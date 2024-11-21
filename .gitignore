@@ -1,0 +1,7 @@
+*.out
+*.o
+/.vscode/
+*.exe
+/build/
+/docs/doxygen/
+/docs/Latex/build/
