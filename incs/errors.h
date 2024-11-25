@@ -3,6 +3,7 @@
  * @author Constanza Araya, Rodolfo Cifuentes, Bruno Martinez, Milton Hernández, Guliana Ruiz
  * @brief Cabeceras para funciones de errors.c
 */
+
 #ifndef ERRORS_H
 #define ERRORS_H
 
