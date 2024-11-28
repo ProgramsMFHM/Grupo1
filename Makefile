@@ -8,7 +8,7 @@ OBJ_DIR=obj
 SRC_FILES=$(wildcard $(SRC_DIR)/*.c)
 OBJ_FILES=$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 INCLUDE=-I./incs/
-LIBS= -lm
+LIBS= -lm -ljansson
 
 CFLAGS=-Wall -Wextra -Wpedantic -O3
 LDFLAGS= -Wall -lm
@@ -34,6 +34,9 @@ folders:
 
 run:
 	@./build/$(EXEC)
+
+json:
+	@./docs/jansson.sh
 
 send:
 	tar czf $(GRUPO)-$(NTAR).tgz --transform 's,^,$(GRUPO)-$(NTAR)/,' Makefile src incs docs

@@ -1,0 +1,43 @@
+[
+    {
+        "nombre": "Carlos ",
+        "edad": 21,
+        "nacionalidad": "Colombia",
+        "gustos": ["Futbol", "pizza"],
+        "bandas": ["ninguna"],
+        "amigos": [
+            "123",
+            "321",
+            "342"
+        ]
+    },
+    {
+        "nombre": "Ana Maria",
+        "edad": 25,
+        "nacionalidad": "Chile",
+        "gustos": ["jazz", "rock"],
+        "bandas": ["ninguna"],
+        "amigos": [
+            "456",
+            "789"
+        ]
+    },
+    {
+        "nombre": "Roberta Lopez",
+        "edad": 38,
+        "nacionalidad": "Chile",
+        "gustos": ["cumbia","pop"],
+        "bandas": ["morat"]
+    },
+    {
+        "nombre": "Milton Hernandez",
+        "edad": 19,
+        "nacionalidad": "Colombia",
+        "gustos": ["cumbia","pop"],
+        "bandas": ["morat"],
+        "amigos": [
+            "1",
+            "2"
+        ]
+    }
+]
