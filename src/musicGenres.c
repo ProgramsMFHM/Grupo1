@@ -59,11 +59,15 @@ void delete_musicGenreList(MusicGenreList genreList)
 */
 void print_musicGenreList(MusicGenreList genreList)
 {
-    MusicGenrePosition position = musicGenreList_first(genreList);
-
-    while (position != NULL) {
-        printf("%s\n", position->genre);
-        position = position->next;
+    MusicGenrePosition current = genreList->next;
+    if (current == NULL) {
+        printf("Empty\n");
+    } else {
+        while (current != NULL) {
+            printf("%s -> ", current->genre);
+            current = current->next;
+        }
+        printf("NULL\n");
     }
 }
 
@@ -196,14 +200,14 @@ MusicGenresTable create_musicGenresTable(MusicGenresTable genresTable)
         delete_musicGenresTable(genresTable);
     }
 
-    genresTable = (MusicGenresTable)malloc(sizeof(struct _musicHashTable) * MUSIC_GENRES_HASH_SIZE);
+    genresTable = (MusicGenresTable)malloc(sizeof(struct _musicHashTable));
     if (!genresTable) {
         print_error(200, NULL, NULL);
     }
 
-    for (int i = 0; i < MUSIC_GENRES_HASH_SIZE; i++) {
-        genresTable[i].genreList = create_empty_musicGenreList(NULL);
-        genresTable[i].nodeCount = 0;
+    for (int i = 0; i < MUSIC_GENRES_TABLE_SIZE; i++) {
+        genresTable->buckets[i] = create_empty_musicGenreList(NULL);
+        genresTable->genreCount = 0;
     }
 
     return genresTable;
@@ -242,11 +246,10 @@ MusicGenresTable read_musicGenre_file(char* fileName, MusicGenresTable genresTab
 */
 void print_musicGenresTable(MusicGenresTable genresTable)
 {
-    for (int i = 0; i < MUSIC_GENRES_HASH_SIZE; i++) {
-        printf("-----------------------------\n");
-        printf("Hash key: %d\n", i);
-        print_musicGenreList(genresTable[i].genreList);
-        printf("\n\n");
+    printf("Generos de la red (%d):\n", genresTable->genreCount);
+    for(int i=0; i<MUSIC_GENRES_TABLE_SIZE; i++){
+        printf("Bucket %2d: ", i);
+        print_musicGenreList(genresTable->buckets[i]);
     }
 }
 
@@ -258,10 +261,10 @@ void print_musicGenresTable(MusicGenresTable genresTable)
 */
 MusicGenrePosition insert_musicGenre(char* genre, MusicGenresTable genresTable)
 {
-    unsigned int index = jenkins_hash(genre) % MUSIC_GENRES_HASH_SIZE;
-    MusicGenrePosition position = insert_musicGenreList_genre(genresTable[index].genreList, genre);
+    unsigned int index = jenkins_hash(genre) % MUSIC_GENRES_TABLE_SIZE;
+    MusicGenrePosition position = insert_musicGenreList_genre(genresTable->buckets[index], genre);
     if (position != NULL) {
-        genresTable[index].nodeCount++;
+        genresTable->genreCount++;
     }
     return position;
 }
@@ -273,14 +276,14 @@ MusicGenrePosition insert_musicGenre(char* genre, MusicGenresTable genresTable)
 */
 void delete_musicGenresTable_genre(char* genre, MusicGenresTable genresTable)
 {
-    int index = jenkins_hash(genre) % MUSIC_GENRES_HASH_SIZE;
-    MusicGenrePosition position = find_musicGenreList_genre(genresTable[index].genreList, genre);
+    int index = jenkins_hash(genre) % MUSIC_GENRES_TABLE_SIZE;
+    MusicGenrePosition position = find_musicGenreList_genre(genresTable->buckets[index], genre);
     if (position == NULL) {
         print_error(301, NULL, NULL);
         return;
     }
-    delete_musicGenreList_genre(position, genresTable[index].genreList);
-    genresTable[index].nodeCount--;
+    delete_musicGenreList_genre(position, genresTable->buckets[index]);
+    genresTable->genreCount--;
 }
 
 /**
@@ -289,8 +292,8 @@ void delete_musicGenresTable_genre(char* genre, MusicGenresTable genresTable)
 */
 void delete_musicGenresTable(MusicGenresTable genresTable)
 {
-    for (int i = 0; i < MUSIC_GENRES_HASH_SIZE; i++) {
-        delete_musicGenreList(genresTable[i].genreList);
+    for (int i = 0; i < MUSIC_GENRES_TABLE_SIZE; i++) {
+        delete_musicGenreList(genresTable->buckets[i]);
     }
     free(genresTable);
 }
@@ -303,6 +306,6 @@ void delete_musicGenresTable(MusicGenresTable genresTable)
 */
 MusicGenrePosition find_musicGenresTable_genre(char* genre, MusicGenresTable genresTable)
 {
-    int index = jenkins_hash(genre) % MUSIC_GENRES_HASH_SIZE;
-    return find_musicGenreList_genre(genresTable[index].genreList, genre);
+    int index = jenkins_hash(genre) % MUSIC_GENRES_TABLE_SIZE;
+    return find_musicGenreList_genre(genresTable->buckets[index], genre);
 }

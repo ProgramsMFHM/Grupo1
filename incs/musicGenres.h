@@ -7,7 +7,7 @@
 #ifndef MUSIC_GENRES_H
 #define MUSIC_GENRES_H
 
-#define MUSIC_GENRES_HASH_SIZE 20
+#define MUSIC_GENRES_TABLE_SIZE 20 /**< Tamaño de la tabla hash de generos musicales */
 
 typedef struct _musicGenre MusicGenre;
 typedef MusicGenre* PtrToMusicGenre;
@@ -32,8 +32,9 @@ struct _musicGenre {
  * @brief Representa una tabla hash para generos musicales
  */
 struct _musicHashTable {
-    MusicGenreList genreList; /**< Lista de generos asociada a una clave hash */
-    int nodeCount; /**< Numero de nodos asociados a la clave hash */
+    MusicGenreList buckets[MUSIC_GENRES_TABLE_SIZE];  /**< Arreglo de punteros a listas enlazadas de generos musicales */
+    int genreCount;                              /**< Contador de generos musicales */
+    bool modified;                              /**< Indica si la tabla ha sido modificada desde que se cargo */
 };
 
 // Funciones para listas de generos musicales

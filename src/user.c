@@ -261,7 +261,7 @@ UserTable create_userTable(UserTable table){
         delete_userTable(table);
     }
 
-    table = (UserTable)malloc(sizeof(struct _userTable) * USER_TABLE_SIZE);
+    table = (UserTable)malloc(sizeof(struct _userTable));
     if(!table){
         print_error(200,NULL,NULL);
     }
