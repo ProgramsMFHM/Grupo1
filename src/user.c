@@ -62,7 +62,9 @@ void print_UserList(UserList userList){
         printf("Empty\n");
     } else {
         while (current != NULL) {
-            printf("[%s, %d, %s, %s] -> ", current->username, current->age, current->nationality, current->musicTaste);
+            printf("[%s, %d, %s, %s, ", current->username, current->age, current->nationality, current->musicTaste);
+            print_userLinkList(current->friends);
+            printf("] -> ");
             current = current->next;
         }
         printf("NULL\n");
@@ -111,7 +113,7 @@ UserPosition find_UserList_prev_node(UserPosition P, UserList userList){
  * @param musicTaste Gusto musical del usuario
  * @return Puntero al nodo creado
 */
-UserPosition createNewUser(const char *username, int age, const char *nationality, const char *musicTaste){
+UserPosition createNewUser(const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends){
     PtrToUser newUser = (PtrToUser) malloc(sizeof(UserNode));
     if (newUser == NULL) {
         print_error(200, NULL, NULL);
@@ -120,6 +122,7 @@ UserPosition createNewUser(const char *username, int age, const char *nationalit
     newUser->age = age;
     strcpy(newUser->nationality, nationality);
     strcpy(newUser->musicTaste, musicTaste);
+    newUser->friends = friends;
     newUser->next = NULL;
     return newUser;
 }
@@ -150,10 +153,11 @@ bool delete_UserList_node(UserPosition P, UserList userList){
     }
     UserPosition prevNode = find_UserList_prev_node(P, userList);
     if(prevNode == NULL){
-        print_error(300, NULL, NULL);
+        print_error(300, P->username, NULL);
         return false;
     }
     prevNode->next = P->next;
+    delete_userLinkList(P->friends);
     free(P);
     return true;
 }
@@ -252,7 +256,7 @@ void delete_userTable(UserTable table){
  * @param musicTaste Gusto musical del usuario
  * @return Puntero al nodo insertado
 */
-UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *musicTaste){
+UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends){
     if(find_userTable_node(table, username) != NULL){
         print_error(301, NULL, NULL);
         return NULL;
@@ -260,7 +264,7 @@ UserPosition insert_userTable_node(UserTable table, const char *username, int ag
 
     unsigned int index = jenkins_hash((char*)username) % USER_TABLE_SIZE;
 
-    PtrToUser newUser = createNewUser(username, age, nationality, musicTaste);
+    PtrToUser newUser = createNewUser(username, age, nationality, musicTaste, friends);
     if (!newUser) {
         print_error(200, NULL, NULL);
     }

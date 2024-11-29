@@ -38,7 +38,7 @@ void print_error(int num, char* target, char* obs) {
             printf("Se intento acceder a un puntero nulo\n");
             break;
         case 300:
-            printf("Usuario no encontrado\n");
+            printf("Usuario %s no encontrado\n", target);
             break;
         case 301:
             printf("Usuario ya presente en la tabla\n");

@@ -17,6 +17,7 @@ typedef struct _userTable* UserTable;
 #include <string.h>
 #include "errors.h"
 #include "hash.h"
+#include "userLink.h"
 
 /** \struct _userNode
  * @brief Estructura que representa un nodo de usuario.
@@ -26,6 +27,7 @@ struct _userNode {
     int age;                         /**< Edad del usuario */
     char nationality[50];            /**< Nacionalidad del usuario */
     char musicTaste[50];             /**< Gusto musical del usuario */
+    UserLinkList friends;            /**< Lista de enlaces a usuarios que son amigos de este usuario */
     PtrToUser next;          /**< Puntero al siguiente nodo de la lista enlazada */
 };
 
@@ -45,7 +47,7 @@ bool is_empty_UserList(UserList userList);
 void print_UserList(UserList userList);
 UserPosition find_UserList_node(UserList userList, const char *name);
 UserPosition find_UserList_prev_node(UserPosition P, UserList userList);
-UserPosition createNewUser(const char *username, int age, const char *nationality, const char *musicTaste);
+UserPosition createNewUser(const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends);
 UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNode);
 bool delete_UserList_node(UserPosition P, UserList userList);
 
@@ -59,7 +61,7 @@ char *get_username(UserPosition P);
 // Funciones de la tabla de usuarios
 UserTable create_userTable(UserTable table);
 void delete_userTable(UserTable table);
-UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *musicTaste);
+UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends);
 UserPosition find_userTable_node(UserTable table, const char *username);
 void delete_userTable_node(UserTable table, const char* username);
 void print_userTable(UserTable table);
