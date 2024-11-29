@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include "comment.h"
 #include "musicGenres.h"
-#include "json.h"
+#include "user.h"
+// #include "json.h"
 
 int main()
 {
@@ -32,6 +33,7 @@ int main()
    // FIN PRUEBA DE GÉNEROS MUSICALES
    */
 
+    /*
     // PRUEBA DE LECTURA DE DATOS JSON
     User usuarios[MAX_USERS];
     int total_users = 0;
@@ -39,7 +41,7 @@ int main()
     if (read_archive_json("./build/users.json", usuarios, &total_users) == 0) {
         printf("Se leyeron %d usuarios:\n", total_users);
 
-        /**<  imprimir los datos obtenidos de cada usuario*/
+        // imprimir los datos obtenidos de cada usuario
         for (int i = 0; i < total_users; i++) {
             printf("ID %d:\n", i + 1);
             printf("Nombre: %s\n", usuarios[i].name);
@@ -60,7 +62,73 @@ int main()
             printf("\n");
         }
     }
-  // FIN PRUEBA DE LECTURA DE DATOS JSON
+     // FIN PRUEBA DE LECTURA DE DATOS JSON
+    */
+
+   // PRUEBA DE TABLA DE USUARIOS
+   // Crear la tabla hash
+    UserTable table = create_userTable(NULL);
+
+    // Imprimir la tabla inicial
+    print_userTable(table);
+
+    // Agregar usuarios
+    insert_userTable_node(table, "Alice", 30, "USA", "Rock");
+    insert_userTable_node(table, "Bob", 25, "Canada", "Jazz");
+    insert_userTable_node(table, "Charlie", 35, "UK", "Pop");
+    insert_userTable_node(table, "David", 35, "UK", "Pop");
+    insert_userTable_node(table, "Emily", 35, "UK", "Pop");
+    insert_userTable_node(table, "Frank", 35, "UK", "Pop");
+    insert_userTable_node(table, "George", 35, "UK", "Pop");
+    insert_userTable_node(table, "Hannah", 35, "UK", "Pop");
+    insert_userTable_node(table, "Isabella", 35, "UK", "Pop");
+    insert_userTable_node(table, "Jack", 35, "UK", "Pop");
+    insert_userTable_node(table, "Jasmine", 35, "UK", "Pop");
+    insert_userTable_node(table, "Kate", 35, "UK", "Pop");
+    insert_userTable_node(table, "Lily", 35, "UK", "Pop");
+    insert_userTable_node(table, "Max", 35, "UK", "Pop");
+    insert_userTable_node(table, "Natalie", 35, "UK", "Pop");
+    insert_userTable_node(table, "Oliver", 35, "UK", "Pop");
+    insert_userTable_node(table, "Penelope", 35, "UK", "Pop");
+    insert_userTable_node(table, "Quentin", 35, "UK", "Pop");
+    insert_userTable_node(table, "Sophia", 35, "UK", "Pop");
+
+    // Imprimir la tabla después de agregar usuarios
+    print_userTable(table);
+
+    // Crear un nuevo usuario
+    UserNode usuario;
+    printf("Ingrese el nombre de usuario: ");
+    if(scanf("%s", usuario.username) < 1){
+        printf("Error al leer el nombre de usuario\n");
+        exit(1);
+    }
+    printf("Ingrese la edad: ");
+    if(scanf("%d", &usuario.age) < 1){
+        printf("Error al leer la edad\n");
+        exit(1);
+    }
+    printf("Ingrese la nacionalidad: ");
+    if(scanf("%s", usuario.nationality) < 1){
+        printf("Error al leer la nacionalidad\n");
+        exit(1);
+    }
+    printf("Ingrese el gusto musical: ");
+    if(scanf("%s", usuario.musicTaste) < 1){
+        printf("Error al leer el gusto musical\n");
+        exit(1);
+    }
+    insert_userTable_node(table, usuario.username, usuario.age, usuario.nationality, usuario.musicTaste);
+
+    // Imprimir la tabla después de agregar el nuevo usuario
+    print_userTable(table);
+
+    // Eliminar a Bob
+    printf("Eliminando a Bob\n");
+    delete_userTable_node(table, "Bob");
+    print_userTable(table);
+
+    // FIN PRUEBA DE TABLA DE USUARIOS
 
     return 0;
 }

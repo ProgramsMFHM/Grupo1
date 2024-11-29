@@ -34,6 +34,15 @@ void print_error(int num, char* target, char* obs) {
             printf("No se pudo acceder al sistema\n");
             exit(-1);
             break;
+        case 202:
+            printf("Se intento acceder a un puntero nulo\n");
+            break;
+        case 300:
+            printf("Usuario no encontrado\n");
+            break;
+        case 301:
+            printf("Usuario ya presente en la tabla\n");
+            break;
         default:
             printf("Codigo de error desconocido\n");
     }
