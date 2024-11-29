@@ -116,7 +116,11 @@ UserLinkPosition insert_userLinkList_node_basicInfo(UserLinkPosition prevPositio
     if (newNode == NULL) {
         print_error(200, NULL, NULL);
     }
-    newNode->userName = userName;
+    newNode->userName = malloc(strlen(userName) + 1);
+    if(newNode->userName == NULL){
+        print_error(200, NULL, NULL);
+    }
+    strcpy(newNode->userName, userName);
     newNode->next = prevPosition->next;
     prevPosition->next = newNode;
     return newNode;
@@ -134,7 +138,11 @@ UserLinkPosition insert_userLinkList_node_completeInfo(UserLinkPosition prevPosi
     if (newNode == NULL) {
         print_error(200, NULL, NULL);
     }
-    newNode->userName = userNode->username;
+    newNode->userName = malloc(strlen(userNode->username) + 1);
+    if(newNode->userName == NULL){
+        print_error(200, NULL, NULL);
+    }
+    strcpy(newNode->userName, userNode->username);
     newNode->userNode = userNode;
     newNode->next = prevPosition->next;
     prevPosition->next = newNode;
@@ -157,6 +165,7 @@ void delete_userLinkList_node(UserLinkPosition P, UserLinkList linkList){
         return;
     }
     prevNode->next = P->next;
+    free(P->userName);
     free(P);
 }
 

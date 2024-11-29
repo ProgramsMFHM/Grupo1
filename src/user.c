@@ -118,10 +118,26 @@ UserPosition createNewUser(const char *username, int age, const char *nationalit
     if (newUser == NULL) {
         print_error(200, NULL, NULL);
     }
+
+    newUser->username = malloc(strlen(username) + 1);
+    if(newUser->username == NULL){
+        print_error(200, NULL, NULL);
+    }
     strcpy(newUser->username, username);
-    newUser->age = age;
+
+    newUser->nationality = malloc(strlen(nationality) + 1);
+    if(newUser->nationality == NULL){
+        print_error(200, NULL, NULL);
+    }
     strcpy(newUser->nationality, nationality);
+
+    newUser->musicTaste = malloc(strlen(musicTaste) + 1);
+    if(newUser->musicTaste == NULL){
+        print_error(200, NULL, NULL);
+    }
     strcpy(newUser->musicTaste, musicTaste);
+
+    newUser->age = age;
     newUser->friends = friends;
     newUser->next = NULL;
     return newUser;
@@ -138,6 +154,29 @@ UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNod
     newNode->next = prevPosition->next;
     prevPosition->next = newNode;
     return newNode;
+}
+
+/**
+ * @brief Completa un nodo de una lista de usuarios
+ *
+ * @param P Puntero al nodo a completar
+ * @param age Edad del usuario
+ * @param nationality Nacionalidad del usuario
+ * @param musicTaste Gusto musical del usuario
+ * @return Puntero al nodo completado
+*/
+UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *musicTaste){
+    if(P == NULL){
+        print_error(202, NULL, NULL);
+    }
+    P->age = age;
+
+    P->nationality = (char*)realloc(P->nationality, strlen(nationality) + 1);
+    strcpy(P->nationality, nationality);
+    P->musicTaste = (char*)realloc(P->musicTaste, strlen(musicTaste) + 1);
+    strcpy(P->musicTaste, musicTaste);
+
+    return P;
 }
 
 /**
@@ -158,6 +197,9 @@ bool delete_UserList_node(UserPosition P, UserList userList){
     }
     prevNode->next = P->next;
     delete_userLinkList(P->friends);
+    free(P->username);
+    free(P->nationality);
+    free(P->musicTaste);
     free(P);
     return true;
 }

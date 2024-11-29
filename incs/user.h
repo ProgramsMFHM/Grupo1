@@ -6,6 +6,8 @@
 #ifndef USER_H
 #define USER_H
 
+#define USERS_PATH "./build/users/"
+
 typedef struct _userNode UserNode;
 typedef UserNode* PtrToUser;
 typedef PtrToUser UserPosition;
@@ -23,10 +25,10 @@ typedef struct _userTable* UserTable;
  * @brief Estructura que representa un nodo de usuario.
 */
 struct _userNode {
-    char username[50];               /**< Nombre del usuario */
+    char* username;               /**< Nombre del usuario */
     int age;                         /**< Edad del usuario */
-    char nationality[50];            /**< Nacionalidad del usuario */
-    char musicTaste[50];             /**< Gusto musical del usuario */
+    char* nationality;            /**< Nacionalidad del usuario */
+    char* musicTaste;             /**< Gusto musical del usuario */
     UserLinkList friends;            /**< Lista de enlaces a usuarios que son amigos de este usuario */
     PtrToUser next;          /**< Puntero al siguiente nodo de la lista enlazada */
 };
@@ -49,6 +51,8 @@ UserPosition find_UserList_node(UserList userList, const char *name);
 UserPosition find_UserList_prev_node(UserPosition P, UserList userList);
 UserPosition createNewUser(const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends);
 UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNode);
+UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *musicTaste);
+UserPosition complet_userList_node(UserPosition P, int age, const char *nationality, const char *musicTaste);
 bool delete_UserList_node(UserPosition P, UserList userList);
 
 

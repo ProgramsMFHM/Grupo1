@@ -1,0 +1,7 @@
+{
+    "userName": "Bob",
+    "age": 19,
+    "nationality": "Italy",
+    "musicTaste": "Rock",
+    "friends": ["Alice"]
+}

@@ -26,6 +26,9 @@ void print_error(int num, char* target, char* obs) {
         case 100:
             printf("No se pudo leer el archivo %s\n", target);
             break;
+        case 101:
+            printf("Error al leer el archivo JSON: %s\n", target);
+            break;
         case 200:
             printf("No hay memoria disponible\n");
             exit(-1);
@@ -42,6 +45,9 @@ void print_error(int num, char* target, char* obs) {
             break;
         case 301:
             printf("Usuario ya presente en la tabla\n");
+            break;
+        case 302:
+            printf("Error al leer campo JSON\n");
             break;
         default:
             printf("Codigo de error desconocido\n");

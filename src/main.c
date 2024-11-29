@@ -3,7 +3,7 @@
 #include "musicGenres.h"
 #include "user.h"
 #include "userLink.h"
-// #include "json.h"
+#include "json.h"
 
 int main()
 {
@@ -133,40 +133,21 @@ int main()
     // FIN PRUEBA DE TABLA DE USUARIOS
     */
 
-    // PRUEBA DE USUARIOS CON ENLACES
-    UserTable users = create_userTable(NULL);
+    // PRUEBA DE TABLA DE USUARIOS
+    UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
+    // print_userTable(table);
 
-    // Crearemos a 5 amigos, Alice, Bob, Carol, Dave y Eve con los siguientes enlaces:
-        // Alice es amiga de Bob, Carol y Dave
-        // Bob es amigo de Alice
-        // Carol es amiga de Alice, Dave y Eve
-        // Dave es amigo de Alice y Carol
-        // Eve es amiga de Carol
-    UserLinkList aliceFriends = create_empty_userLinkList(NULL);
-        insert_userLinkList_node_basicInfo(aliceFriends, "Bob");
-        insert_userLinkList_node_basicInfo(aliceFriends, "Carol");
-        insert_userLinkList_node_basicInfo(aliceFriends, "Dave");
-    UserLinkList bobFriends = create_empty_userLinkList(NULL);
-        insert_userLinkList_node_basicInfo(bobFriends, "Alice");
-    UserLinkList carolFriends = create_empty_userLinkList(NULL);
-        insert_userLinkList_node_basicInfo(carolFriends, "Alice");
-        insert_userLinkList_node_basicInfo(carolFriends, "Dave");
-        insert_userLinkList_node_basicInfo(carolFriends, "Eve");
-    UserLinkList daveFriends = create_empty_userLinkList(NULL);
-        insert_userLinkList_node_basicInfo(daveFriends, "Alice");
-    UserLinkList eveFriends = create_empty_userLinkList(NULL);
-        insert_userLinkList_node_basicInfo(eveFriends, "Carol");
+    printf("--- Completando usuarios ---\n");
+    for(int i = 0; i < USER_TABLE_SIZE; i++){
+        UserPosition user = table->buckets[i]->next;
+        while(user != NULL){
+            complete_user_from_json(user);
+            user = user->next;
+        }
+    }
+    print_userTable(table);
 
-    // Creamos 5 usuarios
-    insert_userTable_node(users, "Alice", 18, "España", "Rock", aliceFriends);
-    insert_userTable_node(users, "Bob", 19, "Italia", "Rock", bobFriends);
-    insert_userTable_node(users, "Carol", 20, "Francia", "Rock", carolFriends);
-    insert_userTable_node(users, "Dave", 21, "Italia", "Rock", daveFriends);
-    insert_userTable_node(users, "Eve", 22, "España", "Rock", eveFriends);
+    delete_userTable(table);
 
-    print_userTable(users);
-    delete_userTable(users);
-
-   // FIN PRUEBA DE USUARIOS CON ENLACES
     return 0;
 }

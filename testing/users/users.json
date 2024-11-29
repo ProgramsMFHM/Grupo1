@@ -1,0 +1,22 @@
+[
+    {
+        "userName": "Alice",
+        "friends": ["Bob", "Carol", "Dave"]
+    },
+    {
+        "userName": "Bob",
+        "friends": ["Alice"]
+    },
+    {
+        "userName": "Carol",
+        "friends": ["Alice", "Dave", "Eve"]
+    },
+    {
+        "userName": "Dave",
+        "friends": ["Alice", "Carol"]
+    },
+    {
+        "userName": "Eve",
+        "friends": ["Carol"]
+    }
+]

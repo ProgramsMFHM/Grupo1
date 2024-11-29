@@ -6,75 +6,108 @@
 #include "json.h"
 
 /**
- * @brief Funcion para leer un arreglo de strings .json y almacenarlos en una matriz
+ * @brief Funcion para leer un archivo json y almacenar los datos en una tabla de usuarios (Nombres y amigos)
  *
- * @param array_json  objeto json del tipo arreglo  que contiene los valores se van a leer
- * @param matriz  donde se acumularan los valores leidos del arreglo
- * @return cantidad de elementos leidos
- */
-int read_list_json(json_t *array_json, char matriz[MAX_ELEMENTS][MAX_CADENA]) {
-    size_t cantidad = json_array_size(array_json);/**<obtener el numero de elementos en el arreglo json*/
-    if (cantidad > MAX_ELEMENTS) {/**< verificar que no supere la cantidad permitida*/
-        printf("max elementos superado\n");
-        cantidad = MAX_ELEMENTS;
+ * @param filename Ruta del archivo json
+ * @param table Puntero a la tabla de usuarios a crear
+ * @return Puntero a la tabla de usuarios creada
+*/
+UserTable get_users_from_file(const char *filePath, UserTable table)
+{
+    if(table == NULL){
+        table = create_userTable(table);
     }
 
-    for (size_t i = 0; i < cantidad; i++) {
-        const char *valor = json_string_value(json_array_get(array_json, i));  /**< obtener el valor del string en el indice i de la matriz*/
-        if (!valor) {
-            printf("Elemento no valido en indice %zu.\n", i);
-            return 0;
-        }
-        snprintf(matriz[i], MAX_CADENA, "%s", valor); /**<copia el valor del string donde corresponda en la matriz */
+    // Crear estructura JSON
+    FILE *file = fopen(filePath, "r");  // Abre el archivo .json en modo lectura
+    if (!file) {
+        print_error(100, (char*)filePath, NULL);
+        return table;
     }
-    return (int)cantidad;
+    json_error_t error;     // declaracion de "variable" error basada en una funcion de la libreria jansson
+    json_t *json = json_loadf(file, 0, &error); //<  puntero en el cual se guarda el archivo .json
+    fclose(file);
+    if (!json) {
+        print_error(101, error.text, NULL);
+        return table;
+    }
+
+    size_t total_users;
+    total_users = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
+
+    // Leemos y procesamos cada uno de los usuarios
+    for (size_t i = 0; i < total_users; i++) {
+        json_t *usuario_json = json_array_get(json, i); // Obtiene el objeto json, basada en el usuario[i]
+
+        // Lectura de campos basicos
+        const char *userName = json_string_value(json_object_get(usuario_json, "userName")); // almacena el nombre del usuario[i]
+        json_t *friends_json = json_object_get(usuario_json, "friends"); // almacena los amigos del usuario[i]
+        UserLinkList friends = read_friends_json(friends_json);
+        insert_userTable_node(table, userName, 0, "NULL", "NULL", friends);
+    }
+    json_decref(json); // libera la memoria utilizada por el json
+
+    return table;
 }
 
 /**
- * @brief Funcion para leer el archivo json, en este caso usuarios.json
+ * @brief Funcion para completar un usuario leido desde un archivo json
  *
- * @param nombre_archivo  archivo .json a leer
- * @param usuarios  usuario de la estructura antes creada en el que se guardaran los datos obtenidos
- * @param total_users  puntero a un entero en el que se guardara el numero total de usuarios leidos en el .json
- * @return int
- */
-int read_archive_json(const char *nombre_archivo, User usuarios[], int *total_users) {
-    FILE *archivo = fopen(nombre_archivo, "r");  /**< Abre el archivo .json en modo lectura */
-    if (!archivo) {
-        perror("No se pudo abrir el archivo JSON");
-        return 1;
+ * @param user Puntero al usuario a completar
+ * @return Puntero al usuario completado
+*/
+UserPosition complete_user_from_json(UserPosition user)
+{
+    if(user == NULL){
+        print_error(202, NULL, NULL);
     }
-    json_error_t error;     /**< declaracion de "variable" error basada en una funcion de la libreria jansson */
-    json_t *json = json_loadf(archivo, 0, &error); /**<  puntero en el cual se guarda el archivo .json*/
-    fclose(archivo);
 
+    // Crear estructura JSON
+    char filePath[200];
+    snprintf(filePath, 200, USERS_PATH"%s.json", user->username);
+    FILE *file = fopen(filePath, "r");  // Abre el archivo .json en modo lectura
+    if (!file){
+        print_error(100, (char*)filePath, NULL);
+        return user;
+    }
+    json_error_t error;     // declaracion de "variable" error basada en una funcion de la libreria jansson
+    json_t *json = json_loadf(file, 0, &error); //<  puntero en el cual se guarda el archivo .json
+    fclose(file);
     if (!json) {
-        printf("Error al analizar el .json: %s\n", error.text);
-        return 1;
+        print_error(101, error.text, NULL);
+        return user;
+    }
+    int age = (int)json_integer_value(json_object_get(json, "age"));
+    const char *nationality = json_string_value(json_object_get(json, "nationality"));
+    const char *musicTaste = json_string_value(json_object_get(json, "musicTaste"));
+    complete_userList_node(user, age, nationality, musicTaste);
+
+    json_decref(json); // libera la memoria utilizada por el json
+    return user;
+}
+
+
+/**
+ * @brief Funcion para leer el arreglo json de amigos y crear una lista de enlaces a usuarios
+ *
+ * @param friends_json Puntero al arreglo json de amigos
+ * @return Puntero a la lista de enlaces a usuarios creada
+*/
+UserLinkList read_friends_json(json_t *friends_json){
+    if(friends_json == NULL){
+        return NULL;
     }
 
-    *total_users = (int)json_array_size(json);  /**<  tamano total de usuarios basado en el arreglo json, utilizando una funcion de la libreria jansson*/
-    for (int i = 0; i < *total_users; i++) {
-        json_t *usuario_json = json_array_get(json, i); /**< Obtiene el objeto json, basada en el usuario[i] */
+    size_t quantity = json_array_size(friends_json); //obtener el numero de elementos en el arreglo json
+    UserLinkList friends = create_empty_userLinkList(NULL);
 
-        /**<  Lectura de campos basicos*/
-        const char *name = json_string_value(json_object_get(usuario_json, "nombre"));  /**<  almacena el nombre del usuario[i]*/
-        json_int_t age = json_integer_value(json_object_get(usuario_json, "edad"));     /**<  almacena la edad del usuario[i]*/
-        const char *nationality = json_string_value(json_object_get(usuario_json, "nacionalidad"));  /**< almacena la nacionalidad del usuario[i] */
-        json_t *gustos_json = json_object_get(usuario_json, "gustos");  /**< almacena los gustos del usuario[i] */
-        json_t *bands_json = json_object_get(usuario_json, "bandas");   /**< almacena las bandas del usuario[i] */
-        json_t *friends_json = json_object_get(usuario_json, "amigos"); /**< almacena los amigos del usuario[i] */
-
-        snprintf(usuarios[i].name, sizeof(usuarios[i].name), "%s", name);  /**<  copia el nombre a la estructura user*/
-        usuarios[i].age = (int)age;                                        /**<  copia la edad a la estructura user*/
-        snprintf(usuarios[i].nationality, sizeof(usuarios[i].nationality), "%s", nationality);   /**< copia la nacionalidad a la estructura user */
-
-       /**< Lee y almacena las listas de gustos, bandas, amigos en la estructura user */
-        read_list_json(gustos_json, usuarios[i].gustos);
-        read_list_json(bands_json, usuarios[i].bands);
-        read_list_json(friends_json, usuarios[i].friends);
+    for (size_t i = 0; i < quantity; i++) {
+        char *friendName = (char*)json_string_value(json_array_get(friends_json, i));  // obtener el valor del string en el indice i del arreglo
+        if (!friendName) {
+            print_error(302, NULL, "Nombre del amigo no valido");
+            continue;
+        }
+        insert_userLinkList_node_basicInfo(friends, friendName);
     }
-
-    json_decref(json); /**< libera la memoria utilizada por el json, funcion de la libreria jansson */
-    return 0;
+    return friends;
 }
