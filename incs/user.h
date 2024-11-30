@@ -20,6 +20,7 @@ typedef struct _userTable* UserTable;
 #include "errors.h"
 #include "hash.h"
 #include "userLink.h"
+#include "genreLink.h"
 
 /** \struct _userNode
  * @brief Estructura que representa un nodo de usuario.
@@ -28,7 +29,7 @@ struct _userNode {
     char* username;               /**< Nombre del usuario */
     int age;                         /**< Edad del usuario */
     char* nationality;            /**< Nacionalidad del usuario */
-    char* musicTaste;             /**< Gusto musical del usuario */
+    GenreLinkList genres;             /**< Gustos musicales que le gustan al usuario */
     UserLinkList friends;            /**< Lista de enlaces a usuarios que son amigos de este usuario */
     PtrToUser next;          /**< Puntero al siguiente nodo de la lista enlazada */
 };
@@ -49,10 +50,9 @@ bool is_empty_UserList(UserList userList);
 void print_UserList(UserList userList);
 UserPosition find_UserList_node(UserList userList, const char *name);
 UserPosition find_UserList_prev_node(UserPosition P, UserList userList);
-UserPosition createNewUser(const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends);
+UserPosition create_new_user(const char *username, int age, const char *nationality, GenreLinkList genres, UserLinkList friends);
 UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNode);
-UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *musicTaste);
-UserPosition complet_userList_node(UserPosition P, int age, const char *nationality, const char *musicTaste);
+UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, GenreLinkList genres);
 bool delete_UserList_node(UserPosition P, UserList userList);
 
 
@@ -65,7 +65,7 @@ char *get_username(UserPosition P);
 // Funciones de la tabla de usuarios
 UserTable create_userTable(UserTable table);
 void delete_userTable(UserTable table);
-UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends);
+UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, GenreLinkList genres, UserLinkList friends);
 UserPosition find_userTable_node(UserTable table, const char *username);
 void delete_userTable_node(UserTable table, const char* username);
 void print_userTable(UserTable table);

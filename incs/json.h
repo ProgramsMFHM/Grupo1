@@ -12,9 +12,11 @@
 #include <string.h>
 #include "errors.h"
 #include "userLink.h"
+#include "genreLink.h"
 
 UserTable get_users_from_file(const char *filePath, UserTable table);
 UserPosition complete_user_from_json(UserPosition user);
 UserLinkList read_friends_json(json_t *friends_json);
+GenreLinkList read_genres_json(json_t *genres_json);
 
 #endif

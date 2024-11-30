@@ -9,7 +9,7 @@
     },
     {
         "userName": "Carol",
-        "friends": ["Alice", "Dave", "Eve"]
+        "friends": ["Alice", "Dave", "Eve", "France"]
     },
     {
         "userName": "Dave",
@@ -17,6 +17,10 @@
     },
     {
         "userName": "Eve",
-        "friends": ["Carol"]
+        "friends": ["Carol", "France"]
+    },
+    {
+        "userName": "France",
+        "friends": ["Eve", "Carol"]
     }
 ]

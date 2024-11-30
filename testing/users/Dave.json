@@ -2,6 +2,6 @@
     "userName": "Dave",
     "age": 21,
     "nationality": "Italy",
-    "musicTaste": "Rock",
+    "genres": ["rock"],
     "friends": ["Alice", "Carol"]
 }

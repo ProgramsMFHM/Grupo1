@@ -37,13 +37,13 @@ UserTable get_users_from_file(const char *filePath, UserTable table)
 
     // Leemos y procesamos cada uno de los usuarios
     for (size_t i = 0; i < total_users; i++) {
-        json_t *usuario_json = json_array_get(json, i); // Obtiene el objeto json, basada en el usuario[i]
+        json_t *user_json = json_array_get(json, i); // Obtiene el objeto json, basada en el usuario[i]
 
         // Lectura de campos basicos
-        const char *userName = json_string_value(json_object_get(usuario_json, "userName")); // almacena el nombre del usuario[i]
-        json_t *friends_json = json_object_get(usuario_json, "friends"); // almacena los amigos del usuario[i]
+        const char *userName = json_string_value(json_object_get(user_json, "userName")); // almacena el nombre del usuario[i]
+        json_t *friends_json = json_object_get(user_json, "friends"); // almacena los amigos del usuario[i]
         UserLinkList friends = read_friends_json(friends_json);
-        insert_userTable_node(table, userName, 0, "NULL", "NULL", friends);
+        insert_userTable_node(table, userName, 0, "NULL", NULL, friends);
     }
     json_decref(json); // libera la memoria utilizada por el json
 
@@ -79,13 +79,15 @@ UserPosition complete_user_from_json(UserPosition user)
     }
     int age = (int)json_integer_value(json_object_get(json, "age"));
     const char *nationality = json_string_value(json_object_get(json, "nationality"));
-    const char *musicTaste = json_string_value(json_object_get(json, "musicTaste"));
-    complete_userList_node(user, age, nationality, musicTaste);
+
+    json_t *genres_json = json_object_get(json, "genres"); // almacena los amigos del usuario[i]
+    GenreLinkList genres = read_genres_json(genres_json);
+
+    complete_userList_node(user, age, nationality, genres);
 
     json_decref(json); // libera la memoria utilizada por el json
     return user;
 }
-
 
 /**
  * @brief Funcion para leer el arreglo json de amigos y crear una lista de enlaces a usuarios
@@ -110,4 +112,29 @@ UserLinkList read_friends_json(json_t *friends_json){
         insert_userLinkList_node_basicInfo(friends, friendName);
     }
     return friends;
+}
+
+/**
+ * @brief Funcion para leer el arreglo json de generos y crear una lista de enlaces a generos
+ *
+ * @param genres_json Puntero al arreglo json de generos
+ * @return Puntero a la lista de enlaces a generos creada
+*/
+GenreLinkList read_genres_json(json_t *genres_json){
+    if(genres_json == NULL){
+        return NULL;
+    }
+
+    size_t quantity = json_array_size(genres_json); //obtener el numero de elementos en el arreglo json
+    GenreLinkList genres = create_empty_genreLinkList(NULL);
+
+    for (size_t i = 0; i < quantity; i++) {
+        char *genreName = (char*)json_string_value(json_array_get(genres_json, i));  // obtener el valor del string en el indice i del arreglo
+        if (!genreName) {
+            print_error(302, NULL, "Nombre del genero no valido");
+            continue;
+        }
+        insert_genreLinkList_node_basicInfo(genres, genreName);
+    }
+    return genres;
 }

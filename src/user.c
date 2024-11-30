@@ -62,7 +62,9 @@ void print_UserList(UserList userList){
         printf("Empty\n");
     } else {
         while (current != NULL) {
-            printf("[%s, %d, %s, %s, ", current->username, current->age, current->nationality, current->musicTaste);
+            printf("[%s, %d, %s, ", current->username, current->age, current->nationality);
+            print_genreLinkList(current->genres);
+            printf(", ");
             print_userLinkList(current->friends);
             printf("] -> ");
             current = current->next;
@@ -110,10 +112,10 @@ UserPosition find_UserList_prev_node(UserPosition P, UserList userList){
  * @param username Nombre del usuario
  * @param age Edad del usuario
  * @param nationality Nacionalidad del usuario
- * @param musicTaste Gusto musical del usuario
+ * @param genres0 Gustos musicales del usuario
  * @return Puntero al nodo creado
 */
-UserPosition createNewUser(const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends){
+UserPosition create_new_user(const char *username, int age, const char *nationality, GenreLinkList genres, UserLinkList friends){
     PtrToUser newUser = (PtrToUser) malloc(sizeof(UserNode));
     if (newUser == NULL) {
         print_error(200, NULL, NULL);
@@ -131,13 +133,8 @@ UserPosition createNewUser(const char *username, int age, const char *nationalit
     }
     strcpy(newUser->nationality, nationality);
 
-    newUser->musicTaste = malloc(strlen(musicTaste) + 1);
-    if(newUser->musicTaste == NULL){
-        print_error(200, NULL, NULL);
-    }
-    strcpy(newUser->musicTaste, musicTaste);
-
     newUser->age = age;
+    newUser->genres = genres;
     newUser->friends = friends;
     newUser->next = NULL;
     return newUser;
@@ -162,10 +159,10 @@ UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNod
  * @param P Puntero al nodo a completar
  * @param age Edad del usuario
  * @param nationality Nacionalidad del usuario
- * @param musicTaste Gusto musical del usuario
+ * @param genres Gustos musicales del usuario
  * @return Puntero al nodo completado
 */
-UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *musicTaste){
+UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, GenreLinkList genres){
     if(P == NULL){
         print_error(202, NULL, NULL);
     }
@@ -173,8 +170,7 @@ UserPosition complete_userList_node(UserPosition P, int age, const char *nationa
 
     P->nationality = (char*)realloc(P->nationality, strlen(nationality) + 1);
     strcpy(P->nationality, nationality);
-    P->musicTaste = (char*)realloc(P->musicTaste, strlen(musicTaste) + 1);
-    strcpy(P->musicTaste, musicTaste);
+    P->genres = genres;
 
     return P;
 }
@@ -197,9 +193,9 @@ bool delete_UserList_node(UserPosition P, UserList userList){
     }
     prevNode->next = P->next;
     delete_userLinkList(P->friends);
+    delete_genreLinkList(P->genres);
     free(P->username);
     free(P->nationality);
-    free(P->musicTaste);
     free(P);
     return true;
 }
@@ -295,10 +291,10 @@ void delete_userTable(UserTable table){
  * @param username Nombre del usuario
  * @param age Edad del usuario
  * @param nationality Nacionalidad del usuario
- * @param musicTaste Gusto musical del usuario
+ * @param genres Gustos musicales del usuario
  * @return Puntero al nodo insertado
 */
-UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *musicTaste, UserLinkList friends){
+UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, GenreLinkList genres, UserLinkList friends){
     if(find_userTable_node(table, username) != NULL){
         print_error(301, NULL, NULL);
         return NULL;
@@ -306,7 +302,7 @@ UserPosition insert_userTable_node(UserTable table, const char *username, int ag
 
     unsigned int index = jenkins_hash((char*)username) % USER_TABLE_SIZE;
 
-    PtrToUser newUser = createNewUser(username, age, nationality, musicTaste, friends);
+    PtrToUser newUser = create_new_user(username, age, nationality, genres, friends);
     if (!newUser) {
         print_error(200, NULL, NULL);
     }
@@ -350,7 +346,7 @@ void delete_userTable_node(UserTable table, const char* username){
  * @param table Puntero a la tabla de usuarios
 */
 void print_userTable(UserTable table){
-    printf("Usuarios de la red:\n");
+    printf("Usuarios de la red (%d):\n", table->userCount);
     for(int i=0; i<USER_TABLE_SIZE; i++){
         printf("Bucket %2d: ", i);
         print_UserList(table->buckets[i]);
