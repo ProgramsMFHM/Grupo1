@@ -15,14 +15,16 @@ LDFLAGS= -Wall -lm
 
 all: $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o build/$(EXEC) $(OBJ_FILES) $(INCLUDE) $(LIBS)
+	cp -r ./testing/* ./build/
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $^ $(INCLUDE)
 
 .PHONY: clean folders send
+
 clean:
 	rm -f $(OBJ_FILES)
-	rm -f build/*
+	rm -rf build/*
 #rm -fr docs/doxygen/
 #rm -fr docs/Latex/build/
 
@@ -34,6 +36,9 @@ folders:
 
 run:
 	@./build/$(EXEC)
+
+test:
+	@valgrind  ./build/$(EXEC)
 
 json:
 	@./docs/jansson.sh
