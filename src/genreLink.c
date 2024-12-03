@@ -220,3 +220,58 @@ GenreLinkPosition genreLinkList_last(GenreLinkList linkList){
 GenreLinkPosition genreLinkList_advance(GenreLinkPosition P){
     return P->next;
 }
+
+
+// Funciones de ordenamiento de listas de enlaces a generos
+
+/**
+ * @brief Ordena una lista de enlaces a generos usando el algoritmo de intercambio (BubleSort)
+ *
+ * @param linkList Puntero a la lista de enlaces a generos a ordenar
+ * @return Puntero a la lista ordenada
+*/
+GenreLinkList bubbleSort_genreLinkList(GenreLinkList linkList){
+    if(is_empty_genreLinkList(linkList)){
+		return linkList;
+	}
+	unsigned int listSize = 0;
+    GenreLinkPosition P = linkList->next;
+	while(P != NULL){ // Calculo ineficiente de la cantidad de elementos de la lista
+		listSize++;
+		P = P->next;
+	}
+	unsigned int toOrder = listSize-1;
+
+	P=linkList->next;
+	while(toOrder > 0){
+		for(unsigned int i = 0; i < toOrder; i++){
+			if(strcmp(P->genre, P->next->genre) > 0){
+				swap_genreLinkList_nodes(P, P->next);
+			}
+			P = P->next;
+		}
+		P=linkList->next;
+		toOrder--;
+
+	}
+	return linkList;
+}
+
+/**
+ * @brief Intercambia los punteros de dos nodos de una lista de enlaces a generos
+ *
+ * @param a Puntero al primer nodo a intercambiar
+ * @param b Puntero al segundo nodo a intercambiar
+*/
+void swap_genreLinkList_nodes(GenreLinkPosition a, GenreLinkPosition b){
+    GenreLinkNode aux;
+    aux = *a;
+
+	a->genre = b->genre;
+    a->completed = b->completed;
+    a->genreNode = b->genreNode;
+
+	b->genre = aux.genre;
+    b->completed = aux.completed;
+    b->genreNode = aux.genreNode;
+}

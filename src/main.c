@@ -24,11 +24,11 @@ int main()
     // FIN PRUEBA DE COMENTARIOS
     */
 
-   // PRUEBA DE GÉNEROS MUSICALES
+   /* PRUEBA DE GÉNEROS MUSICALES
    MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
    print_musicGenresTable(genresTable);
    delete_musicGenresTable(genresTable);
-   // FIN PRUEBA DE GÉNEROS MUSICALES
+   FIN PRUEBA DE GÉNEROS MUSICALES */
 
     /*
     // PRUEBA DE LECTURA DE DATOS JSON
@@ -141,9 +141,19 @@ int main()
             user = user->next;
         }
     }
-    print_userTable(table);
+
+    printf("Gustos musicales de Allice:\n");
+    bubbleSort_genreLinkList(find_userTable_node(table, "Alice")->genres);
+    print_genreLinkList(find_userTable_node(table, "Alice")->genres);
+    printf("\n");
+
+    printf("Gustos musicales de Bob:\n");
+    bubbleSort_genreLinkList(find_userTable_node(table, "Bob")->genres);
+    print_genreLinkList(find_userTable_node(table, "Bob")->genres);
+    printf("\n");
 
     delete_userTable(table);
+    // FIN PRUEBA DE TABLA DE USUARIOS
 
     return 0;
 }

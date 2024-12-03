@@ -48,4 +48,8 @@ GenreLinkPosition genreLinkList_first(GenreLinkList linkList);
 GenreLinkPosition genreLinkList_last(GenreLinkList linkList);
 GenreLinkPosition genreLinkList_advance(GenreLinkPosition P);
 
+// Funciones de ordenamiento de listas de enlaces a generos
+GenreLinkList bubbleSort_genreLinkList(GenreLinkList linkList);
+void swap_genreLinkList_nodes(GenreLinkPosition a, GenreLinkPosition b);
+
 #endif

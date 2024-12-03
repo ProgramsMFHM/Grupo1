@@ -2,6 +2,6 @@
     "userName": "Bob",
     "age": 19,
     "nationality": "Italy",
-    "genres": ["rock"],
+    "genres": ["rock", "lofi", "ska", "reggae", "electronic"],
     "friends": ["Alice"]
 }

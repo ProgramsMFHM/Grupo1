@@ -2,6 +2,6 @@
    "userName": "Alice",
     "age": 18,
     "nationality": "Spain",
-    "genres": ["rock", "lofi"],
+    "genres": ["rock", "lofi", "classical", "jazz", "electronic"],
     "friends": ["Bob", "Carol", "Dave"]
 }
