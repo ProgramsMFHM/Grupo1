@@ -1,7 +1,9 @@
 {
-    "userName": "Bob",
-    "age": 19,
-    "nationality": "Italy",
-    "genres": ["rock", "lofi", "ska", "reggae", "electronic"],
-    "friends": ["Alice"]
+  "userName": "Bob",
+  "age": 19,
+  "nationality": "USA",
+  "genres": [ "jazz", "blues" ],
+  "artists": [ "milesDavis", "johnColtrane" ],
+  "description": "Fan�tico del jazz y la fotograf�a.",
+  "friends": [ "Alice", "Dave", "Mallory" ]
 }

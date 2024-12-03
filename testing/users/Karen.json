@@ -1,0 +1,9 @@
+{
+  "userName": "Karen",
+  "age": 23,
+  "nationality": "Mexico",
+  "genres": [ "cumbia", "bolero" ],
+  "artists": [ "losAngelesAzules", "luisMiguel" ],
+  "description": "Coleccionista de m�sica latina.",
+  "friends": [ "Ivan", "Jake", "Abby" ]
+}

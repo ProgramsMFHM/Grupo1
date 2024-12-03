@@ -1,0 +1,9 @@
+{
+  "userName": "Hannah",
+  "age": 30,
+  "nationality": "Italy",
+  "genres": [ "disco", "funk" ],
+  "artists": [ "ehic", "earth,Wild&Fire" ],
+  "description": "Bailarina apasionada de ritmos retro.",
+  "friends": [ "Frank", "Grace" ]
+}

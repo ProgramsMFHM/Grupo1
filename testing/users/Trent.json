@@ -1,0 +1,9 @@
+{
+  "userName": "Trent",
+  "age": 45,
+  "nationality": "New Zealand",
+  "genres": [ "folk", "ambient" ],
+  "artists": [ "nickDrake", "enya" ],
+  "description": "Exploradora de paisajes sonoros relajantes.",
+  "friends": [ "Uma", "Victor", "Wendy" ]
+}

@@ -1,0 +1,9 @@
+{
+  "userName": "Patricia",
+  "age": 28,
+  "nationality": "Chile",
+  "genres": [ "ska", "reggae" ],
+  "artists": [ "bobMarley", "theSpecials" ],
+  "description": "Exploradora de ritmos caribe�os.",
+  "friends": [ "Oscar", "Quinn" ]
+}

@@ -141,6 +141,7 @@ int main()
             user = user->next;
         }
     }
+    print_userTable(table);
 
     printf("Gustos musicales de Allice:\n");
     bubbleSort_genreLinkList(find_userTable_node(table, "Alice")->genres);

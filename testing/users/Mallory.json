@@ -1,0 +1,9 @@
+{
+  "userName": "Mallory",
+  "age": 18,
+  "nationality": "Spain",
+  "genres": [ "pop", "jazz" ],
+  "artists": [ "ladyGaga", "ellaFitzgerald" ],
+  "description": "Disfruto de la m�sica, quiero conocer mas generos.",
+  "friends": [ "Bob", "Alice" ]
+}

@@ -1,0 +1,9 @@
+{
+  "userName": "Jake",
+  "age": 21,
+  "nationality": "Brazil",
+  "genres": [ "latinPop", "salsa" ],
+  "artists": [ "shakira", "marcAnthony" ],
+  "description": "Ritmos latinos son mi pasi�n.",
+  "friends": [ "Ivan", "Karen" ]
+}

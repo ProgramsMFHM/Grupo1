@@ -1,7 +1,9 @@
 {
-    "userName": "Dave",
-    "age": 21,
-    "nationality": "Italy",
-    "genres": ["rock"],
-    "friends": ["Alice", "Carol"]
+  "userName": "Dave",
+  "age": 21,
+  "nationality": "Canada",
+  "genres": [ "metal", "punk" ],
+  "artists": [ "metallica", "greenDay" ],
+  "description": "Apasionado por la guitarra el�ctrica.",
+  "friends": [ "Bob", "Eve" ]
 }

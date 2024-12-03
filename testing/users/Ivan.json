@@ -1,0 +1,9 @@
+{
+  "userName": "Ivan",
+  "age": 22,
+  "nationality": "Russia",
+  "genres": [ "hipHop", "trap" ],
+  "artists": [ "kanyeWest", "drake" ],
+  "description": "Explorador de beats urbanos.",
+  "friends": [ "Jake", "Karen", "Abby" ]
+}

@@ -1,0 +1,9 @@
+{
+  "userName": "Rachel",
+  "age": 20,
+  "nationality": "India",
+  "genres": [ "acoustic", "dancehall" ],
+  "artists": [ "edSheeran", "seanPaul" ],
+  "description": "Amante de la m�sica ac�stica.",
+  "friends": [ "Sam", "Tina", "Abby" ]
+}

@@ -1,0 +1,9 @@
+{
+  "userName": "Grace",
+  "age": 31,
+  "nationality": "France",
+  "genres": [ "rnb", "soul" ],
+  "artists": [ "aliciaKeys", "arethaFranklin" ],
+  "description": "Amante del RnB y las baladas.",
+  "friends": [ "Frank", "Hannah" ]
+}

@@ -1,0 +1,9 @@
+{
+  "userName": "Quinn",
+  "age": 30,
+  "nationality": "Netherlands",
+  "genres": [ "edm", "progressiveRock" ],
+  "artists": [ "arminVanBuuren", "pinkFloyd" ],
+  "description": "Mel�mano apasionado.",
+  "friends": [ "Oscar", "Patricia", "Aisha" ]
+}

@@ -1,0 +1,9 @@
+{
+  "userName": "Oscar",
+  "age": 30,
+  "nationality": "Colombia",
+  "genres": [ "salsa", "bachata" ],
+  "artists": [ "juanLuisGuerra", "hectorLavoe" ],
+  "description": "Bailar es mi vida.",
+  "friends": [ "Patricia", "Quinn" ]
+}

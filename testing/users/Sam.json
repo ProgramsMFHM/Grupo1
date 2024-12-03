@@ -1,0 +1,9 @@
+{
+  "userName": "Sam",
+  "age": 21,
+  "nationality": "Egypt",
+  "genres": [ "hardRock", "alternativeRock" ],
+  "artists": [ "nirvana", "fooFighters" ],
+  "description": "Fan del rock alternativo.",
+  "friends": [ "Rachel", "Tina", "Cleo", "Dylan" ]
+}

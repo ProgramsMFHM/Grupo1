@@ -1,0 +1,9 @@
+{
+  "userName": "Victor",
+  "age": 27,
+  "nationality": "Portugal",
+  "genres": [ "opera", "classical" ],
+  "artists": [ "pavarotti", "vivaldi" ],
+  "description": "Disfruto de la m�sica cl�sica en vivo.",
+  "friends": [ "Uma", "Trent", "Leo" ]
+}

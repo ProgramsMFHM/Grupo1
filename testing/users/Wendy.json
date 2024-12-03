@@ -1,0 +1,9 @@
+{
+  "userName": "Wendy",
+  "age": 40,
+  "nationality": "Ireland",
+  "genres": [ "soul", "funk" ],
+  "artists": [ "jamesBrown", "amyWinehouse" ],
+  "description": "Apasionada por los ritmos cl�sicos y modernos.",
+  "friends": [ "Uma", "Trent" ]
+}
