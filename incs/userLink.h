@@ -25,9 +25,9 @@ typedef PtrToUserLinkNode UserLinkList;
  * @brief Lista de enlaces a usuarios
 */
 struct _userLinkNode {
-    bool completed; /*!< Indica si el enlace a un usuario esta completo, es decir si el userNode apunta a la tabla de usuarios */
-    char* userName /*!< Nombre del usuario */;
-    PtrToUser userNode; /*!< Usuario de la red */
+    char* userName;        /*!< Nombre del usuario */
+    double coefficient;    /*!< Coeficiente del nodo (usado en varias funciones) */
+    PtrToUser userNode;    /*!< Usuario de la red */
     UserLinkPosition next; /*!< Posicion siguiente en la lista */
 };
 

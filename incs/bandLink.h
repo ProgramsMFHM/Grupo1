@@ -25,7 +25,6 @@ typedef PtrToBandLinkNode BandLinkList;
  * @brief Lista de enlaces a bandas
 */
 struct _bandLinkNode {
-    bool completed; /*!< Indica si el enlace a una banda esta completo, es decir si el bandNode apunta a la tabla de bandas */
     char* band /*!< Nombre de la banda */;
     PtrToBand bandNode; /*!< Banda en la red */
     BandLinkPosition next; /*!< Posicion siguiente en la lista */
