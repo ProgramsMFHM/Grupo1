@@ -1,6 +1,7 @@
 alternativeRock
 ambientacoustic
 bachata
+balada
 bolero
 blues
 chillout

@@ -43,7 +43,7 @@ UserTable get_users_from_file(const char *filePath, UserTable table)
         const char *userName = json_string_value(json_object_get(user_json, "userName")); // almacena el nombre del usuario[i]
         json_t *friends_json = json_object_get(user_json, "friends"); // almacena los amigos del usuario[i]
         UserLinkList friends = read_friends_json(friends_json);
-        insert_userTable_node(table, userName, 0, "NULL", NULL, NULL, friends);
+        insert_userTable_node(table, userName, 0, "NULL", "NULL", NULL, NULL, friends);
     }
     json_decref(json); // libera la memoria utilizada por el json
 
@@ -79,6 +79,7 @@ UserPosition complete_user_from_json(UserPosition user)
     }
     int age = (int)json_integer_value(json_object_get(json, "age"));
     const char *nationality = json_string_value(json_object_get(json, "nationality"));
+    const char *description = json_string_value(json_object_get(json, "description"));
 
     json_t *genres_json = json_object_get(json, "genres"); // almacena los generos del usuario
     GenreLinkList genres = read_genres_json(genres_json);
@@ -86,7 +87,7 @@ UserPosition complete_user_from_json(UserPosition user)
     json_t *bands_json = json_object_get(json, "artists"); // almacena las bandas del usuario
     BandLinkList bands = read_band_json(bands_json);
 
-    complete_userList_node(user, age, nationality, genres, bands);
+    complete_userList_node(user, age, nationality, description, genres, bands);
 
     json_decref(json); // libera la memoria utilizada por el json
     return user;

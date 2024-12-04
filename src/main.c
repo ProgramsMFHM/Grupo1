@@ -7,6 +7,7 @@
 #include "genreLink.h"
 #include "bands.h"
 #include "json.h"
+#include "utilities.h"
 
 int main(int argc, char* argv[])
 {
@@ -42,6 +43,34 @@ int main(int argc, char* argv[])
     else{
         printf("Ayuda del programa\n");
     }
+
+    // PRUEBA DE TABLA DE USUARIOS
+        UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
+        // print_userTable(table);
+
+        printf("--- Completando usuarios ---\n");
+        for(int i = 0; i < USER_TABLE_SIZE; i++){
+            UserPosition user = table->buckets[i]->next;
+            while(user != NULL){
+                complete_user_from_json(user);
+                user = user->next;
+            }
+        }
+        print_userTable(table);
+
+        for(int i = 0; i < USER_TABLE_SIZE; i++){
+            UserPosition user = table->buckets[i]->next;
+            while(user != NULL){
+                printf(ANSI_COLOR_GREEN "%s: " ANSI_COLOR_RESET, user->username);
+                print_loopweb(user->description);
+                printf("\n");
+                user = user->next;
+            }
+        }
+
+        delete_userTable(table);
+    // FIN PRUEBA DE TABLA DE USUARIOS
+
     return 0;
 }
 
