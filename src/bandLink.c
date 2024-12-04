@@ -272,10 +272,8 @@ void swap_bandLinkList_nodes(BandLinkPosition a, BandLinkPosition b){
     aux = *a;
 
 	a->band = b->band;
-    a->completed = b->completed;
     a->bandNode = b->bandNode;
 
 	b->band = aux.band;
-    b->completed = aux.completed;
     b->bandNode = aux.bandNode;
 }

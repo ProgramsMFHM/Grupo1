@@ -272,10 +272,8 @@ void swap_genreLinkList_nodes(GenreLinkPosition a, GenreLinkPosition b){
     aux = *a;
 
 	a->genre = b->genre;
-    a->completed = b->completed;
     a->genreNode = b->genreNode;
 
 	b->genre = aux.genre;
-    b->completed = aux.completed;
     b->genreNode = aux.genreNode;
 }
