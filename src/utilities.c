@@ -112,6 +112,49 @@ bool is_valid_extension(char* extension)
     return false;
 }
 
+/**
+ * @brief Esta funcion imprime una cadena de caracteres en la consola, resaltando las palabras que comienzan con @ y con #.
+ *
+ * @param str Cadena de caracteres a imprimir
+*/
+void print_loopweb(char* str){
+    char* line = malloc(sizeof(char) * strlen(str) + 1); // Copiamos la cadena de caracteres
+    strcpy(line, str);
+
+    char *token = strtok(line, " "); // Dividimos la linea en palabras
+    while (token != NULL) {
+        char *ptr = token; // Puntero para recorrer la palabra
+        while (*ptr != '\0') {
+            if (*ptr == '@') {
+                // Imprime y colorea todo el segmento que empieza con '@'
+                printf(ANSI_COLOR_GREEN"@");
+                ptr++;
+                while (*ptr != '\0' && *ptr != '@' && *ptr != '#' && *ptr != '\n') {
+                    putchar(*ptr);
+                    ptr++;
+                }
+                printf(ANSI_COLOR_RESET);
+            } else if (*ptr == '#') {
+                // Imprime y colorea todo el segmento que empieza con '#'
+                printf(ANSI_COLOR_RED"#");
+                ptr++;
+                while (*ptr != '\0' && *ptr != '@' && *ptr != '#' && *ptr != '\n') {
+                    putchar(*ptr);
+                    ptr++;
+                }
+                printf(ANSI_COLOR_RESET);
+            } else {
+                // Imprime caracteres normales sin colorear
+                putchar(*ptr);
+                ptr++;
+            }
+        }
+        token = strtok(NULL, " "); // Siguiente palabra
+        printf(" "); // Espacio entre palabras
+    }
+    printf("\b"); // Borra el ultimo espacio
+    free(line);
+}
 
 // Funciones para usar como parametros
 

@@ -130,7 +130,7 @@ int main()
     // FIN PRUEBA DE TABLA DE USUARIOS
     */
 
-    // PRUEBA DE TABLA DE USUARIOS
+    /* PRUEBA DE TABLA DE USUARIOS
     UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
     // print_userTable(table);
 
@@ -155,7 +155,7 @@ int main()
     printf("\n");
 
     delete_userTable(table);
-    // FIN PRUEBA DE TABLA DE USUARIOS
+    FIN PRUEBA DE TABLA DE USUARIOS */
 
 
     /* PRUEBA DE TABLA DE BANDAS
@@ -168,6 +168,12 @@ int main()
     delete_musicGenresTable(genresTable);
 
     FIN PRUEBA DE TABLA DE BANDAS */
+
+    // PRUEBA FUNCION DE IMPRESION
+    printf_loopweb("Hello World\n");
+    printf_loopweb("Este es un texto de descripcion de un comentario sobre #rock y @rock\nSomos entusiastas de #rock\n");
+    printf_loopweb("@rock#rock@pop#pop@rock#rock\n");
+    // FIN PRUEBA FUNCION DE IMPRESION
 
     return 0;
 }
