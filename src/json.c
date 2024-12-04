@@ -43,7 +43,7 @@ UserTable get_users_from_file(const char *filePath, UserTable table)
         const char *userName = json_string_value(json_object_get(user_json, "userName")); // almacena el nombre del usuario[i]
         json_t *friends_json = json_object_get(user_json, "friends"); // almacena los amigos del usuario[i]
         UserLinkList friends = read_friends_json(friends_json);
-        insert_userTable_node(table, userName, 0, "NULL", NULL, friends);
+        insert_userTable_node(table, userName, 0, "NULL", NULL, NULL, friends);
     }
     json_decref(json); // libera la memoria utilizada por el json
 
@@ -80,10 +80,13 @@ UserPosition complete_user_from_json(UserPosition user)
     int age = (int)json_integer_value(json_object_get(json, "age"));
     const char *nationality = json_string_value(json_object_get(json, "nationality"));
 
-    json_t *genres_json = json_object_get(json, "genres"); // almacena los amigos del usuario[i]
+    json_t *genres_json = json_object_get(json, "genres"); // almacena los generos del usuario
     GenreLinkList genres = read_genres_json(genres_json);
 
-    complete_userList_node(user, age, nationality, genres);
+    json_t *bands_json = json_object_get(json, "artists"); // almacena las bandas del usuario
+    BandLinkList bands = read_band_json(bands_json);
+
+    complete_userList_node(user, age, nationality, genres, bands);
 
     json_decref(json); // libera la memoria utilizada por el json
     return user;
@@ -137,4 +140,29 @@ GenreLinkList read_genres_json(json_t *genres_json){
         insert_genreLinkList_node_basicInfo(genres, genreName);
     }
     return genres;
+}
+
+/**
+ * @brief Funcion para leer el arreglo json de bandas y crear una lista de enlaces a bandas
+ *
+ * @param genres_json Puntero al arreglo json de bandas
+ * @return Puntero a la lista de enlaces a bandas creada
+*/
+BandLinkList read_band_json(json_t *bands_json){
+    if(bands_json == NULL){
+        return NULL;
+    }
+
+    size_t quantity = json_array_size(bands_json); //obtener el numero de elementos en el arreglo json
+    BandLinkList bands = create_empty_bandLinkList(NULL);
+
+    for (size_t i = 0; i < quantity; i++) {
+        char *bandName = (char*)json_string_value(json_array_get(bands_json, i));  // obtener el valor del string en el indice i del arreglo
+        if (!bandName) {
+            print_error(302, NULL, "Nombre de la banda no valido");
+            continue;
+        }
+        insert_bandLinkList_node_basicInfo(bands, bandName);
+    }
+    return bands;
 }

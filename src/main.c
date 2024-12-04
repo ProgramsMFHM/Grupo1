@@ -4,6 +4,7 @@
 #include "userLink.h"
 #include "musicGenres.h"
 #include "genreLink.h"
+#include "bands.h"
 #include "json.h"
 
 int main()
@@ -155,6 +156,18 @@ int main()
 
     delete_userTable(table);
     // FIN PRUEBA DE TABLA DE USUARIOS
+
+
+    /* PRUEBA DE TABLA DE BANDAS
+    BandTable bandsTable = read_band_file("./build/bands.txt", NULL);
+    print_bandTable(bandsTable);
+    delete_bandTable(bandsTable);
+
+    MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
+    print_musicGenresTable(genresTable);
+    delete_musicGenresTable(genresTable);
+
+    FIN PRUEBA DE TABLA DE BANDAS */
 
     return 0;
 }

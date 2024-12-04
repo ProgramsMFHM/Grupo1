@@ -65,8 +65,10 @@ void print_UserList(UserList userList){
             printf("[%s, %d, %s, ", current->username, current->age, current->nationality);
             print_genreLinkList(current->genres);
             printf(", ");
+            print_bandLinkList(current->bands);
+            printf(", ");
             print_userLinkList(current->friends);
-            printf("] -> ");
+            printf("]\n\t-> ");
             current = current->next;
         }
         printf("NULL\n");
@@ -115,7 +117,7 @@ UserPosition find_UserList_prev_node(UserPosition P, UserList userList){
  * @param genres0 Gustos musicales del usuario
  * @return Puntero al nodo creado
 */
-UserPosition create_new_user(const char *username, int age, const char *nationality, GenreLinkList genres, UserLinkList friends){
+UserPosition create_new_user(const char *username, int age, const char *nationality, GenreLinkList genres, BandLinkList bands, UserLinkList friends){
     PtrToUser newUser = (PtrToUser) malloc(sizeof(UserNode));
     if (newUser == NULL) {
         print_error(200, NULL, NULL);
@@ -135,6 +137,7 @@ UserPosition create_new_user(const char *username, int age, const char *national
 
     newUser->age = age;
     newUser->genres = genres;
+    newUser->bands = bands;
     newUser->friends = friends;
     newUser->next = NULL;
     return newUser;
@@ -162,7 +165,7 @@ UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNod
  * @param genres Gustos musicales del usuario
  * @return Puntero al nodo completado
 */
-UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, GenreLinkList genres){
+UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, GenreLinkList genres, BandLinkList bands){
     if(P == NULL){
         print_error(202, NULL, NULL);
     }
@@ -171,7 +174,7 @@ UserPosition complete_userList_node(UserPosition P, int age, const char *nationa
     P->nationality = (char*)realloc(P->nationality, strlen(nationality) + 1);
     strcpy(P->nationality, nationality);
     P->genres = genres;
-
+    P->bands = bands;
     return P;
 }
 
@@ -194,6 +197,7 @@ bool delete_UserList_node(UserPosition P, UserList userList){
     prevNode->next = P->next;
     delete_userLinkList(P->friends);
     delete_genreLinkList(P->genres);
+    delete_bandLinkList(P->bands);
     free(P->username);
     free(P->nationality);
     free(P);
@@ -294,7 +298,7 @@ void delete_userTable(UserTable table){
  * @param genres Gustos musicales del usuario
  * @return Puntero al nodo insertado
 */
-UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, GenreLinkList genres, UserLinkList friends){
+UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, GenreLinkList genres, BandLinkList bands, UserLinkList friends){
     if(find_userTable_node(table, username) != NULL){
         print_error(301, NULL, NULL);
         return NULL;
@@ -302,7 +306,7 @@ UserPosition insert_userTable_node(UserTable table, const char *username, int ag
 
     unsigned int index = jenkins_hash((char*)username) % USER_TABLE_SIZE;
 
-    PtrToUser newUser = create_new_user(username, age, nationality, genres, friends);
+    PtrToUser newUser = create_new_user(username, age, nationality, genres, bands, friends);
     if (!newUser) {
         print_error(200, NULL, NULL);
     }
