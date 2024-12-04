@@ -59,6 +59,10 @@ bool is_empty_userLinkList(UserLinkList linkList){
  * @param linkList Lista de enlaces a usuarios
 */
 void print_userLinkList(UserLinkList linkList){
+    if(linkList == NULL){
+        printf("NULL");
+        return;
+    }
     UserLinkPosition current = linkList->next;
     printf("{%s", current->userName);
     current = current->next;

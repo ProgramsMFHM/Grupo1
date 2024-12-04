@@ -59,6 +59,10 @@ bool is_empty_bandLinkList(BandLinkList linkList){
  * @param linkList Lista de enlaces a bandas
 */
 void print_bandLinkList(BandLinkList linkList){
+    if(linkList == NULL){
+        printf("NULL");
+        return;
+    }
     BandLinkPosition current = linkList->next;
     printf("{%s", current->band);
     current = current->next;
