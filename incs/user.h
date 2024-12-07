@@ -46,6 +46,9 @@ struct _userTable {
     bool modified;                       /**< Indica si la tabla ha sido modificada desde que se cargo */
 };
 
+// Funciones para un nodo de usuario
+void save_userNode(PtrToUser user);
+
 // Funciones de la lista de usuarios
 UserList create_empty_UserList(UserList userList);
 void delete_UserList(UserList userList);

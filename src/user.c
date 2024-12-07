@@ -5,6 +5,84 @@
 */
 #include "user.h"
 
+// Funciones para un nodo de usuario
+
+/**
+ * @brief Imprime un usuario en su archivo en formato JSON
+ *
+ * @param user Puntero al nodo de usuario
+*/
+void save_userNode(PtrToUser user){
+    if(user == NULL
+        || user->username == NULL
+        || user->nationality == NULL
+        || user->description == NULL
+        || user->genres == NULL
+        || user->bands == NULL
+        || user->friends == NULL){
+        print_error(202, NULL, NULL);
+    }
+
+    char filename[strlen(user->username) + strlen(USERS_PATH) + 5];
+    sprintf(filename, USERS_PATH"%s.json", user->username);
+
+    #ifdef DEBUG
+        printf("Guardando usuario %s en el archivo %s\n", user->username, filename);
+    #endif
+
+    FILE *file = fopen(filename, "w");
+    if(file == NULL){
+        print_error(100, filename, NULL);
+        return;
+    }
+
+    fprintf(file, "{\n");
+    fprintf(file,"\t\"username\": \"%s\",\n", user->username);
+    fprintf(file,"\t\"age\": %d,\n", user->age);
+    fprintf(file,"\t\"nationality\": \"%s\",\n", user->nationality);
+    fprintf(file,"\t\"description\": \"%s\",\n", user->description);
+
+    // Gustos musicales de la lista de gustos musicales
+    fprintf(file,"\t\"genres\": [");
+    GenreLinkPosition aux = user->genres->next;
+    while (aux != NULL) {
+        fprintf(file,"\"%s\"", aux->genre);
+        if (aux->next != NULL) {
+            fprintf(file,", ");
+        }
+        aux = aux->next;
+    }
+    fprintf(file,"],\n");
+
+    // Bandas de la lista de bandas
+    fprintf(file,"\t\"bands\": [");
+    BandLinkPosition aux2 = user->bands->next;
+    while (aux2 != NULL) {
+        fprintf(file,"\"%s\"", aux2->band);
+        if (aux2->next != NULL) {
+            fprintf(file,", ");
+        }
+        aux2 = aux2->next;
+    }
+    fprintf(file,"],\n");
+
+    // Amigos de la lista de amigos
+    fprintf(file,"\t\"friends\": [");
+    UserLinkPosition aux3 = user->friends->next;
+    while (aux3 != NULL) {
+        fprintf(file,"\"%s\"", aux3->userName);
+        if (aux3->next != NULL) {
+            fprintf(file,", ");
+        }
+        aux3 = aux3->next;
+    }
+    fprintf(file,"]\n");
+
+    fprintf(file,"}\n");
+
+    fclose(file);
+}
+
 // Funciones de la lista de usuarios
 /**
  * @brief Crea una lista vacia de usuarios
