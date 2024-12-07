@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "getopt.h"
-#include "comment.h"
+#include "commentTree.h"
 #include "user.h"
 #include "userLink.h"
 #include "musicGenres.h"
@@ -44,32 +44,55 @@ int main(int argc, char* argv[])
         printf("Ayuda del programa\n");
     }
 
-    // PRUEBA DE TABLA DE USUARIOS
-        UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
-        // print_userTable(table);
+    // PRUEBA ARBOL DE COMENTARIOS
+        // Cargamos usuarios
+        UserTable userTable = get_users_from_file(USERS_PATH "users.json", NULL);
 
-        printf("--- Completando usuarios ---\n");
-        for(int i = 0; i < USER_TABLE_SIZE; i++){
-            UserPosition user = table->buckets[i]->next;
-            while(user != NULL){
-                complete_user_from_json(user);
-                user = user->next;
-            }
+        // Crear árbol vacío
+        CommentTree tree = make_empty_commentTree(NULL);
+
+        // Crear comentarios e insertarlos
+        char *comentarios[] = {
+            "Este es el primer comentario #rock #pop #indie",
+            "Este es el segundo comentario @rock @pop @indie",
+            "Otro comentario interesante #rock #pop #indie",
+            "Comentario sobre música",
+            "Comentario sobre películas",
+            "Comentario aleatorio"
+        };
+
+        for (int i = 0; i < 6; i++) {
+            printf("Insertando comentario %d\n", i);
+
+            // Crear listas dummy para genres y bands
+            GenreLinkPosition genres = NULL; // Función que inicializa géneros ficticios
+            BandLinkPosition bands = NULL;   // Función que inicializa bandas ficticias
+
+            // Insertar comentario
+            tree = insert_commentTree_node(
+                tree,                  // Árbol actual
+                i,                     // commentID
+                time(NULL),            // Marca de tiempo
+                comentarios[i],        // Texto del comentario
+                find_userTable_node(userTable, "Alice"), // Usuario asociado
+                genres,                // Lista de géneros
+                bands                  // Lista de bandas
+            );
         }
-        print_userTable(table);
+        complete_tree_tags(tree);
 
-        for(int i = 0; i < USER_TABLE_SIZE; i++){
-            UserPosition user = table->buckets[i]->next;
-            while(user != NULL){
-                printf(ANSI_COLOR_GREEN "%s: " ANSI_COLOR_RESET, user->username);
-                print_loopweb(user->description);
-                printf("\n");
-                user = user->next;
-            }
-        }
+        // Mostrar el árbol (opcional, para verificar)
+        printf("\nÁrbol de comentarios:\n");
+        print_commentTree(tree);
 
-        delete_userTable(table);
-    // FIN PRUEBA DE TABLA DE USUARIOS
+        // Liberar recursos
+        printf("\nEliminando árbol de comentarios...\n");
+        delete_commentTree(tree);
+
+        printf("Eliminando tabla de usuarios...\n");
+        delete_userTable(userTable);
+
+    // FIN PRUEBA ARBOL DE COMENTARIOS
 
     return 0;
 }
@@ -234,3 +257,30 @@ FIN PRUEBA DE TABLA DE BANDAS */
     printf_loopweb("Este es un texto de descripcion de un comentario sobre #rock y @rock\nSomos entusiastas de #rock\n");
     printf_loopweb("@rock#rock@pop#pop@rock#rock\n");
 FIN PRUEBA FUNCION DE IMPRESION */
+
+/* PRUEBA DE TABLA DE USUARIOS
+    UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
+    // print_userTable(table);
+
+    printf("--- Completando usuarios ---\n");
+    for(int i = 0; i < USER_TABLE_SIZE; i++){
+        UserPosition user = table->buckets[i]->next;
+        while(user != NULL){
+            complete_user_from_json(user);
+            user = user->next;
+        }
+    }
+    print_userTable(table);
+
+    for(int i = 0; i < USER_TABLE_SIZE; i++){
+        UserPosition user = table->buckets[i]->next;
+        while(user != NULL){
+            printf(ANSI_COLOR_GREEN "%s: " ANSI_COLOR_RESET, user->username);
+            print_loopweb(user->description);
+            printf("\n");
+            user = user->next;
+        }
+    }
+
+    delete_userTable(table);
+FIN PRUEBA DE TABLA DE USUARIOS */
