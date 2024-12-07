@@ -134,3 +134,61 @@ bool increasing(double a, double b){
 bool decreasing(double a, double b){
     return a >= b;
 }
+
+/**
+ * @brief Funcion para imprimir en la consola un archivo de publicaciones con los "@" y "#" coloreados
+ * @param file Archivo de publicaciones
+ * @param filename Nombre del archivo
+ * @param line Línea de la publicación
+ * @param token Token de la palabra
+ * @param end Puntero al final de la palabra
+ * @param word Palabra original
+ * @param ptr Puntero para recorrer la palabra
+*/
+
+void printf_loopweb() {
+    const char *filename = "publicaciones.txt"; // Archivo de publicaciones
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Error al abrir el archivo");
+        return;
+    }
+
+    char line[1024]; // Buffer para leer cada línea del archivo
+    while (fgets(line, sizeof(line), file)) {
+        char *token = strtok(line, " "); // Dividimos la línea en palabras
+        while (token != NULL) {
+            char *ptr = token; // Puntero para recorrer la palabra
+            while (*ptr != '\0') {
+                if (*ptr == '@') {
+                    // Imprime y colorea todo el segmento que empieza con '@'
+                    printf("%s@", ANSI_COLOR_GREEN);
+                    ptr++;
+                    while (*ptr != '\0' && *ptr != '@' && *ptr != '#') {
+                        putchar(*ptr);
+                        ptr++;
+                    }
+                    printf("%s", ANSI_COLOR_RESET);
+                } else if (*ptr == '#') {
+                    // Imprime y colorea todo el segmento que empieza con '#'
+                    printf("%s#", ANSI_COLOR_RED);
+                    ptr++;
+                    while (*ptr != '\0' && *ptr != '@' && *ptr != '#') {
+                        putchar(*ptr);
+                        ptr++;
+                    }
+                    printf("%s", ANSI_COLOR_RESET);
+                } else {
+                    // Imprime caracteres normales sin colorear
+                    putchar(*ptr);
+                    ptr++;
+                }
+            }
+            printf(" "); // Espacio entre palabras
+            token = strtok(NULL, " "); // Siguiente palabra
+        }
+        printf("\n"); // Nueva línea al final de cada línea procesada
+    }
+
+    fclose(file); // Cerramos el archivo
+}

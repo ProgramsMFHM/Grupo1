@@ -35,4 +35,7 @@ bool is_valid_extension(char* extension);
 bool increasing(double a, double b);
 bool decreasing(double a, double b);
 
+// Funciones para mostrar publicacion 
+void printf_loopweb();
+
 #endif

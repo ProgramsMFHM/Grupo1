@@ -5,6 +5,7 @@
 #include "musicGenres.h"
 #include "genreLink.h"
 #include "json.h"
+//#include "utilities.h"
 
 int main()
 {
@@ -24,11 +25,11 @@ int main()
     // FIN PRUEBA DE COMENTARIOS
     */
 
-   // PRUEBA DE GÉNEROS MUSICALES
+   /* PRUEBA DE GÉNEROS MUSICALES
    MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
    print_musicGenresTable(genresTable);
    delete_musicGenresTable(genresTable);
-   // FIN PRUEBA DE GÉNEROS MUSICALES
+   // FIN PRUEBA DE GÉNEROS MUSICALES */
 
     /*
     // PRUEBA DE LECTURA DE DATOS JSON
@@ -129,6 +130,7 @@ int main()
     // FIN PRUEBA DE TABLA DE USUARIOS
     */
 
+    /*
     // PRUEBA DE TABLA DE USUARIOS
     UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
     // print_userTable(table);
@@ -144,6 +146,7 @@ int main()
     print_userTable(table);
 
     delete_userTable(table);
-
+    */
+    printf_loopweb();
     return 0;
 }
