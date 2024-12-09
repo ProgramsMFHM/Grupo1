@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "getopt.h"
 #include "comments.h"
+#include "commentLink.h"
 #include "user.h"
 #include "userLink.h"
 #include "musicGenres.h"
