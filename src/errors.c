@@ -49,6 +49,9 @@ void print_error(int num, char* target, char* obs) {
         case 302:
             printf("Error al leer campo JSON\n");
             break;
+        case 303:
+            printf("Comentario %s no encontrado\n", target);
+            break;
         default:
             printf("Codigo de error desconocido\n");
     }

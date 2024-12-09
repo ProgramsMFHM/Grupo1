@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "getopt.h"
-#include "commentTree.h"
+#include "comments.h"
 #include "user.h"
 #include "userLink.h"
 #include "musicGenres.h"
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
         UserTable userTable = get_users_from_file(USERS_PATH "users.json", NULL);
 
         // Crear árbol vacío
-        CommentTree tree = make_empty_commentTree(NULL);
+        CommentList comments = create_empty_CommentList(NULL);
 
         // Crear comentarios e insertarlos
         char *comentarios[] = {
@@ -62,32 +62,18 @@ int main(int argc, char* argv[])
         };
 
         for (int i = 0; i < 6; i++) {
-            printf("Insertando comentario %d\n", i);
-
-            // Crear listas dummy para genres y bands
-            GenreLinkPosition genres = NULL; // Función que inicializa géneros ficticios
-            BandLinkPosition bands = NULL;   // Función que inicializa bandas ficticias
-
             // Insertar comentario
-            tree = insert_commentTree_node(
-                tree,                  // Árbol actual
-                i,                     // commentID
-                time(NULL),            // Marca de tiempo
-                comentarios[i],        // Texto del comentario
-                find_userTable_node(userTable, "Alice"), // Usuario asociado
-                genres,                // Lista de géneros
-                bands                  // Lista de bandas
-            );
+            insert_CommentList_node(comments, create_new_comment(i, comentarios[i], "Alice"));
+            complete_commentList_node(comments->next, userTable);
         }
-        complete_tree_tags(tree);
 
         // Mostrar el árbol (opcional, para verificar)
-        printf("\nÁrbol de comentarios:\n");
-        print_commentTree(tree);
+        printf("Comentarios en la lista:\n\n");
+        print_CommentList(comments);
 
         // Liberar recursos
-        printf("\nEliminando árbol de comentarios...\n");
-        delete_commentTree(tree);
+        printf("\nEliminando lista de comentarios...\n");
+        delete_CommentList(comments);
 
         printf("Eliminando tabla de usuarios...\n");
         delete_userTable(userTable);
