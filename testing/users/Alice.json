@@ -5,5 +5,6 @@
   "genres": [ "rock", "pop" ],
   "artists": [ "rihanna", "ladyGaga" ],
   "description": "Amante de los festivales de musica.",
-  "friends": [ "Bob", "Carol", "Mallory" ]
+  "friends": [ "Bob", "Carol", "Mallory" ],
+  "comments": []
 }

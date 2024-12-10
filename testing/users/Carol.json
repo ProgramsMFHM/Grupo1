@@ -5,5 +5,6 @@
   "genres": [ "kpop", "electronic" ],
   "artists": [ "bts", "blackpink" ],
   "description": "Exploradora de sonidos modernos.",
-  "friends": [ "Alice", "Eve" ]
+  "friends": [ "Alice", "Eve" ],
+  "comments": []
 }

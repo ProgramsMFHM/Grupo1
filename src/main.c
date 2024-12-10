@@ -46,18 +46,32 @@ int main(int argc, char* argv[])
         printf("Ayuda del programa\n");
     }
 
-    // PRUEBA DE TABLA DE BANDAS Y GENRES
-    BandTable bandsTable = get_bands_from_file("./build/bands.json", NULL);
-    print_bandTable(bandsTable);
-    delete_bandTable(bandsTable);
+    // PRUEBA DE TABLA DE USUARIOS
+        UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
+        // print_userTable(table);
 
-    printf("--------------------------------------------------------------------------------\n");
+        printf("--- Completando usuarios ---\n");
+        for(int i = 0; i < USER_TABLE_SIZE; i++){
+            UserPosition user = table->buckets[i]->next;
+            while(user != NULL){
+                complete_user_from_json(user);
+                user = user->next;
+            }
+        }
+        print_userTable(table);
 
-    MusicGenresTable genresTable = get_genres_from_file("./build/music_genres.json", NULL);
-    print_musicGenresTable(genresTable);
-    delete_musicGenresTable(genresTable);
+        for(int i = 0; i < USER_TABLE_SIZE; i++){
+            UserPosition user = table->buckets[i]->next;
+            while(user != NULL){
+                printf(ANSI_COLOR_GREEN "%s: " ANSI_COLOR_RESET, user->username);
+                print_loopweb(user->description);
+                printf("\n");
+                user = user->next;
+            }
+        }
 
-    // FIN PRUEBA DE TABLA DE BANDAS Y GENRES
+        delete_userTable(table);
+    // FIN PRUEBA DE TABLA DE USUARIOS
 
     return 0;
 }
@@ -223,33 +237,6 @@ FIN PRUEBA DE TABLA DE BANDAS */
     printf_loopweb("@rock#rock@pop#pop@rock#rock\n");
 FIN PRUEBA FUNCION DE IMPRESION */
 
-/* PRUEBA DE TABLA DE USUARIOS
-    UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
-    // print_userTable(table);
-
-    printf("--- Completando usuarios ---\n");
-    for(int i = 0; i < USER_TABLE_SIZE; i++){
-        UserPosition user = table->buckets[i]->next;
-        while(user != NULL){
-            complete_user_from_json(user);
-            user = user->next;
-        }
-    }
-    print_userTable(table);
-
-    for(int i = 0; i < USER_TABLE_SIZE; i++){
-        UserPosition user = table->buckets[i]->next;
-        while(user != NULL){
-            printf(ANSI_COLOR_GREEN "%s: " ANSI_COLOR_RESET, user->username);
-            print_loopweb(user->description);
-            printf("\n");
-            user = user->next;
-        }
-    }
-
-    delete_userTable(table);
-FIN PRUEBA DE TABLA DE USUARIOS */
-
 
 /* PRUEBA LISTA DE COMENTARIOS
     // Cargamos usuarios
@@ -286,3 +273,17 @@ FIN PRUEBA DE TABLA DE USUARIOS */
     delete_userTable(userTable);
 
 FIN PRUEBA ARBOL DE COMENTARIOS */
+
+
+/* PRUEBA DE TABLA DE BANDAS Y GENRES
+    BandTable bandsTable = get_bands_from_file("./build/bands.json", NULL);
+    print_bandTable(bandsTable);
+    delete_bandTable(bandsTable);
+
+    printf("--------------------------------------------------------------------------------\n");
+
+    MusicGenresTable genresTable = get_genres_from_file("./build/music_genres.json", NULL);
+    print_musicGenresTable(genresTable);
+    delete_musicGenresTable(genresTable);
+
+FIN PRUEBA DE TABLA DE BANDAS Y GENRES */

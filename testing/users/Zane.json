@@ -5,5 +5,6 @@
   "genres": [ "grunge", "hardRock" ],
   "artists": [ "pearlJam", "soundgarden" ],
   "description": "Amante de la musica de los 90s.",
-  "friends": [ "Xander", "Yara", "Aisha" ]
+  "friends": [ "Xander", "Yara", "Aisha" ],
+  "comments": []
 }

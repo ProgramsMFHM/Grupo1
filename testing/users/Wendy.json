@@ -5,5 +5,6 @@
   "genres": [ "soul", "funk" ],
   "artists": [ "jamesBrown", "amyWinehouse" ],
   "description": "Apasionada por los ritmos clasicos y modernos.",
-  "friends": [ "Uma", "Trent" ]
+  "friends": [ "Uma", "Trent" ],
+  "comments": []
 }

@@ -5,5 +5,6 @@
   "genres": [ "classical", "opera" ],
   "artists": [ "beethoven", "mozart" ],
   "description": "Musico clasico profesional. #classical",
-  "friends": [ "Grace", "Hannah" ]
+  "friends": [ "Grace", "Hannah" ],
+  "comments": []
 }

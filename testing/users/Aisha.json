@@ -5,5 +5,6 @@
   "genres": [ "gospel", "rnb" ],
   "artists": [ "kirkFranklin", "whitneyHouston" ],
   "description": "Canto en un coro local.",
-  "friends": [ "Quinn", "Zane" ]
+  "friends": [ "Quinn", "Zane" ],
+  "comments": []
 }

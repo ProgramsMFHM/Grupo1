@@ -5,5 +5,6 @@
   "genres": [ "ska", "reggae" ],
   "artists": [ "bobMarley", "theSpecials" ],
   "description": "Exploradora de ritmos caribennos.",
-  "friends": [ "Oscar", "Quinn" ]
+  "friends": [ "Oscar", "Quinn" ],
+  "comments": []
 }

@@ -43,7 +43,7 @@ UserTable get_users_from_file(const char *filePath, UserTable table)
         const char *userName = json_string_value(json_object_get(user_json, "userName")); // almacena el nombre del usuario[i]
         json_t *friends_json = json_object_get(user_json, "friends"); // almacena los amigos del usuario[i]
         UserLinkList friends = read_friends_json(friends_json);
-        insert_userTable_node(table, userName, 0, "NULL", "NULL", NULL, NULL, friends);
+        insert_userTable_node(table, userName, 0, "NULL", "NULL", NULL, NULL, friends, NULL);
     }
     json_decref(json); // libera la memoria utilizada por el json
 
@@ -87,7 +87,10 @@ UserPosition complete_user_from_json(UserPosition user)
     json_t *bands_json = json_object_get(json, "artists"); // almacena las bandas del usuario
     BandLinkList bands = read_band_json(bands_json);
 
-    complete_userList_node(user, age, nationality, description, genres, bands);
+    json_t *comments_json = json_object_get(json, "comments"); // almacena los comentarios del usuario
+    CommentList comments = read_comments_json(comments_json);
+
+    complete_userList_node(user, age, nationality, description, genres, bands, comments);
 
     json_decref(json); // libera la memoria utilizada por el json
     return user;
@@ -277,7 +280,7 @@ CommentList read_comments_json(json_t *comments_json)
             print_error(302, NULL, "ID de comentario no valido");
             continue;
         }
-        insert_CommentList_node(comments, create_new_comment(i, "NULL", "NULL"));
+        insert_CommentList_node(comments, create_new_comment(commentID, "NULL", "NULL"));
     }
     return comments;
 }

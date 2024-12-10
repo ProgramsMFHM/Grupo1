@@ -5,5 +5,6 @@
   "genres": [ "pop", "jazz" ],
   "artists": [ "ladyGaga", "ellaFitzgerald" ],
   "description": "Disfruto de la musica, quiero conocer mas generos.",
-  "friends": [ "Bob", "Alice" ]
+  "friends": [ "Bob", "Alice" ],
+  "comments": []
 }
