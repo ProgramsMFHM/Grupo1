@@ -64,7 +64,9 @@ void print_musicGenreList(MusicGenreList genreList)
         printf("Empty\n");
     } else {
         while (current != NULL) {
-            printf("%s -> ", current->genre);
+            printf("[%s, ", current->genre);
+            print_CommentList(current->comments);
+            printf("]\n\t-> ");
             current = current->next;
         }
         printf("NULL\n");
@@ -110,15 +112,22 @@ MusicGenrePosition find_musicGenreList_prev_genre(MusicGenrePosition position, M
  * @param genre Genero a insertar
  * @return Puntero al nodo insertado
 */
-MusicGenrePosition insert_musicGenreList_genre(MusicGenrePosition prevPosition, char* genre)
+MusicGenrePosition insert_musicGenreList_genre(MusicGenrePosition prevPosition, char* genre, CommentList comments)
 {
     MusicGenrePosition newNode = (MusicGenrePosition)malloc(sizeof(struct _musicGenre));
     if (newNode == NULL) {
         print_error(200, NULL, NULL);
     }
+
+    newNode->genre = malloc(strlen(genre) + 1);
+    if (newNode->genre == NULL) {
+        print_error(200, NULL, NULL);
+    }
+    snprintf(newNode->genre, strlen(genre) + 1, "%s", genre);
+
+    newNode->comments = comments;
     newNode->next = prevPosition->next;
     prevPosition->next = newNode;
-    snprintf(newNode->genre, sizeof(newNode->genre), "%s", genre);
     return newNode;
 }
 
@@ -138,6 +147,8 @@ void delete_musicGenreList_genre(MusicGenrePosition position, MusicGenreList gen
         return;
     }
     prevNode->next = position->next;
+    delete_CommentList(position->comments);
+    free(position->genre);
     free(position);
 }
 
@@ -214,33 +225,6 @@ MusicGenresTable create_musicGenresTable(MusicGenresTable genresTable)
 }
 
 /**
- * @brief Lee generos de un archivo e inserta en una tabla de generos musicales
- * @param fileName Nombre del archivo a leer
- * @param genresTable Tabla de generos musicales donde insertar los generos
- * @return Tabla de generos musicales con los generos leidos
-*/
-MusicGenresTable read_musicGenre_file(char* fileName, MusicGenresTable genresTable)
-{
-    FILE* file = fopen(fileName, "r");
-    char readGenre[25];
-
-    if (file == NULL) {
-        print_error(100, fileName, NULL);
-    }
-
-    if (genresTable == NULL) {
-        genresTable = create_musicGenresTable(NULL);
-    }
-
-    while (fscanf(file, "%s", readGenre) != EOF) {
-        insert_musicGenre(readGenre, genresTable);
-    }
-
-    fclose(file);
-    return genresTable;
-}
-
-/**
  * @brief Imprime una tabla de generos musicales en la consola
  * @param genresTable Tabla de generos musicales a imprimir
 */
@@ -259,10 +243,10 @@ void print_musicGenresTable(MusicGenresTable genresTable)
  * @param genresTable Tabla de generos musicales donde insertar el genero
  * @return Puntero al nodo insertado
 */
-MusicGenrePosition insert_musicGenre(char* genre, MusicGenresTable genresTable)
+MusicGenrePosition insert_musicGenre(char* genre, CommentList comments, MusicGenresTable genresTable)
 {
     unsigned int index = jenkins_hash(genre) % MUSIC_GENRES_TABLE_SIZE;
-    MusicGenrePosition position = insert_musicGenreList_genre(genresTable->buckets[index], genre);
+    MusicGenrePosition position = insert_musicGenreList_genre(genresTable->buckets[index], genre, comments);
     if (position != NULL) {
         genresTable->genreCount++;
     }

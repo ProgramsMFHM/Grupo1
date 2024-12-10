@@ -138,6 +138,50 @@ BandTable get_bands_from_file(const char* filePath, BandTable table)
 }
 
 /**
+ * @brief Lee generos de un archivo e inserta en una tabla de generos musicales
+ * @param fileName Nombre del archivo a leer
+ * @param bandTable Tabla de generos donde insertar los bandas
+ * @return Tabla de generos con los generos leidos
+*/
+MusicGenresTable get_genres_from_file(const char* filePath, MusicGenresTable genreTable)
+{
+    if(genreTable == NULL){
+        genreTable = create_musicGenresTable(genreTable);
+    }
+
+    // Crear estructura JSON
+    FILE *file = fopen(filePath, "r");  // Abre el archivo .json en modo lectura
+    if (!file) {
+        print_error(100, (char*)filePath, NULL);
+        return genreTable;
+    }
+    json_error_t error;     // declaracion de "variable" error basada en una funcion de la libreria jansson
+    json_t *json = json_loadf(file, 0, &error); //<  puntero en el cual se guarda el archivo .json
+    fclose(file);
+    if (!json) {
+        print_error(101, error.text, NULL);
+        return genreTable;
+    }
+
+    size_t total_genres;
+    total_genres = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
+
+    // Leemos y procesamos cada uno de los generos
+    for (size_t i = 0; i < total_genres; i++) {
+        json_t *genre_json = json_array_get(json, i); // Obtiene el objeto json, basado en el genero[i]
+
+        // Lectura de campos basicos
+        const char *genre = json_string_value(json_object_get(genre_json, "genre")); // almacena el nombre del genero[i]
+        json_t *comments_json = json_object_get(genre_json, "comments"); // almacena loc omentarios del genero[i]
+        CommentList comments = read_comments_json(comments_json);
+        insert_musicGenre((char*)genre, comments, genreTable);
+    }
+    json_decref(json); // libera la memoria utilizada por el json
+
+    return genreTable;
+}
+
+/**
  * @brief Funcion para leer el arreglo json de amigos y crear una lista de enlaces a usuarios
  *
  * @param friends_json Puntero al arreglo json de amigos

@@ -19,12 +19,14 @@ typedef struct _musicHashTable* MusicGenresTable;
 #include <string.h>
 #include <stdlib.h>
 #include "hash.h"
+#include "comments.h"
 
 /** \struct _musicGenre
  * @brief Representa un genero musical en la lista de generos
  */
 struct _musicGenre {
-    char genre[25]; /**< genero musical almacenado */
+    char* genre;             /**< genero musical almacenado */
+    CommentList comments;    /**< Lista de comentarios relacionados con el genero */
     MusicGenrePosition next; /**< Puntero al siguiente genero en la lista */
 };
 
@@ -44,7 +46,7 @@ bool is_empty_musicGenreList(MusicGenreList genreList);
 void print_musicGenreList(MusicGenreList genreList);
 MusicGenrePosition find_musicGenreList_genre(MusicGenreList genreList, char* genre);
 MusicGenrePosition find_musicGenreList_prev_genre(MusicGenrePosition position, MusicGenreList genreList);
-MusicGenrePosition insert_musicGenreList_genre(MusicGenrePosition prevPosition, char* genre);
+MusicGenrePosition insert_musicGenreList_genre(MusicGenrePosition prevPosition, char* genre, CommentList comments);
 void delete_musicGenreList_genre(MusicGenrePosition position, MusicGenreList genreList);
 
 // Funciones de interaccion con el usuario
@@ -55,9 +57,8 @@ char* get_genre(MusicGenrePosition position);
 
 // Funciones para la tabla de generos musicales
 MusicGenresTable create_musicGenresTable(MusicGenresTable genresTable);
-MusicGenresTable read_musicGenre_file(char* fileName, MusicGenresTable genresTable);
 void print_musicGenresTable(MusicGenresTable genresTable);
-MusicGenrePosition insert_musicGenre(char* genre, MusicGenresTable genresTable);
+MusicGenrePosition insert_musicGenre(char* genre, CommentList comments, MusicGenresTable genresTable);
 void delete_musicGenresTable_genre(char* genre, MusicGenresTable genresTable);
 void delete_musicGenresTable(MusicGenresTable genresTable);
 MusicGenrePosition find_musicGenresTable_genre(char* genre, MusicGenresTable genresTable);

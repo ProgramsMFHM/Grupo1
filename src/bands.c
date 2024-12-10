@@ -61,7 +61,7 @@ void print_bandList(BandList bandList)
 {
     BandPosition current = bandList->next;
     if (current == NULL) {
-        printf("Empty");
+        printf("Empty\n");
     } else {
         while (current != NULL) {
             printf("[%s, ", current->band);

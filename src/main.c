@@ -46,16 +46,18 @@ int main(int argc, char* argv[])
         printf("Ayuda del programa\n");
     }
 
-    // PRUEBA DE TABLA DE BANDAS
+    // PRUEBA DE TABLA DE BANDAS Y GENRES
     BandTable bandsTable = get_bands_from_file("./build/bands.json", NULL);
     print_bandTable(bandsTable);
     delete_bandTable(bandsTable);
 
-    /* MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
-    print_musicGenresTable(genresTable);
-    delete_musicGenresTable(genresTable); */
+    printf("--------------------------------------------------------------------------------\n");
 
-    // FIN PRUEBA DE TABLA DE BANDAS
+    MusicGenresTable genresTable = get_genres_from_file("./build/music_genres.json", NULL);
+    print_musicGenresTable(genresTable);
+    delete_musicGenresTable(genresTable);
+
+    // FIN PRUEBA DE TABLA DE BANDAS Y GENRES
 
     return 0;
 }
