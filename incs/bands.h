@@ -19,13 +19,15 @@ typedef struct _bandHashTable* BandTable;
 #include <string.h>
 #include <stdlib.h>
 #include "hash.h"
+#include "comments.h"
 
 /** \struct _band
- * @brief Representa un genero musical en la lista de bandas
+ * @brief Representa un banda en la lista de bandas
  */
 struct _band {
-    char band[25]; /**< genero musical almacenado */
-    BandPosition next; /**< Puntero al siguiente genero en la lista */
+    char* band;           /**< banda almacenada */
+    CommentList comments; /**< Lista de comentarios relacionados con la banda */
+    BandPosition next;    /**< Puntero a la siguiente banda en la lista */
 };
 
 /** \struct _bandHashTable
@@ -44,7 +46,7 @@ bool is_empty_bandList(BandList bandList);
 void print_bandList(BandList bandList);
 BandPosition find_bandList_band(BandList bandList, char* band);
 BandPosition find_bandList_prev_band(BandPosition position, BandList bandList);
-BandPosition insert_bandList_band(BandPosition prevPosition, char* band);
+BandPosition insert_bandList_band(BandPosition prevPosition, char* band, CommentList comments);
 void delete_bandList_band(BandPosition position, BandList bandList);
 
 // Funciones de interaccion con el usuario
@@ -55,9 +57,8 @@ char* get_band(BandPosition position);
 
 // Funciones para la tabla de bandas
 BandTable create_bandTable(BandTable bandTable);
-BandTable read_band_file(char* fileName, BandTable bandTable);
 void print_bandTable(BandTable bandTable);
-BandPosition insert_band(char* band, BandTable bandTable);
+BandPosition insert_bandTable_band(char* band, CommentList comments, BandTable bandTable);
 void delete_bandTable_band(char* band, BandTable bandTable);
 void delete_bandTable(BandTable bandTable);
 BandPosition find_bandTable_band(char* band, BandTable bandTable);

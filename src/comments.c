@@ -17,7 +17,7 @@ void save_commentNode(PtrToComment comment){
         || comment->bands == NULL
         || comment->genres == NULL
         || comment->text == NULL
-        || comment->user.userName == NULL
+        || comment->user->userName == NULL
         )
     {
         print_error(202, NULL, NULL);
@@ -40,7 +40,7 @@ void save_commentNode(PtrToComment comment){
     }
 
     fprintf(file, "{\n");
-    fprintf(file,"\t\"author\": \"%s\",\n", comment->user.userName);
+    fprintf(file,"\t\"author\": \"%s\",\n", comment->user->userName);
     fprintf(file,"\t\"ID\": %ld,\n", comment->ID);
     fprintf(file,"\t\"text\": \"%s\",\n", comment->text);
     fprintf(file, "}\n");
@@ -101,19 +101,17 @@ bool is_empty_CommentList(CommentList commentList){
 void print_CommentList(CommentList commentList){
     CommentPosition current = commentList->next;
     if (current == NULL) {
-        printf("Empty\n");
+        printf("Empty");
     } else {
+        printf("{");
         while (current != NULL) {
-            if(!current->complete){
-                complete_comment_tags(current);
+            printf("%ld", current->ID);
+            if(current->next){
+                printf(", ");
             }
-            printf("%ld, %s, #:", current->ID, current->text);
-            print_genreLinkList(current->genres);
-            printf(", @:");
-            print_bandLinkList(current->bands);
-            printf("\n");
             current = current->next;
         }
+        printf("}");
     }
 }
 
@@ -172,11 +170,13 @@ CommentPosition create_new_comment(time_t ID, const char *text, char* author){
     }
     strcpy(newComment->text, text);
 
-    newComment->user.userName = malloc(strlen(author) + 1);
-    if(newComment->user.userName == NULL){
+    newComment->user = create_empty_userLinkList(NULL);
+
+    newComment->user->userName = malloc(strlen(author) + 1);
+    if(newComment->user->userName == NULL){
         print_error(200, NULL, NULL);
     }
-    strcpy(newComment->user.userName, author);
+    strcpy(newComment->user->userName, author);
 
     newComment->bands = create_empty_bandLinkList(NULL);
     newComment->genres = create_empty_genreLinkList(NULL);
@@ -211,10 +211,10 @@ CommentPosition complete_commentList_node(CommentPosition P, UserTable userTable
     if(!P->complete){
         complete_comment_tags(P);
     }
-    if(!P->user.userNode){
-        P->user.userNode = find_userTable_node(userTable, P->user.userName);
-        if(!P->user.userNode){
-            print_error(300, P->user.userName, NULL);
+    if(!P->user->userNode){
+        P->user->userNode = find_userTable_node(userTable, P->user->userName);
+        if(!P->user->userNode){
+            print_error(300, P->user->userName, NULL);
         }
     }
     return P;
@@ -239,9 +239,10 @@ bool delete_CommentList_node(CommentPosition P, CommentList commentList){
         return false;
     }
     prevNode->next = P->next;
+    free(P->user->userName); // Lo eliminamos de esta manera porque P->user es el centinela de una lista y la funcion de eliminacion no toma en cuenta que el centinela tenga informeacion dentro
+    delete_userLinkList(P->user);
     delete_genreLinkList(P->genres);
     delete_bandLinkList(P->bands);
-    free(P->user.userName);
     free(P->text);
     free(P);
     return true;

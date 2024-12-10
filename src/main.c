@@ -7,6 +7,7 @@
 #include "musicGenres.h"
 #include "genreLink.h"
 #include "bands.h"
+#include "bandLink.h"
 #include "json.h"
 #include "utilities.h"
 
@@ -45,41 +46,16 @@ int main(int argc, char* argv[])
         printf("Ayuda del programa\n");
     }
 
-    // PRUEBA ARBOL DE COMENTARIOS
-        // Cargamos usuarios
-        UserTable userTable = get_users_from_file(USERS_PATH "users.json", NULL);
+    // PRUEBA DE TABLA DE BANDAS
+    BandTable bandsTable = get_bands_from_file("./build/bands.json", NULL);
+    print_bandTable(bandsTable);
+    delete_bandTable(bandsTable);
 
-        // Crear árbol vacío
-        CommentList comments = create_empty_CommentList(NULL);
+    /* MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
+    print_musicGenresTable(genresTable);
+    delete_musicGenresTable(genresTable); */
 
-        // Crear comentarios e insertarlos
-        char *comentarios[] = {
-            "Este es el primer comentario #rock #pop #indie",
-            "Este es el segundo comentario @rock @pop @indie",
-            "Otro comentario interesante #rock #pop #indie",
-            "Comentario sobre música",
-            "Comentario sobre películas",
-            "Comentario aleatorio"
-        };
-
-        for (int i = 0; i < 6; i++) {
-            // Insertar comentario
-            insert_CommentList_node(comments, create_new_comment(i, comentarios[i], "Alice"));
-            complete_commentList_node(comments->next, userTable);
-        }
-
-        // Mostrar el árbol (opcional, para verificar)
-        printf("Comentarios en la lista:\n\n");
-        print_CommentList(comments);
-
-        // Liberar recursos
-        printf("\nEliminando lista de comentarios...\n");
-        delete_CommentList(comments);
-
-        printf("Eliminando tabla de usuarios...\n");
-        delete_userTable(userTable);
-
-    // FIN PRUEBA ARBOL DE COMENTARIOS
+    // FIN PRUEBA DE TABLA DE BANDAS
 
     return 0;
 }
@@ -271,3 +247,40 @@ FIN PRUEBA FUNCION DE IMPRESION */
 
     delete_userTable(table);
 FIN PRUEBA DE TABLA DE USUARIOS */
+
+
+/* PRUEBA LISTA DE COMENTARIOS
+    // Cargamos usuarios
+    UserTable userTable = get_users_from_file(USERS_PATH "users.json", NULL);
+
+    // Crear árbol vacío
+    CommentList comments = create_empty_CommentList(NULL);
+
+    // Crear comentarios e insertarlos
+    char *comentarios[] = {
+        "Este es el primer comentario #rock #pop #indie",
+        "Este es el segundo comentario @rock @pop @indie",
+        "Otro comentario interesante #rock #pop #indie",
+        "Comentario sobre música",
+        "Comentario sobre películas",
+        "Comentario aleatorio"
+    };
+
+    for (int i = 0; i < 6; i++) {
+        // Insertar comentario
+        insert_CommentList_node(comments, create_new_comment(i, comentarios[i], "Alice"));
+        complete_commentList_node(comments->next, userTable);
+    }
+
+    // Mostrar el árbol (opcional, para verificar)
+    printf("Comentarios en la lista:\n\n");
+    print_CommentList(comments);
+
+    // Liberar recursos
+    printf("\nEliminando lista de comentarios...\n");
+    delete_CommentList(comments);
+
+    printf("Eliminando tabla de usuarios...\n");
+    delete_userTable(userTable);
+
+FIN PRUEBA ARBOL DE COMENTARIOS */

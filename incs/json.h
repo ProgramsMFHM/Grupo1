@@ -10,15 +10,18 @@
 #include <jansson.h>
 #include <stdio.h>
 #include <string.h>
+#include "time.h"
 #include "errors.h"
 #include "userLink.h"
 #include "genreLink.h"
 #include "bandLink.h"
 
 UserTable get_users_from_file(const char *filePath, UserTable table);
+BandTable get_bands_from_file(const char* filePath, BandTable table);
 UserPosition complete_user_from_json(UserPosition user);
 UserLinkList read_friends_json(json_t *friends_json);
 GenreLinkList read_genres_json(json_t *genres_json);
-BandLinkList read_band_json(json_t *bands_json);
+BandLinkList read_band_json(json_t *comments_json);
+CommentList read_comments_json(json_t *comments_json);
 
 #endif

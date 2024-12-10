@@ -32,11 +32,11 @@ UserTable get_users_from_file(const char *filePath, UserTable table)
         return table;
     }
 
-    size_t total_users;
-    total_users = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
+    size_t total_bands;
+    total_bands = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
 
     // Leemos y procesamos cada uno de los usuarios
-    for (size_t i = 0; i < total_users; i++) {
+    for (size_t i = 0; i < total_bands; i++) {
         json_t *user_json = json_array_get(json, i); // Obtiene el objeto json, basada en el usuario[i]
 
         // Lectura de campos basicos
@@ -94,6 +94,50 @@ UserPosition complete_user_from_json(UserPosition user)
 }
 
 /**
+ * @brief Lee bandas de un archivo e inserta en una tabla de bandas
+ * @param fileName Nombre del archivo a leer
+ * @param bandTable Tabla de bandas donde insertar los bandas
+ * @return Tabla de bandas con los bandas leidos
+*/
+BandTable get_bands_from_file(const char* filePath, BandTable table)
+{
+    if(table == NULL){
+        table = create_bandTable(table);
+    }
+
+    // Crear estructura JSON
+    FILE *file = fopen(filePath, "r");  // Abre el archivo .json en modo lectura
+    if (!file) {
+        print_error(100, (char*)filePath, NULL);
+        return table;
+    }
+    json_error_t error;     // declaracion de "variable" error basada en una funcion de la libreria jansson
+    json_t *json = json_loadf(file, 0, &error); //<  puntero en el cual se guarda el archivo .json
+    fclose(file);
+    if (!json) {
+        print_error(101, error.text, NULL);
+        return table;
+    }
+
+    size_t total_bands;
+    total_bands = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
+
+    // Leemos y procesamos cada una de las bandas
+    for (size_t i = 0; i < total_bands; i++) {
+        json_t *band_json = json_array_get(json, i); // Obtiene el objeto json, basado en la banda[i]
+
+        // Lectura de campos basicos
+        const char *band = json_string_value(json_object_get(band_json, "band")); // almacena el nombre de la banda[i]
+        json_t *comments_json = json_object_get(band_json, "comments"); // almacena las bandas del usuario[i]
+        CommentList comments = read_comments_json(comments_json);
+        insert_bandTable_band((char*)band, comments, table);
+    }
+    json_decref(json); // libera la memoria utilizada por el json
+
+    return table;
+}
+
+/**
  * @brief Funcion para leer el arreglo json de amigos y crear una lista de enlaces a usuarios
  *
  * @param friends_json Puntero al arreglo json de amigos
@@ -146,7 +190,7 @@ GenreLinkList read_genres_json(json_t *genres_json){
 /**
  * @brief Funcion para leer el arreglo json de bandas y crear una lista de enlaces a bandas
  *
- * @param genres_json Puntero al arreglo json de bandas
+ * @param bands_json Puntero al arreglo json de bandas
  * @return Puntero a la lista de enlaces a bandas creada
 */
 BandLinkList read_band_json(json_t *bands_json){
@@ -166,4 +210,30 @@ BandLinkList read_band_json(json_t *bands_json){
         insert_bandLinkList_node_basicInfo(bands, bandName);
     }
     return bands;
+}
+
+/**
+ * @brief Funcion para leer el arreglo json de comentarios y crear una lista de comentarios
+ *
+ * @param comments_json Puntero al arreglo json de comentarios
+ * @return Puntero a la lista de comentarios creada
+*/
+CommentList read_comments_json(json_t *comments_json)
+{
+    if(comments_json == NULL){
+        return NULL;
+    }
+
+    size_t quantity = json_array_size(comments_json); //obtener el numero de elementos en el arreglo json
+    CommentList comments = create_empty_CommentList(NULL);
+
+    for (size_t i = 0; i < quantity; i++) {
+        time_t commentID = (time_t)json_integer_value(json_array_get(comments_json, i));  // obtener el valor del ID en el indice i del arreglo
+        if (!commentID) {
+            print_error(302, NULL, "ID de comentario no valido");
+            continue;
+        }
+        insert_CommentList_node(comments, create_new_comment(i, "NULL", "NULL"));
+    }
+    return comments;
 }

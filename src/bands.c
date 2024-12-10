@@ -61,10 +61,12 @@ void print_bandList(BandList bandList)
 {
     BandPosition current = bandList->next;
     if (current == NULL) {
-        printf("Empty\n");
+        printf("Empty");
     } else {
         while (current != NULL) {
-            printf("%s -> ", current->band);
+            printf("[%s, ", current->band);
+            print_CommentList(current->comments);
+            printf("]\n\t-> ");
             current = current->next;
         }
         printf("NULL\n");
@@ -108,17 +110,25 @@ BandPosition find_bandList_prev_band(BandPosition position, BandList bandList)
  * @brief Inserta un nodo en la lista de bandas
  * @param prevPosition Puntero al nodo anterior al que se desea insertar
  * @param band Genero a insertar
+ * @param comments Lista de comentarios relacionados con la banda
  * @return Puntero al nodo insertado
 */
-BandPosition insert_bandList_band(BandPosition prevPosition, char* band)
+BandPosition insert_bandList_band(BandPosition prevPosition, char* band, CommentList comments)
 {
     BandPosition newNode = (BandPosition)malloc(sizeof(struct _band));
     if (newNode == NULL) {
         print_error(200, NULL, NULL);
     }
+
+    newNode->band = (char*)malloc(sizeof(char) * strlen(band) + 1);
+    if (newNode->band == NULL) {
+        print_error(200, NULL, NULL);
+    }
+    snprintf(newNode->band, strlen(band) + 1, "%s", band);
+
+    newNode->comments = comments;
     newNode->next = prevPosition->next;
     prevPosition->next = newNode;
-    snprintf(newNode->band, sizeof(newNode->band), "%s", band);
     return newNode;
 }
 
@@ -138,6 +148,8 @@ void delete_bandList_band(BandPosition position, BandList bandList)
         return;
     }
     prevNode->next = position->next;
+    delete_CommentList(position->comments);
+    free(position->band);
     free(position);
 }
 
@@ -214,33 +226,6 @@ BandTable create_bandTable(BandTable bandTable)
 }
 
 /**
- * @brief Lee bandas de un archivo e inserta en una tabla de bandas
- * @param fileName Nombre del archivo a leer
- * @param bandTable Tabla de bandas donde insertar los bandas
- * @return Tabla de bandas con los bandas leidos
-*/
-BandTable read_band_file(char* fileName, BandTable bandTable)
-{
-    FILE* file = fopen(fileName, "r");
-    char readBand[25];
-
-    if (file == NULL) {
-        print_error(100, fileName, NULL);
-    }
-
-    if (bandTable == NULL) {
-        bandTable = create_bandTable(NULL);
-    }
-
-    while (fscanf(file, "%s", readBand) != EOF) {
-        insert_band(readBand, bandTable);
-    }
-
-    fclose(file);
-    return bandTable;
-}
-
-/**
  * @brief Imprime una tabla de bandas en la consola
  * @param bandTable Tabla de bandas a imprimir
 */
@@ -256,13 +241,14 @@ void print_bandTable(BandTable bandTable)
 /**
  * @brief Inserta un genero en una tabla de bandas
  * @param band Genero a insertar
+ * @param comments Lista de comentarios relacionados con la banda
  * @param bandTable Tabla de bandas donde insertar el genero
  * @return Puntero al nodo insertado
 */
-BandPosition insert_band(char* band, BandTable bandTable)
+BandPosition insert_bandTable_band(char* band, CommentList comments, BandTable bandTable)
 {
     unsigned int index = jenkins_hash(band) % BANDS_TABLE_SIZE;
-    BandPosition position = insert_bandList_band(bandTable->buckets[index], band);
+    BandPosition position = insert_bandList_band(bandTable->buckets[index], band, comments);
     if (position != NULL) {
         bandTable->bandCount++;
     }

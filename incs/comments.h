@@ -30,7 +30,7 @@ struct _commentNode {
     time_t ID;                    /**< Identificador del comentario */
     char* text;                   /**< Texto del comentario */
     bool complete;               /**< Indica si los tags del comentario están completos */
-    UserLinkNode user;            /**< Usuario del comentario */
+    UserLinkPosition user;            /**< Usuario del comentario */
     GenreLinkList genres;         /**< Gustos musicales del comentario */
     BandLinkList bands;           /**< Bandas del comentario */
     PtrToComment next;            /**< Puntero al siguiente nodo de la lista enlazada */
