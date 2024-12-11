@@ -7,6 +7,7 @@
 #define COMMENTS_H
 
 #define COMMENTS_PATH "./build/comments/"
+#define MAX_COMMENT_LENGTH 300
 
 typedef struct _commentNode CommentNode;
 typedef CommentNode* PtrToComment;
@@ -37,6 +38,7 @@ struct _commentNode {
 };
 
 // Funciones para un nodo de usuario
+void print_commentNode(PtrToComment comment);
 void save_commentNode(PtrToComment comment);
 
 // Funciones de la lista de usuarios

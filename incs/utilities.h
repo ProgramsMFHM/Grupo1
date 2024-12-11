@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "errors.h"
 
 
@@ -35,5 +36,8 @@ void print_loopweb(char* str);
 // Funciones para usar como parametros
 bool increasing(double a, double b);
 bool decreasing(double a, double b);
+
+// Tiempo
+void print_date(time_t time);
 
 #endif

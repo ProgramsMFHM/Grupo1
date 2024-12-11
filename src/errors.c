@@ -29,6 +29,12 @@ void print_error(int num, char* target, char* obs) {
         case 101:
             printf("Error al leer el archivo JSON: %s\n", target);
             break;
+        case 102:
+            printf("Error al transformar fecha\n");
+            break;
+        case 103:
+            printf("Error al leer entrada por terminal\n");
+            break;
         case 200:
             printf("No hay memoria disponible\n");
             exit(-1);

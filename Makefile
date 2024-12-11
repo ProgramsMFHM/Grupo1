@@ -43,5 +43,9 @@ test:
 json:
 	@./docs/jansson.sh
 
+save:
+	rm -rf ./testing/*
+	cp -r ./build/* ./testing/
+
 send:
 	tar czf $(GRUPO)-$(NTAR).tgz --transform 's,^,$(GRUPO)-$(NTAR)/,' Makefile src incs docs

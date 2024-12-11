@@ -5,7 +5,30 @@
 */
 #include "comments.h"
 
-// Funciones para un nodo de usuario
+// Funciones para un nodo de comentario
+/**
+ * @brief Imprime un nodo de comentario por terminal
+ *
+ * @param comment Puntero al nodo de comentario
+*/
+void print_commentNode(PtrToComment comment)
+{
+    if(!comment || !comment->user->userName || !comment->text || !comment->bands || !comment->genres){
+        print_error(202, NULL, NULL);
+    }
+
+    printf(ANSI_COLOR_BLUE "%s " ANSI_COLOR_RESET "( ", comment->user->userName);
+    print_date(comment->ID);
+    printf(" )\n\n");
+    print_loopweb(comment->text);
+    printf("\n\n");
+    printf("Generos musicales: ");
+    print_genreLinkList(comment->genres);
+    printf("\n");
+    printf("Bandas: ");
+    print_bandLinkList(comment->bands);
+    printf("\n");
+}
 
 /**
  * @brief Imprime un comentario en su archivo en formato JSON
@@ -99,6 +122,10 @@ bool is_empty_CommentList(CommentList commentList){
  * @param commentList Puntero a la lista de comentarios
 */
 void print_CommentList(CommentList commentList){
+    if(commentList == NULL){
+        printf("NULL");
+        return;
+    }
     CommentPosition current = commentList->next;
     if (current == NULL) {
         printf("Empty");

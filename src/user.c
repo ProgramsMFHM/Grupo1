@@ -462,3 +462,111 @@ void print_userTable(UserTable table){
         print_UserList(table->buckets[i]);
     }
 }
+
+// Funciones de LoopWeb relacionadas a usuarios
+
+/**
+ * @brief Funcion que crea un comentario en loopweb partiendo de la interaccion con el usuario
+ *
+ * @param userName Nombre del usuario
+ * @param userTable Tabla de usuarios
+ * @param bandTable Tabla de bandas
+ * @param genreTable Tabla de generos
+*/
+void make_comment(char* userName, UserTable userTable, BandTable bandTable, GenreTable genreTable)
+{
+    int option;
+    UserPosition author = find_userTable_node(userTable, userName); // Guardamos el autor del comentario
+    if(author == NULL){ // No deberia pasar, ya se ha comprobado antes
+        print_error(300, userName, NULL);
+        return;
+    }
+    author = complete_user_from_json(author);
+
+    char commentText[MAX_COMMENT_LENGTH+1];
+    do{
+        // Limpiamos el buffer de entrada
+        while (getchar() != '\n');
+
+        printf("Escriba el comentario: ");
+        if(fgets(commentText, sizeof(commentText), stdin) == NULL){
+            print_error(102, NULL, NULL);
+            continue;
+        }
+
+        // Elimina el salto de línea si es necesario
+        size_t len = strlen(commentText);
+        if (len > 0 && commentText[len - 1] == '\n') {
+            commentText[len - 1] = '\0';
+        }
+
+        printf("El comentario a ingresar es: ");
+        print_loopweb(commentText);
+        printf("\nEsta seguro de ingresar el comentario? (0:si, 1:no): ");
+        if(scanf("%d", &option) != 1){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+
+        // Limpiamos el buffer de entrada
+        while (getchar() != '\n');
+
+    }while(option != 0);
+
+    CommentList commentList = create_empty_CommentList(NULL); // Para agregar a donde corresponde
+    CommentPosition commentNode = create_new_comment(time(NULL), commentText, userName);
+    complete_comment_tags(commentNode);
+    insert_CommentList_node(commentList, commentNode);
+
+    // Revisamos las bandas del comentario
+    BandLinkList bandAux = commentNode->bands->next;
+    while(bandAux != NULL){
+        printf("Procesando: %s\n", bandAux->band);
+        if(!find_bandTable_band(bandAux->band, bandTable))
+        {
+            printf("La banda %s no se encuentra en la base de datos, desea agregarla?: (0:Si, 1:No): ", bandAux->band);
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                bandAux = bandAux->next;
+                continue;
+            }
+            if(option == 0){
+                insert_bandTable_band(bandAux->band, commentList, bandTable);
+            }
+        }
+        insert_CommentList_node(find_bandTable_band(bandAux->band, bandTable)->comments, commentNode); // Se agrega el comentario a bandas
+        bandAux = bandAux->next;
+    }
+
+    // Revisamos los generos del comentario
+    GenreLinkPosition genreAux = commentNode->genres->next;
+    while(genreAux != NULL){
+        printf("Procesando: %s\n", genreAux->genre);
+        if(!find_genresTable_genre(genreAux->genre, genreTable))
+        {
+            printf("El genero %s no se encuentra en la base de datos, desea agregarlo?: (0:Si, 1:No): ", genreAux->genre);
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                genreAux = genreAux->next;
+                continue;
+            }
+            if(option == 0){
+                insert_genre(genreAux->genre, commentList, genreTable);
+            }
+        }
+        insert_CommentList_node(find_genresTable_genre(genreAux->genre, genreTable)->comments, commentNode); // Se agrega el comentario a bandas
+        genreAux = genreAux->next;
+    }
+
+    // Guardamos los comentarios en donde corresponde
+    save_commentNode(commentNode); // Se guarda en el archivo correspondiente
+    insert_CommentList_node(author->comments, commentNode); // Se guarda en la lista de comentarios del autor
+    save_userNode(author);
+    save_bandTable(bandTable);
+    save_genresTable(genreTable);
+
+    sleep(1);
+    printf(CLEAR_SCREEN"El siguiente comentario fue agregado a loopweb:\n\n");
+    print_commentNode(commentNode);
+
+}

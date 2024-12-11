@@ -17,12 +17,15 @@ typedef struct _userTable* UserTable;
 #define USER_TABLE_SIZE 20 /**< Tamaño de la tabla hash de usuarios */
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "errors.h"
 #include "hash.h"
-#include "userLink.h"
-#include "genreLink.h"
 #include "bandLink.h"
 #include "comments.h"
+#include "genreLink.h"
+#include "json.h"
+#include "userLink.h"
+#include "utilities.h"
 
 /** \struct _userNode
  * @brief Estructura que representa un nodo de usuario.
@@ -77,5 +80,8 @@ UserPosition insert_userTable_node(UserTable table, const char *username, int ag
 UserPosition find_userTable_node(UserTable table, const char *username);
 void delete_userTable_node(UserTable table, const char* username);
 void print_userTable(UserTable table);
+
+// Funciones de loopweb relacionadas a usuarios
+void make_comment(char* userName, UserTable users, BandTable band, GenreTable genre);
 
 #endif

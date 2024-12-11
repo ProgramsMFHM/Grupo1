@@ -177,3 +177,30 @@ bool increasing(double a, double b){
 bool decreasing(double a, double b){
     return a >= b;
 }
+
+// Tiempo
+
+/**
+ * @brief Imprime una fecha en formato YYYY-MM-DD HH:MM:SS +ZZZZ
+ *
+ * @param time Tiempo a imprimir
+*/
+void print_date(time_t time)
+{
+    struct tm *local = localtime(&time);  // Convertir a tiempo local
+    tzset(); // Inicializar la información de la zona horaria
+
+    char *stringPointer = malloc(24);
+    if(stringPointer==NULL)
+    {
+        print_error(200, NULL, NULL);
+    }
+
+    if(strftime(stringPointer, 24, "%Y-%m-%d %H:%M:%S %Z",local) == 0)
+    {
+        print_error(102, NULL, NULL);
+        return;
+    }
+
+    printf("%s", stringPointer);
+}
