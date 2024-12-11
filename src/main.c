@@ -4,7 +4,7 @@
 #include "commentLink.h"
 #include "user.h"
 #include "userLink.h"
-#include "musicGenres.h"
+#include "genres.h"
 #include "genreLink.h"
 #include "bands.h"
 #include "bandLink.h"
@@ -54,10 +54,10 @@ int main(int argc, char* argv[])
 
     printf("--------------------------------------------------------------------------------\n");
 
-    MusicGenresTable genresTable = get_genres_from_file("./build/music_genres.json", NULL);
-    print_musicGenresTable(genresTable);
-    save_musicGenresTable(genresTable);
-    delete_musicGenresTable(genresTable);
+    GenreTable genresTable = get_genres_from_file("./build/genres.json", NULL);
+    print_genresTable(genresTable);
+    save_genresTable(genresTable);
+    delete_genresTable(genresTable);
 
     // FIN PRUEBA DE TABLA DE BANDAS Y GENRES
 
@@ -80,9 +80,9 @@ int main(int argc, char* argv[])
 FIN PRUEBA DE COMENTARIOS */
 
  /* PRUEBA DE GÉNEROS MUSICALES
-   MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
-   print_musicGenresTable(genresTable);
-   delete_musicGenresTable(genresTable);
+   GenreTable genresTable = read_genre_file("./build/music_genres.txt", NULL);
+   print_genresTable(genresTable);
+   delete_genresTable(genresTable);
 FIN PRUEBA DE GÉNEROS MUSICALES */
 
 /* PRUEBA DE LECTURA DE DATOS JSON
@@ -213,9 +213,9 @@ FIN PRUEBA DE TABLA DE USUARIOS */
     print_bandTable(bandsTable);
     delete_bandTable(bandsTable);
 
-    MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
-    print_musicGenresTable(genresTable);
-    delete_musicGenresTable(genresTable);
+    GenreTable genresTable = read_genre_file("./build/music_genres.txt", NULL);
+    print_genresTable(genresTable);
+    delete_genresTable(genresTable);
 
 FIN PRUEBA DE TABLA DE BANDAS */
 
@@ -270,9 +270,9 @@ FIN PRUEBA ARBOL DE COMENTARIOS */
 
     printf("--------------------------------------------------------------------------------\n");
 
-    MusicGenresTable genresTable = get_genres_from_file("./build/music_genres.json", NULL);
-    print_musicGenresTable(genresTable);
-    delete_musicGenresTable(genresTable);
+    GenreTable genresTable = get_genres_from_file("./build/music_genres.json", NULL);
+    print_genresTable(genresTable);
+    delete_genresTable(genresTable);
 
 FIN PRUEBA DE TABLA DE BANDAS Y GENRES */
 

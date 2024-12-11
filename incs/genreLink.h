@@ -17,7 +17,7 @@ typedef PtrToGenreLinkNode GenreLinkList;
 #include <string.h>
 #include <unistd.h>
 #include "errors.h"
-#include "musicGenres.h"
+#include "genres.h"
 #include "utilities.h"
 
 
@@ -26,7 +26,7 @@ typedef PtrToGenreLinkNode GenreLinkList;
 */
 struct _genreLinkNode {
     char* genre /*!< Nombre del Genero */;
-    PtrToMusicGenre genreNode; /*!< Genero en la red */
+    PtrToGenre genreNode; /*!< Genero en la red */
     GenreLinkPosition next; /*!< Posicion siguiente en la lista */
 };
 
@@ -38,11 +38,11 @@ void print_genreLinkList(GenreLinkList linkList);
 GenreLinkPosition find_genreLinkList_node(GenreLinkList linkList, char* genre);
 GenreLinkPosition find_genreLinkList_prev_node(GenreLinkPosition P, GenreLinkList linkList);
 GenreLinkPosition insert_genreLinkList_node_basicInfo(GenreLinkPosition prevPosition, char* genre);
-GenreLinkPosition insert_genreLinkList_node_completeInfo(GenreLinkPosition prevPosition, PtrToMusicGenre genreNode);
+GenreLinkPosition insert_genreLinkList_node_completeInfo(GenreLinkPosition prevPosition, PtrToGenre genreNode);
 void delete_genreLinkList_node(GenreLinkPosition P, GenreLinkList linkList);
 
 // Funciones de interaccion con el genero
-GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, MusicGenresTable userTable);
+GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, GenreTable userTable);
 GenreLinkPosition genreLinkList_first(GenreLinkList linkList);
 GenreLinkPosition genreLinkList_last(GenreLinkList linkList);
 GenreLinkPosition genreLinkList_advance(GenreLinkPosition P);

@@ -137,7 +137,7 @@ GenreLinkPosition insert_genreLinkList_node_basicInfo(GenreLinkPosition prevPosi
  * @param userNode Puntero al nodo de genero al que se desea enlazar
  * @return Puntero al nodo creado
 */
-GenreLinkPosition insert_genreLinkList_node_completeInfo(GenreLinkPosition prevPosition, PtrToMusicGenre userNode){
+GenreLinkPosition insert_genreLinkList_node_completeInfo(GenreLinkPosition prevPosition, PtrToGenre userNode){
     GenreLinkPosition newNode = (GenreLinkPosition) malloc(sizeof(struct _genreLinkNode));
     if (newNode == NULL) {
         print_error(200, NULL, NULL);
@@ -181,8 +181,8 @@ void delete_genreLinkList_node(GenreLinkPosition P, GenreLinkList linkList){
  * @param genreTable Puntero a la tabla de generos
  * @return Puntero al nodo de enlace a genero completado
 */
-GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, MusicGenresTable genreTable){
-    MusicGenrePosition userNode = find_musicGenresTable_genre(P->genre, genreTable);
+GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, GenreTable genreTable){
+    GenrePosition userNode = find_genresTable_genre(P->genre, genreTable);
     if(userNode == NULL){
         print_error(300, P->genre, NULL);
         return NULL;

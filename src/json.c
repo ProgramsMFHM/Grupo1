@@ -146,10 +146,10 @@ BandTable get_bands_from_file(const char* filePath, BandTable table)
  * @param bandTable Tabla de generos donde insertar los bandas
  * @return Tabla de generos con los generos leidos
 */
-MusicGenresTable get_genres_from_file(const char* filePath, MusicGenresTable genreTable)
+GenreTable get_genres_from_file(const char* filePath, GenreTable genreTable)
 {
     if(genreTable == NULL){
-        genreTable = create_musicGenresTable(genreTable);
+        genreTable = create_genresTable(genreTable);
     }
 
     // Crear estructura JSON
@@ -177,7 +177,7 @@ MusicGenresTable get_genres_from_file(const char* filePath, MusicGenresTable gen
         const char *genre = json_string_value(json_object_get(genre_json, "genre")); // almacena el nombre del genero[i]
         json_t *comments_json = json_object_get(genre_json, "comments"); // almacena loc omentarios del genero[i]
         CommentList comments = read_comments_json(comments_json);
-        insert_musicGenre((char*)genre, comments, genreTable);
+        insert_genre((char*)genre, comments, genreTable);
     }
     json_decref(json); // libera la memoria utilizada por el json
 

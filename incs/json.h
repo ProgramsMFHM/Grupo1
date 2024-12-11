@@ -18,7 +18,7 @@
 
 UserTable get_users_from_file(const char *filePath, UserTable table);
 BandTable get_bands_from_file(const char* filePath, BandTable table);
-MusicGenresTable get_genres_from_file(const char* filePath, MusicGenresTable genreTable);
+GenreTable get_genres_from_file(const char* filePath, GenreTable genreTable);
 UserPosition complete_user_from_json(UserPosition user);
 UserLinkList read_friends_json(json_t *friends_json);
 GenreLinkList read_genres_json(json_t *genres_json);
