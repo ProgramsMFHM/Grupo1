@@ -222,6 +222,8 @@ BandTable create_bandTable(BandTable bandTable)
         bandTable->bandCount = 0;
     }
 
+    bandTable->modified = false;
+
     return bandTable;
 }
 
@@ -252,6 +254,7 @@ BandPosition insert_bandTable_band(char* band, CommentList comments, BandTable b
     if (position != NULL) {
         bandTable->bandCount++;
     }
+    bandTable->modified = true;
     return position;
 }
 
@@ -269,6 +272,7 @@ void delete_bandTable_band(char* band, BandTable bandTable)
         return;
     }
     delete_bandList_band(position, bandTable->buckets[index]);
+    bandTable->modified = true;
     bandTable->bandCount--;
 }
 
@@ -294,4 +298,51 @@ BandPosition find_bandTable_band(char* band, BandTable bandTable)
 {
     int index = jenkins_hash(band) % BANDS_TABLE_SIZE;
     return find_bandList_band(bandTable->buckets[index], band);
+}
+
+
+/**
+ * @brief Funcion para guardar una tabla de bandas en su archivo JSON correspondiente
+ *
+ * @param bandTable Tabla de bandas a guardar
+*/
+void save_bandTable(BandTable bandTable)
+{
+    FILE* bandTableFile = fopen("./build/bands.json", "w");
+    if (bandTableFile == NULL)
+    {
+        print_error(100, "./build/bands.json", NULL);
+        return;
+    }
+
+    fprintf(bandTableFile, "[\n");
+    for(int i=0; i<BANDS_TABLE_SIZE; i++)
+    {
+        if(!bandTable->buckets[i]->next){
+            continue;
+        }
+        if(i != 0){
+            fprintf(bandTableFile, ",\n");
+        }
+        BandPosition aux = bandTable->buckets[i]->next;
+        while(aux != NULL){
+            fprintf(bandTableFile, "\t{\n\t\t\"band\":\"%s\",\n\t\t\"comments\":[", aux->band);
+            if(aux->comments->next){
+                CommentPosition aux2 = aux->comments->next;
+                while(aux2 != NULL){
+                    fprintf(bandTableFile, "%ld", aux2->ID);
+                    if(aux2->next != NULL){
+                        fprintf(bandTableFile, ", ");
+                    }
+                    aux2 = aux2->next;
+                }
+            }
+            fprintf(bandTableFile, "]\n\t}");
+            if(aux->next != NULL){
+                fprintf(bandTableFile, ",\n");
+            }
+            aux = aux->next;
+        }
+    }
+    fprintf(bandTableFile, "\n]");
 }

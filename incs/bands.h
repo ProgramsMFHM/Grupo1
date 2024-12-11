@@ -62,5 +62,6 @@ BandPosition insert_bandTable_band(char* band, CommentList comments, BandTable b
 void delete_bandTable_band(char* band, BandTable bandTable);
 void delete_bandTable(BandTable bandTable);
 BandPosition find_bandTable_band(char* band, BandTable bandTable);
+void save_bandTable(BandTable bandTable);
 
 #endif

@@ -62,5 +62,6 @@ MusicGenrePosition insert_musicGenre(char* genre, CommentList comments, MusicGen
 void delete_musicGenresTable_genre(char* genre, MusicGenresTable genresTable);
 void delete_musicGenresTable(MusicGenresTable genresTable);
 MusicGenrePosition find_musicGenresTable_genre(char* genre, MusicGenresTable genresTable);
+void save_musicGenresTable(MusicGenresTable bandTable);
 
 #endif

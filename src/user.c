@@ -66,15 +66,27 @@ void save_userNode(PtrToUser user){
     }
     fprintf(file,"],\n");
 
-    // Amigos de la lista de amigos
-    fprintf(file,"\t\"friends\": [");
-    UserLinkPosition aux3 = user->friends->next;
+    // Comentarios de la lista de comentarios
+    fprintf(file,"\t\"comments\": [");
+    CommentPosition aux3 = user->comments->next;
     while (aux3 != NULL) {
-        fprintf(file,"\"%s\"", aux3->userName);
+        fprintf(file,"\"%ld\"", aux3->ID);
         if (aux3->next != NULL) {
             fprintf(file,", ");
         }
         aux3 = aux3->next;
+    }
+    fprintf(file,"],\n");
+
+    // Amigos de la lista de amigos
+    fprintf(file,"\t\"friends\": [");
+    UserLinkPosition aux4 = user->friends->next;
+    while (aux4 != NULL) {
+        fprintf(file,"\"%s\"", aux4->userName);
+        if (aux4->next != NULL) {
+            fprintf(file,", ");
+        }
+        aux4 = aux4->next;
     }
     fprintf(file,"]\n");
 

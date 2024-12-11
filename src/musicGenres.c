@@ -220,7 +220,7 @@ MusicGenresTable create_musicGenresTable(MusicGenresTable genresTable)
         genresTable->buckets[i] = create_empty_musicGenreList(NULL);
         genresTable->genreCount = 0;
     }
-
+    genresTable->modified = false;
     return genresTable;
 }
 
@@ -250,6 +250,7 @@ MusicGenrePosition insert_musicGenre(char* genre, CommentList comments, MusicGen
     if (position != NULL) {
         genresTable->genreCount++;
     }
+    genresTable->modified = true;
     return position;
 }
 
@@ -268,6 +269,7 @@ void delete_musicGenresTable_genre(char* genre, MusicGenresTable genresTable)
     }
     delete_musicGenreList_genre(position, genresTable->buckets[index]);
     genresTable->genreCount--;
+    genresTable->modified = true;
 }
 
 /**
@@ -292,4 +294,50 @@ MusicGenrePosition find_musicGenresTable_genre(char* genre, MusicGenresTable gen
 {
     int index = jenkins_hash(genre) % MUSIC_GENRES_TABLE_SIZE;
     return find_musicGenreList_genre(genresTable->buckets[index], genre);
+}
+
+/**
+ * @brief Funcion para guardar una tabla de generos musicales en su archivo JSON correspondiente
+ *
+ * @param bandTable Tabla de generos a guardar
+*/
+void save_musicGenresTable(MusicGenresTable bandTable)
+{
+    FILE* musicGenresTableFile = fopen("./build/music_genres.json", "w");
+    if (musicGenresTableFile == NULL)
+    {
+        print_error(100, "./build/music_genres.json", NULL);
+        return;
+    }
+
+    fprintf(musicGenresTableFile, "[\n");
+    for(int i=0; i<BANDS_TABLE_SIZE; i++)
+    {
+        if(!bandTable->buckets[i]->next){
+            continue;
+        }
+        if(i != 0){
+            fprintf(musicGenresTableFile, ",\n");
+        }
+        MusicGenrePosition aux = bandTable->buckets[i]->next;
+        while(aux != NULL){
+            fprintf(musicGenresTableFile, "\t{\n\t\t\"genre\":\"%s\",\n\t\t\"comments\":[", aux->genre);
+            if(aux->comments->next){
+                CommentPosition aux2 = aux->comments->next;
+                while(aux2 != NULL){
+                    fprintf(musicGenresTableFile, "%ld", aux2->ID);
+                    if(aux2->next != NULL){
+                        fprintf(musicGenresTableFile, ", ");
+                    }
+                    aux2 = aux2->next;
+                }
+            }
+            fprintf(musicGenresTableFile, "]\n\t}");
+            if(aux->next != NULL){
+                fprintf(musicGenresTableFile, ",\n");
+            }
+            aux = aux->next;
+        }
+    }
+    fprintf(musicGenresTableFile, "\n]");
 }
