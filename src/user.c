@@ -96,9 +96,9 @@ void save_userNode(PtrToUser user){
 
     // Comentarios de la lista de comentarios
     fprintf(file,"\t\"comments\": [");
-    CommentPosition aux3 = user->comments->next;
+    CommentLinkPosition aux3 = user->comments->next;
     while (aux3 != NULL) {
-        fprintf(file,"%ld", aux3->ID);
+        fprintf(file,"%ld", aux3->commentID);
         if (aux3->next != NULL) {
             fprintf(file,", ");
         }
@@ -185,7 +185,7 @@ void print_UserList(UserList userList){
             printf(", ");
             print_bandLinkList(current->bands);
             printf(", ");
-            print_CommentList(current->comments);
+            print_commentLinkList(current->comments);
             printf(", ");
             print_userLinkList(current->friends);
             printf("]\n\t-> ");
@@ -237,7 +237,7 @@ UserPosition find_UserList_prev_node(UserPosition P, UserList userList){
  * @param genres0 Gustos musicales del usuario
  * @return Puntero al nodo creado
 */
-UserPosition create_new_user(const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends, CommentList comments){
+UserPosition create_new_user(const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends, CommentLinkList comments){
     PtrToUser newUser = (PtrToUser) malloc(sizeof(UserNode));
     if (newUser == NULL) {
         print_error(200, NULL, NULL);
@@ -292,7 +292,7 @@ UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNod
  * @param genres Gustos musicales del usuario
  * @return Puntero al nodo completado
 */
-UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, CommentList comments){
+UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, CommentLinkList comments){
     if(P == NULL){
         print_error(202, NULL, NULL);
     }
@@ -327,7 +327,7 @@ bool delete_UserList_node(UserPosition P, UserList userList){
         return false;
     }
     prevNode->next = P->next;
-    delete_CommentList(P->comments);
+    delete_commentLinkList(P->comments);
     delete_userLinkList(P->friends);
     delete_genreLinkList(P->genres);
     delete_bandLinkList(P->bands);
@@ -432,7 +432,7 @@ void delete_userTable(UserTable table){
  * @param genres Gustos musicales del usuario
  * @return Puntero al nodo insertado
 */
-UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends, CommentList comments){
+UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends, CommentLinkList comments){
     if(find_userTable_node(table, username) != NULL){
         print_error(301, NULL, NULL);
         return NULL;
@@ -501,7 +501,7 @@ void print_userTable(UserTable table){
  * @param bandTable Tabla de bandas
  * @param genreTable Tabla de generos
 */
-void make_comment(char* userName, UserTable userTable, BandTable bandTable, GenreTable genreTable)
+void make_comment(char* userName, UserTable userTable, BandTable bandTable, GenreTable genreTable, CommentTable comments)
 {
     int option;
     UserPosition author = find_userTable_node(userTable, userName); // Guardamos el autor del comentario
@@ -544,12 +544,14 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
     }while(option != 0);
 
     CommentPosition commentNode = create_new_comment(time(NULL), commentText, userName);
+    insert_commentTable_comment(commentNode, comments);
     complete_comment_tags(commentNode);
     // Revisamos las bandas del comentario
     BandLinkList bandAux = commentNode->bands->next;
     while(bandAux != NULL){
         printf("Procesando: %s\n", bandAux->band);
-        if(!find_bandTable_band(bandAux->band, bandTable))
+        BandPosition bandPosition = find_bandTable_band(bandAux->band, bandTable);
+        if(!bandPosition)
         {
             printf("La banda %s no se encuentra en la base de datos, desea agregarla?: (0:Si, 1:No): ", bandAux->band);
             if(scanf("%d", &option) != 1){
@@ -558,12 +560,10 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
                 continue;
             }
             if(option == 0){
-                CommentList commentList = create_empty_CommentList(NULL); // Para agregar a donde corresponde
-                insert_CommentList_node(commentList, commentNode);
-                insert_bandTable_band(bandAux->band, commentList, bandTable);
+                bandPosition = insert_bandTable_band(bandAux->band, bandTable);
             }
         }
-        insert_CommentList_node(find_bandTable_band(bandAux->band, bandTable)->comments, commentNode); // Se agrega el comentario a bandas
+        insert_commentLinkList_node_completeInfo(bandPosition->comments, commentNode); // Se agrega el comentario a la banda correspondiente
         bandAux = bandAux->next;
     }
 
@@ -571,7 +571,8 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
     GenreLinkPosition genreAux = commentNode->genres->next;
     while(genreAux != NULL){
         printf("Procesando: %s\n", genreAux->genre);
-        if(!find_genresTable_genre(genreAux->genre, genreTable))
+        GenrePosition genrePosition = find_genresTable_genre(genreAux->genre, genreTable);
+        if(!genrePosition)
         {
             printf("El genero %s no se encuentra en la base de datos, desea agregarlo?: (0:Si, 1:No): ", genreAux->genre);
             if(scanf("%d", &option) != 1){
@@ -580,21 +581,20 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
                 continue;
             }
             if(option == 0){
-                CommentList commentList = create_empty_CommentList(NULL); // Para agregar a donde corresponde
-                insert_CommentList_node(commentList, commentNode);
-                insert_genre(genreAux->genre, commentList, genreTable);
+                genrePosition = insert_genre(genreAux->genre, genreTable);
             }
         }
-        insert_CommentList_node(find_genresTable_genre(genreAux->genre, genreTable)->comments, commentNode); // Se agrega el comentario a bandas
+        insert_commentLinkList_node_completeInfo(genrePosition->comments, commentNode); // Se agrega el comentario a la banda correspondiente
         genreAux = genreAux->next;
     }
 
     // Guardamos los comentarios en donde corresponde
     save_commentNode(commentNode); // Se guarda en el archivo correspondiente
-    insert_CommentList_node(author->comments, commentNode); // Se guarda en la lista de comentarios del autor
+    insert_commentLinkList_node_completeInfo(author->comments, commentNode); // Se guarda en la lista de comentarios del autor
     save_userNode(author);
     save_bandTable(bandTable);
     save_genresTable(genreTable);
+    save_commentTable(comments);
 
     sleep(1);
     printf(CLEAR_SCREEN"El siguiente comentario fue agregado a loopweb:\n\n");

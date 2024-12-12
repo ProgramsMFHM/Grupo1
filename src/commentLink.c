@@ -134,7 +134,7 @@ CommentLinkPosition insert_commentLinkList_node_basicInfo(CommentLinkPosition pr
  * @brief Crea el nodo correspondiente a un enlace a un comentario (apuntando a un nodo de comentario)
  *
  * @param prevPosition Puntero al nodo anterior al que se desea insertar
- * @param userNode Puntero al nodo de comentario al que se desea enlazar
+ * @param commentNode Puntero al nodo de comentario al que se desea enlazar
  * @return Puntero al nodo creado
 */
 CommentLinkPosition insert_commentLinkList_node_completeInfo(CommentLinkPosition prevPosition, PtrToComment commentNode){
@@ -171,6 +171,7 @@ void delete_commentLinkList_node(CommentLinkPosition P, CommentLinkList linkList
 }
 
 // Funciones de interaccion con el usuario
+
 /**
  * @brief Completa un enlace a un comentario (agregando el puntero al nodo de comentario)
  *
@@ -178,15 +179,15 @@ void delete_commentLinkList_node(CommentLinkPosition P, CommentLinkList linkList
  * @param commentTable Puntero a la tabla de comentarios
  * @return Puntero al nodo de enlace a comentario completado
 */
-CommentLinkPosition complete_commentLinkList_node(CommentLinkPosition P, CommentList commentList){
-    CommentPosition userNode = find_CommentList_prev_node(P->commentNode, commentList);
-    if(userNode == NULL){
+CommentLinkPosition complete_commentLinkList_node(CommentLinkPosition P, CommentTable commentTable){
+    CommentPosition commentNode = find_commentTable_comment(P->commentID, commentTable);
+    if(commentNode == NULL){
         char commentID[20];
         sprintf(commentID, "%ld", P->commentID);
         print_error(302, commentID, NULL);
         return NULL;
     }
-    P->commentNode = userNode;
+    P->commentNode = commentNode;
     return P;
 }
 

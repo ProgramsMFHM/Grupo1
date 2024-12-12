@@ -54,24 +54,6 @@ int main(int argc, char* argv[])
         printf("Ayuda del programa :D\n");
     }
 
-    UserTable loopwebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
-    CommentTable commentTable = get_comments_from_file(COMMENTS_PATH"comments.json", NULL);
-    print_commentTable(commentTable);
-
-    for(int i=0; i<COMMENTS_TABLE_SIZE; i++){
-        CommentPosition aux = commentTable->buckets[i]->next;
-        while(aux != NULL){
-            complete_comment_from_json(aux);
-            print_commentNode(aux);
-            aux = aux->next;
-        }
-    }
-
-    save_commentTable(commentTable);
-
-    delete_commentTable(commentTable);
-    delete_userTable(loopwebUsers);
-
     return 0;
 }
 
@@ -83,6 +65,7 @@ void user_mode(char *userName)
     UserTable loopwebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
     BandTable loopwebBands = get_bands_from_file("./build/bands.json", NULL);
     GenreTable loopwebGenres = get_genres_from_file("./build/genres.json", NULL);
+    CommentTable loopwebComments = get_comments_from_file(COMMENTS_PATH"comments.json", NULL);
 
     // Comprobamos que el usuario exista
     if(!find_userTable_node(loopwebUsers, userName)){
@@ -117,7 +100,7 @@ void user_mode(char *userName)
             case 3: // Ver me feed de publicaciones
                 break;
             case 4: // Realizar una publicacion
-                make_comment(userName, loopwebUsers, loopwebBands, loopwebGenres);
+                make_comment(userName, loopwebUsers, loopwebBands, loopwebGenres, loopwebComments);
                 break;
             case 5: // Ver mis recomendaciones de amigos
                 break;
@@ -136,5 +119,6 @@ void user_mode(char *userName)
 
     delete_bandTable(loopwebBands);
     delete_genresTable(loopwebGenres);
+    delete_commentTable(loopwebComments);
     delete_userTable(loopwebUsers);
 }

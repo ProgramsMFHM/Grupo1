@@ -21,7 +21,7 @@ typedef struct _userTable* UserTable;
 #include "errors.h"
 #include "hash.h"
 #include "bandLink.h"
-#include "comments.h"
+#include "commentLink.h"
 #include "genreLink.h"
 #include "json.h"
 #include "userLink.h"
@@ -38,7 +38,7 @@ struct _userNode {
     GenreLinkList genres;         /**< Gustos musicales que le gustan al usuario */
     BandLinkList bands;           /**< Bandas que le gustan al usuario */
     UserLinkList friends;         /**< Lista de enlaces a usuarios que son amigos de este usuario */
-    CommentList comments;         /**< Lista de comentarios hechos por el usuario */
+    CommentLinkList comments;     /**< Lista de comentarios hechos por el usuario */
     PtrToUser next;               /**< Puntero al siguiente nodo de la lista enlazada */
 };
 
@@ -61,9 +61,9 @@ bool is_empty_UserList(UserList userList);
 void print_UserList(UserList userList);
 UserPosition find_UserList_node(UserList userList, const char *name);
 UserPosition find_UserList_prev_node(UserPosition P, UserList userList);
-UserPosition create_new_user(const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends, CommentList comments);
+UserPosition create_new_user(const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends, CommentLinkList comments);
 UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNode);
-UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, CommentList comments);
+UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, CommentLinkList comments);
 bool delete_UserList_node(UserPosition P, UserList userList);
 
 
@@ -76,12 +76,12 @@ char *get_username(UserPosition P);
 // Funciones de la tabla de usuarios
 UserTable create_userTable(UserTable table);
 void delete_userTable(UserTable table);
-UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends, CommentList comments);
+UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends, CommentLinkList comments);
 UserPosition find_userTable_node(UserTable table, const char *username);
 void delete_userTable_node(UserTable table, const char* username);
 void print_userTable(UserTable table);
 
 // Funciones de loopweb relacionadas a usuarios
-void make_comment(char* userName, UserTable users, BandTable band, GenreTable genre);
+void make_comment(char* userName, UserTable users, BandTable band, GenreTable genre, CommentTable comments);
 
 #endif

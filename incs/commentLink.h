@@ -43,7 +43,7 @@ CommentLinkPosition insert_commentLinkList_node_completeInfo(CommentLinkPosition
 void delete_commentLinkList_node(CommentLinkPosition P, CommentLinkList linkList);
 
 // Funciones de interaccion con el comentario
-CommentLinkPosition complete_commentLinkList_node(CommentLinkPosition P, CommentList commentList);
+CommentLinkPosition complete_commentLinkList_node(CommentLinkPosition P, CommentTable commentTable);
 CommentLinkPosition commentLinkList_first(CommentLinkList linkList);
 CommentLinkPosition commentLinkList_last(CommentLinkList linkList);
 CommentLinkPosition commentLinkList_advance(CommentLinkPosition P);

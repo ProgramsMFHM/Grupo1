@@ -25,6 +25,6 @@ CommentPosition complete_comment_from_json(CommentPosition comment);
 UserLinkList read_friends_json(json_t *friends_json);
 GenreLinkList read_genres_json(json_t *genres_json);
 BandLinkList read_band_json(json_t *comments_json);
-CommentList read_comments_json(json_t *comments_json);
+CommentLinkList read_comments_json(json_t *comments_json);
 
 #endif

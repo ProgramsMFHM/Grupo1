@@ -386,10 +386,10 @@ void print_commentTable(CommentTable commentTable)
  * @param commentTable Tabla de comentarios donde insertar el comentario
  * @return Puntero al nodo insertado
 */
-CommentPosition insert_commentTable_comment(time_t ID, const char *text, char* author, CommentTable commentTable)
+CommentPosition insert_commentTable_comment(CommentPosition comment, CommentTable commentTable)
 {
-    unsigned int index = ID % COMMENTS_TABLE_SIZE;
-    CommentPosition position = insert_CommentList_node(commentTable->buckets[index], create_new_comment(ID, text, author));
+    unsigned int index = comment->ID % COMMENTS_TABLE_SIZE;
+    CommentPosition position = insert_CommentList_node(commentTable->buckets[index], comment);
     if (position != NULL) {
         commentTable->commentCount++;
     }

@@ -87,7 +87,7 @@ UserPosition complete_user_from_json(UserPosition user)
     BandLinkList bands = read_band_json(bands_json);
 
     json_t *comments_json = json_object_get(json, "comments"); // almacena los comentarios del usuario
-    CommentList comments = read_comments_json(comments_json);
+    CommentLinkList comments = read_comments_json(comments_json);
 
     complete_userList_node(user, age, nationality, description, genres, bands, comments);
 
@@ -167,8 +167,10 @@ BandTable get_bands_from_file(const char* filePath, BandTable table)
         // Lectura de campos basicos
         const char *band = json_string_value(json_object_get(band_json, "band")); // almacena el nombre de la banda[i]
         json_t *comments_json = json_object_get(band_json, "comments"); // almacena las bandas del usuario[i]
-        CommentList comments = read_comments_json(comments_json);
-        insert_bandTable_band((char*)band, comments, table);
+        CommentLinkList comments = read_comments_json(comments_json);
+        BandPosition bandPosition = insert_bandTable_band((char*)band, table);
+        delete_commentLinkList(bandPosition->comments);
+        bandPosition->comments = comments;
     }
     json_decref(json); // libera la memoria utilizada por el json
 
@@ -210,8 +212,10 @@ GenreTable get_genres_from_file(const char* filePath, GenreTable genreTable)
         // Lectura de campos basicos
         const char *genre = json_string_value(json_object_get(genre_json, "genre")); // almacena el nombre del genero[i]
         json_t *comments_json = json_object_get(genre_json, "comments"); // almacena loc omentarios del genero[i]
-        CommentList comments = read_comments_json(comments_json);
-        insert_genre((char*)genre, comments, genreTable);
+        CommentLinkList comments = read_comments_json(comments_json);
+        GenrePosition genrePosition = insert_genre((char*)genre, genreTable);
+        delete_commentLinkList(genrePosition->comments);
+        genrePosition->comments = comments;
     }
     json_decref(json); // libera la memoria utilizada por el json
 
@@ -253,7 +257,7 @@ CommentTable get_comments_from_file(const char* filePath, CommentTable commentTa
             print_error(302, NULL, "ID de comentario no valido");
             continue;
         }
-        insert_commentTable_comment(comment, "NULL", "NULL", commentTable);
+        insert_commentTable_comment(create_new_comment(comment, "NULL", "NULL"), commentTable);
     }
     json_decref(json); // libera la memoria utilizada por el json
 
@@ -341,14 +345,14 @@ BandLinkList read_band_json(json_t *bands_json){
  * @param comments_json Puntero al arreglo json de comentarios
  * @return Puntero a la lista de comentarios creada
 */
-CommentList read_comments_json(json_t *comments_json)
+CommentLinkList read_comments_json(json_t *comments_json)
 {
     if(comments_json == NULL){
         return NULL;
     }
 
     size_t quantity = json_array_size(comments_json); //obtener el numero de elementos en el arreglo json
-    CommentList comments = create_empty_CommentList(NULL);
+    CommentLinkList comments = create_empty_commentLinkList(NULL);
 
     for (size_t i = 0; i < quantity; i++) {
         time_t commentID = (time_t)json_integer_value(json_array_get(comments_json, i));  // obtener el valor del ID en el indice i del arreglo
@@ -356,7 +360,7 @@ CommentList read_comments_json(json_t *comments_json)
             print_error(302, NULL, "ID de comentario no valido");
             continue;
         }
-        insert_CommentList_node(comments, create_new_comment(commentID, "NULL", "NULL"));
+        insert_commentLinkList_node_basicInfo(comments, commentID);
     }
     return comments;
 }

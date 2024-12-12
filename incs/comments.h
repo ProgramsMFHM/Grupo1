@@ -73,7 +73,7 @@ CommentPosition commentList_advance(CommentPosition P);
 // Funciones para la tabla de comentarios
 CommentTable create_commentTable(CommentTable commentTable);
 void print_commentTable(CommentTable commentTable);
-CommentPosition insert_commentTable_comment(time_t ID, const char *text, char* author, CommentTable commentTable);
+CommentPosition insert_commentTable_comment(CommentPosition comment, CommentTable commentTable);
 void delete_commentTable_comment(time_t ID, CommentTable commentTable);
 void delete_commentTable(CommentTable commentTable);
 CommentPosition find_commentTable_comment(time_t ID, CommentTable commentTable);

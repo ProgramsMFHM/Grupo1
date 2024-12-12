@@ -65,7 +65,7 @@ void print_bandList(BandList bandList)
     } else {
         while (current != NULL) {
             printf("[%s, ", current->band);
-            print_CommentList(current->comments);
+            print_commentLinkList(current->comments);
             printf("]\n\t-> ");
             current = current->next;
         }
@@ -113,7 +113,7 @@ BandPosition find_bandList_prev_band(BandPosition position, BandList bandList)
  * @param comments Lista de comentarios relacionados con la banda
  * @return Puntero al nodo insertado
 */
-BandPosition insert_bandList_band(BandPosition prevPosition, char* band, CommentList comments)
+BandPosition insert_bandList_band(BandPosition prevPosition, char* band)
 {
     BandPosition newNode = (BandPosition)malloc(sizeof(struct _band));
     if (newNode == NULL) {
@@ -126,7 +126,7 @@ BandPosition insert_bandList_band(BandPosition prevPosition, char* band, Comment
     }
     snprintf(newNode->band, strlen(band) + 1, "%s", band);
 
-    newNode->comments = comments;
+    newNode->comments = create_empty_commentLinkList(NULL);
     newNode->next = prevPosition->next;
     prevPosition->next = newNode;
     return newNode;
@@ -148,7 +148,7 @@ void delete_bandList_band(BandPosition position, BandList bandList)
         return;
     }
     prevNode->next = position->next;
-    delete_CommentList(position->comments);
+    delete_commentLinkList(position->comments);
     free(position->band);
     free(position);
 }
@@ -243,14 +243,13 @@ void print_bandTable(BandTable bandTable)
 /**
  * @brief Inserta una banda en una tabla de bandas
  * @param band Banda a insertar
- * @param comments Lista de comentarios relacionados con la banda
  * @param bandTable Tabla de bandas donde insertar la banda
  * @return Puntero al nodo insertado
 */
-BandPosition insert_bandTable_band(char* band, CommentList comments, BandTable bandTable)
+BandPosition insert_bandTable_band(char* band, BandTable bandTable)
 {
     unsigned int index = jenkins_hash(band) % BANDS_TABLE_SIZE;
-    BandPosition position = insert_bandList_band(bandTable->buckets[index], band, comments);
+    BandPosition position = insert_bandList_band(bandTable->buckets[index], band);
     if (position != NULL) {
         bandTable->bandCount++;
     }
@@ -328,9 +327,9 @@ void save_bandTable(BandTable bandTable)
         while(aux != NULL){
             fprintf(bandTableFile, "\t{\n\t\t\"band\":\"%s\",\n\t\t\"comments\":[", aux->band);
             if(aux->comments->next){
-                CommentPosition aux2 = aux->comments->next;
+                CommentLinkPosition aux2 = aux->comments->next;
                 while(aux2 != NULL){
-                    fprintf(bandTableFile, "%ld", aux2->ID);
+                    fprintf(bandTableFile, "%ld", aux2->commentID);
                     if(aux2->next != NULL){
                         fprintf(bandTableFile, ", ");
                     }

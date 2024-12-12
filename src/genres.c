@@ -65,7 +65,7 @@ void print_genreList(GenreList genreList)
     } else {
         while (current != NULL) {
             printf("[%s, ", current->genre);
-            print_CommentList(current->comments);
+            print_commentLinkList(current->comments);
             printf("]\n\t-> ");
             current = current->next;
         }
@@ -112,7 +112,7 @@ GenrePosition find_genreList_prev_genre(GenrePosition position, GenreList genreL
  * @param genre Genero a insertar
  * @return Puntero al nodo insertado
 */
-GenrePosition insert_genreList_genre(GenrePosition prevPosition, char* genre, CommentList comments)
+GenrePosition insert_genreList_genre(GenrePosition prevPosition, char* genre)
 {
     GenrePosition newNode = (GenrePosition)malloc(sizeof(struct _genre));
     if (newNode == NULL) {
@@ -125,7 +125,7 @@ GenrePosition insert_genreList_genre(GenrePosition prevPosition, char* genre, Co
     }
     snprintf(newNode->genre, strlen(genre) + 1, "%s", genre);
 
-    newNode->comments = comments;
+    newNode->comments = create_empty_commentLinkList(NULL);
     newNode->next = prevPosition->next;
     prevPosition->next = newNode;
     return newNode;
@@ -147,7 +147,7 @@ void delete_genreList_genre(GenrePosition position, GenreList genreList)
         return;
     }
     prevNode->next = position->next;
-    delete_CommentList(position->comments);
+    delete_commentLinkList(position->comments);
     free(position->genre);
     free(position);
 }
@@ -243,10 +243,10 @@ void print_genresTable(GenreTable genresTable)
  * @param genresTable Tabla de generos musicales donde insertar el genero
  * @return Puntero al nodo insertado
 */
-GenrePosition insert_genre(char* genre, CommentList comments, GenreTable genresTable)
+GenrePosition insert_genre(char* genre, GenreTable genresTable)
 {
     unsigned int index = jenkins_hash(genre) % GENRE_TABLE_SIZE;
-    GenrePosition position = insert_genreList_genre(genresTable->buckets[index], genre, comments);
+    GenrePosition position = insert_genreList_genre(genresTable->buckets[index], genre);
     if (position != NULL) {
         genresTable->genreCount++;
     }
@@ -323,9 +323,9 @@ void save_genresTable(GenreTable bandTable)
         while(aux != NULL){
             fprintf(genresTableFile, "\t{\n\t\t\"genre\":\"%s\",\n\t\t\"comments\":[", aux->genre);
             if(aux->comments->next){
-                CommentPosition aux2 = aux->comments->next;
+                CommentLinkPosition aux2 = aux->comments->next;
                 while(aux2 != NULL){
-                    fprintf(genresTableFile, "%ld", aux2->ID);
+                    fprintf(genresTableFile, "%ld", aux2->commentID);
                     if(aux2->next != NULL){
                         fprintf(genresTableFile, ", ");
                     }
