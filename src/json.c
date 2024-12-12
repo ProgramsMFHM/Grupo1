@@ -84,7 +84,7 @@ UserPosition complete_user_from_json(UserPosition user)
     json_t *genres_json = json_object_get(json, "genres"); // almacena los generos del usuario
     GenreLinkList genres = read_genres_json(genres_json);
 
-    json_t *bands_json = json_object_get(json, "artists"); // almacena las bandas del usuario
+    json_t *bands_json = json_object_get(json, "bands"); // almacena las bandas del usuario
     BandLinkList bands = read_band_json(bands_json);
 
     json_t *comments_json = json_object_get(json, "comments"); // almacena los comentarios del usuario

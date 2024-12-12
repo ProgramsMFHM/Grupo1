@@ -45,6 +45,7 @@ void print_error(int num, char* target, char* obs) {
             break;
         case 202:
             printf("Se intento acceder a un puntero nulo\n");
+            exit(-1);
             break;
         case 300:
             printf("Usuario %s no encontrado\n", target);

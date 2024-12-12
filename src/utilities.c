@@ -190,17 +190,13 @@ void print_date(time_t time)
     struct tm *local = localtime(&time);  // Convertir a tiempo local
     tzset(); // Inicializar la información de la zona horaria
 
-    char *stringPointer = malloc(24);
-    if(stringPointer==NULL)
-    {
-        print_error(200, NULL, NULL);
-    }
+    char string[24];
 
-    if(strftime(stringPointer, 24, "%Y-%m-%d %H:%M:%S %Z",local) == 0)
+    if(strftime(string, 24, "%Y-%m-%d %H:%M:%S %Z",local) == 0)
     {
         print_error(102, NULL, NULL);
         return;
     }
 
-    printf("%s", stringPointer);
+    printf("%s", string);
 }

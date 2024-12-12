@@ -59,8 +59,12 @@ bool is_empty_commentLinkList(CommentLinkList linkList){
  * @param linkList Lista de enlaces a comentarios
 */
 void print_commentLinkList(CommentLinkList linkList){
-    if(linkList == NULL || linkList->next == NULL){
+    if(linkList == NULL){
         printf("NULL");
+        return;
+    }
+    if(linkList->next == NULL){
+        printf("Empy");
         return;
     }
     CommentLinkPosition current = linkList->next;

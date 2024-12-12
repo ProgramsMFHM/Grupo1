@@ -11,9 +11,15 @@ INCLUDE=-I./incs/
 LIBS= -lm -ljansson
 
 CFLAGS=-Wall -Wextra -Wpedantic -O3
+CFLAGS_DEBUG=-Wall -Wextra -Wpedantic -O3 -g -DDEBUG
 LDFLAGS= -Wall -lm
 
 all: $(OBJ_FILES)
+	$(CC) $(CFLAGS) -o build/$(EXEC) $(OBJ_FILES) $(INCLUDE) $(LIBS)
+	cp -r ./testing/* ./build/
+
+debug: CFLAGS += -g -DDEBUG
+debug: clean $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o build/$(EXEC) $(OBJ_FILES) $(INCLUDE) $(LIBS)
 	cp -r ./testing/* ./build/
 
@@ -45,7 +51,9 @@ json:
 
 save:
 	rm -rf ./testing/*
-	cp -r ./build/* ./testing/
+	cp ./build/*.json ./testing/
+	cp -r ./build/users ./testing/
+	cp -r ./build/comments ./testing/
 
 send:
 	tar czf $(GRUPO)-$(NTAR).tgz --transform 's,^,$(GRUPO)-$(NTAR)/,' Makefile src incs docs

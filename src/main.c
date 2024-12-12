@@ -15,6 +15,12 @@ void user_mode(char *user_name);
 
 int main(int argc, char* argv[])
 {
+    #ifdef DEBUG
+        fprintf(stdout,"EN MODO DEBUG\n");
+    #endif
+    #ifndef DEBUG
+        fprintf(stdout,"EN MODO NO DEBUG\n");
+    #endif
     int opt;
     // int opt_index = 0
 
@@ -40,12 +46,12 @@ int main(int argc, char* argv[])
                 break;
             case 'h': // Modo ayuda
             default:
-                printf("Ayuda del programa\n");
+                printf("Ayuda del programa :D\n");
                 break;
         }
     }
     else{
-        printf("Ayuda del programa\n");
+        printf("Ayuda del programa :D\n");
     }
 
     return 0;
@@ -110,5 +116,7 @@ void user_mode(char *userName)
         }
     }
 
+    delete_bandTable(loopwebBands);
+    delete_genresTable(loopwebGenres);
     delete_userTable(loopwebUsers);
 }

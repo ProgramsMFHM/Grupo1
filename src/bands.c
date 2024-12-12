@@ -345,4 +345,5 @@ void save_bandTable(BandTable bandTable)
         }
     }
     fprintf(bandTableFile, "\n]");
+    fclose(bandTableFile);
 }

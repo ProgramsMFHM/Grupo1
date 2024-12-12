@@ -59,8 +59,12 @@ bool is_empty_genreLinkList(GenreLinkList linkList){
  * @param linkList Lista de enlaces a generos
 */
 void print_genreLinkList(GenreLinkList linkList){
-    if(linkList == NULL || linkList->next == NULL){
+    if(linkList == NULL){
         printf("NULL");
+        return;
+    }
+    if(linkList->next == NULL){
+        printf("Empy");
         return;
     }
     GenreLinkPosition current = linkList->next;

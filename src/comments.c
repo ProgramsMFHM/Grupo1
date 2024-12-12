@@ -65,7 +65,7 @@ void save_commentNode(PtrToComment comment){
     fprintf(file, "{\n");
     fprintf(file,"\t\"author\": \"%s\",\n", comment->user->userName);
     fprintf(file,"\t\"ID\": %ld,\n", comment->ID);
-    fprintf(file,"\t\"text\": \"%s\",\n", comment->text);
+    fprintf(file,"\t\"text\": \"%s\"\n", comment->text);
     fprintf(file, "}\n");
     fclose(file);
 }
@@ -255,8 +255,14 @@ CommentPosition complete_commentList_node(CommentPosition P, UserTable userTable
  * @return true si el nodo fue borrado, false en caso contrario (si no existe)
 */
 bool delete_CommentList_node(CommentPosition P, CommentList commentList){
+    if(commentList == NULL){
+        #ifdef DEBUG
+            printf("Se intento borrar un nodo de una lista de comentarios nula\n");
+        #endif
+        return false;
+    }
     if(P == NULL){
-        print_error(202, NULL, NULL);
+        return true;
     }
     CommentPosition prevNode = find_CommentList_prev_node(P, commentList);
     if(prevNode == NULL){

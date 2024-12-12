@@ -1,10 +1,10 @@
 {
-  "userName": "Alice",
-  "age": 18,
-  "nationality": "Spain",
-  "genres": [ "rock", "pop" ],
-  "artists": [ "rihanna", "ladyGaga" ],
-  "description": "Amante de los festivales de musica.",
-  "friends": [ "Bob", "Carol", "Mallory" ],
-  "comments": []
+	"username": "Alice",
+	"age": 18,
+	"nationality": "Spain",
+	"description": "Amante de los festivales de musica.",
+	"genres": ["pop", "rock"],
+	"bands": ["ladyGaga", "rihanna"],
+	"comments": [1733949300],
+	"friends": ["Mallory", "Carol", "Bob"]
 }

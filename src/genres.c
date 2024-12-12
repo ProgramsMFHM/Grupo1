@@ -340,4 +340,5 @@ void save_genresTable(GenreTable bandTable)
         }
     }
     fprintf(genresTableFile, "\n]");
+    fclose(genresTableFile);
 }
