@@ -63,15 +63,15 @@ void user_mode(char *userName)
 
     int terminate = 0;
     UserTable loopwebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
+    UserPosition user = find_userTable_node(loopwebUsers, userName); // Comprobamos que el usuario exista
+    if(!user){
+        print_error(300, userName, NULL);
+        delete_userTable(loopwebUsers);
+        return;
+    }
     BandTable loopwebBands = get_bands_from_file("./build/bands.json", NULL);
     GenreTable loopwebGenres = get_genres_from_file("./build/genres.json", NULL);
     CommentTable loopwebComments = get_comments_from_file(COMMENTS_PATH"comments.json", NULL);
-
-    // Comprobamos que el usuario exista
-    if(!find_userTable_node(loopwebUsers, userName)){
-        print_error(300, userName, NULL);
-        return;
-    }
 
     while(!terminate)
     {
@@ -96,6 +96,8 @@ void user_mode(char *userName)
             case 1: // Ver perfiles de mis amigos
                 break;
             case 2: // Ver mi propio perfil
+                printf(CLEAR_SCREEN);
+                print_user(user);
                 break;
             case 3: // Ver me feed de publicaciones
                 break;

@@ -53,6 +53,7 @@ struct _userTable {
 
 // Funciones para un nodo de usuario
 void save_userNode(PtrToUser user);
+void print_user(UserPosition user);
 
 // Funciones de la lista de usuarios
 UserList create_empty_UserList(UserList userList);

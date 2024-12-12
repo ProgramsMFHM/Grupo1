@@ -123,6 +123,86 @@ void save_userNode(PtrToUser user){
     fclose(file);
 }
 
+/**
+ * @brief Imprime el perfil completo de un usuario por terminal
+ *
+ * @param user Nodo de usuario a imprimir
+*/
+void print_user(UserPosition user)
+{
+    complete_user_from_json(user);
+    if (user == NULL) {
+        printf("\n** Error: Usuario no encontrado **\n");
+        return;
+    }
+
+    // Imprimir la información general del usuario con color
+    printf(ANSI_COLOR_CYAN"+----------------------+\n");
+    printf(ANSI_COLOR_CYAN"|                      |\n");
+    printf(ANSI_COLOR_CYAN"|"ANSI_COLOR_RESET"        ******        "ANSI_COLOR_CYAN"|   Nombre: "ANSI_COLOR_RESET"%s\n", user->username);
+    printf(ANSI_COLOR_CYAN"|"ANSI_COLOR_RESET"       ********       "ANSI_COLOR_CYAN"|\n");
+    printf("|"ANSI_COLOR_RESET"      **********      "ANSI_COLOR_CYAN"|\n");
+    printf("|"ANSI_COLOR_RESET"      **********      "ANSI_COLOR_CYAN"|   Edad: "ANSI_COLOR_RESET"%d\n", user->age);
+    printf(ANSI_COLOR_CYAN"|"ANSI_COLOR_RESET"       ********       "ANSI_COLOR_CYAN"|\n");
+    printf("|"ANSI_COLOR_RESET"        ******        "ANSI_COLOR_CYAN"|\n");
+    printf("|"ANSI_COLOR_RESET"    **************    "ANSI_COLOR_CYAN"|   Nacionalidad: "ANSI_COLOR_RESET"%s\n", user->nationality);
+    printf(ANSI_COLOR_CYAN"|"ANSI_COLOR_RESET"  ******************  "ANSI_COLOR_CYAN"|\n");
+    printf("|"ANSI_COLOR_RESET"  ******************  "ANSI_COLOR_CYAN"|\n");
+    printf("+----------------------+\n"ANSI_COLOR_RESET);
+
+    // Imprime la descripción utilizando la función printf_loopweb
+    print_loopweb(user->description); printf("\n");
+
+    // Imprime los géneros musicales favoritos
+    printf(ANSI_COLOR_CYAN"\nMis géneros favoritos:\n"ANSI_COLOR_RESET);
+    GenreLinkList genres = user->genres;
+    if (genres != NULL && genres->next != NULL) {
+        genres = genres->next; // Avanzamos al primer nodo real
+        while (genres != NULL) {
+            printf(ANSI_COLOR_RESET "  - %s" ANSI_COLOR_RESET, genres->genre);
+            if (genres->next != NULL) {
+                printf("\n");
+            }
+            genres = genres->next;
+        }
+    } else {
+        printf("  No tengo generos favoritos.\n");
+    }
+
+    // Imprime las bandas favoritas
+    printf(ANSI_COLOR_CYAN"\nMis bandas favoritas:\n"ANSI_COLOR_RESET);
+    BandLinkList bands = user->bands;
+    if (bands != NULL && bands->next != NULL) {
+        bands = bands->next; // Avanzamos al primer nodo real
+        while (bands != NULL) {
+            printf(ANSI_COLOR_RESET "  - %s" ANSI_COLOR_RESET, bands->band);
+            if (bands->next != NULL) {
+                printf("\n");
+            }
+            bands = bands->next;
+        }
+    } else {
+        printf("  No tengo bandas favoritas.\n");
+    }
+
+    // Imprime los amigos del usuario
+    printf(ANSI_COLOR_CYAN"\nMis amigos:\n"ANSI_COLOR_RESET);
+    UserLinkList friends = user->friends;
+    if (friends != NULL && friends->next != NULL) {
+        friends = friends->next; // Avanzamos al primer nodo real
+        while (friends != NULL) {
+            printf(ANSI_COLOR_RESET "  - %s" ANSI_COLOR_RESET, friends->userName);
+            if (friends->next != NULL) {
+                printf("\n");
+            }
+            friends = friends->next;
+        }
+    } else {
+        printf("  No tengo amigos.\n");
+    }
+    printf("\n");
+}
+
 // Funciones de la lista de usuarios
 /**
  * @brief Crea una lista vacia de usuarios
