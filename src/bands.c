@@ -74,9 +74,9 @@ void print_bandList(BandList bandList)
 }
 
 /**
- * @brief Busca un genero en la lista de bandas
+ * @brief Busca una banda en la lista de bandas
  * @param bandList Puntero a la lista de bandas
- * @param band Genero a buscar
+ * @param band Banda a buscar
  * @return Puntero al nodo encontrado, NULL si no se encuentra
 */
 BandPosition find_bandList_band(BandList bandList, char* band)
@@ -109,7 +109,7 @@ BandPosition find_bandList_prev_band(BandPosition position, BandList bandList)
 /**
  * @brief Inserta un nodo en la lista de bandas
  * @param prevPosition Puntero al nodo anterior al que se desea insertar
- * @param band Genero a insertar
+ * @param band Banda a insertar
  * @param comments Lista de comentarios relacionados con la banda
  * @return Puntero al nodo insertado
 */
@@ -158,7 +158,7 @@ void delete_bandList_band(BandPosition position, BandList bandList)
 /**
  * @brief Obtiene el primer nodo de una lista de bandas
  * @param bandList Puntero a la lista de bandas
- * @return Puntero al primer genero de la lista
+ * @return Puntero a la primera banda de la lista
 */
 BandPosition bandList_first(BandList bandList)
 {
@@ -168,7 +168,7 @@ BandPosition bandList_first(BandList bandList)
 /**
  * @brief Obtiene el ultimo nodo de una lista de bandas
  * @param bandList Puntero a la lista de bandas
- * @return Puntero al ultimo genero de la lista
+ * @return Puntero a la ultima banda de la lista
 */
 BandPosition bandList_last(BandList bandList)
 {
@@ -181,8 +181,8 @@ BandPosition bandList_last(BandList bandList)
 
 /**
  * @brief Avanza al siguiente nodo en la lista de bandas
- * @param position Puntero al genero actual
- * @return Puntero al siguiente genero de la lista
+ * @param position Puntero a la banda actual
+ * @return Puntero a la siguiente banda de la lista
 */
 BandPosition bandList_advance(BandPosition position)
 {
@@ -190,9 +190,9 @@ BandPosition bandList_advance(BandPosition position)
 }
 
 /**
- * @brief Obtiene el genero almacenado en un nodo
+ * @brief Obtiene la banda almacenado en un nodo
  * @param position Puntero al nodo
- * @return Genero almacenado en el nodo
+ * @return Banda almacenada en el nodo
 */
 char* get_band(BandPosition position)
 {
@@ -241,10 +241,10 @@ void print_bandTable(BandTable bandTable)
 }
 
 /**
- * @brief Inserta un genero en una tabla de bandas
- * @param band Genero a insertar
+ * @brief Inserta una banda en una tabla de bandas
+ * @param band Banda a insertar
  * @param comments Lista de comentarios relacionados con la banda
- * @param bandTable Tabla de bandas donde insertar el genero
+ * @param bandTable Tabla de bandas donde insertar la banda
  * @return Puntero al nodo insertado
 */
 BandPosition insert_bandTable_band(char* band, CommentList comments, BandTable bandTable)
@@ -259,9 +259,9 @@ BandPosition insert_bandTable_band(char* band, CommentList comments, BandTable b
 }
 
 /**
- * @brief Borra un genero de una tabla de bandas
- * @param band Genero a borrar
- * @param bandTable Tabla de bandas donde buscar el genero
+ * @brief Borra una banda de una tabla de bandas
+ * @param band Banda a borrar
+ * @param bandTable Tabla de bandas donde buscar la banda
 */
 void delete_bandTable_band(char* band, BandTable bandTable)
 {
@@ -289,10 +289,10 @@ void delete_bandTable(BandTable bandTable)
 }
 
 /**
- * @brief Verifica si un genero esta en la tabla de bandas
- * @param band Genero a verificar
+ * @brief Verifica si una banda esta en la tabla de bandas
+ * @param band Banda a verificar
  * @param bandTable Tabla de bandas donde buscar
- * @return TRUE si el genero esta en la tabla, FALSE en caso contrario
+ * @return TRUE si la banda esta en la tabla, FALSE en caso contrario
 */
 BandPosition find_bandTable_band(char* band, BandTable bandTable)
 {

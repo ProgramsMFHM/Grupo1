@@ -191,19 +191,24 @@ CommentPosition create_new_comment(time_t ID, const char *text, char* author){
     }
 
     newComment->ID = ID;
-    newComment->text = malloc(strlen(text) + 1);
-    if(newComment->text == NULL){
-        print_error(200, NULL, NULL);
-    }
-    strcpy(newComment->text, text);
-
+    newComment->text = NULL;
     newComment->user = create_empty_userLinkList(NULL);
 
-    newComment->user->userName = malloc(strlen(author) + 1);
-    if(newComment->user->userName == NULL){
-        print_error(200, NULL, NULL);
+    if(text != NULL){
+        newComment->text = malloc(strlen(text) + 1);
+        if(newComment->text == NULL){
+            print_error(200, NULL, NULL);
+        }
+        strcpy(newComment->text, text);
     }
-    strcpy(newComment->user->userName, author);
+
+    if(author != NULL){
+        newComment->user->userName = malloc(strlen(author) + 1);
+        if(newComment->user->userName == NULL){
+            print_error(200, NULL, NULL);
+        }
+        strcpy(newComment->user->userName, author);
+    }
 
     newComment->bands = create_empty_bandLinkList(NULL);
     newComment->genres = create_empty_genreLinkList(NULL);
@@ -229,20 +234,34 @@ CommentPosition insert_CommentList_node(CommentPosition prevPosition, CommentPos
  * @brief Completa un nodo de una lista de comentarios
  *
  * @param P Puntero al nodo a completar
+ * @param text Texto del comentario
+ * @param author Autor del comentario
  * @return Puntero al nodo completado
 */
-CommentPosition complete_commentList_node(CommentPosition P, UserTable userTable){
-    if(P->text == NULL){
-        print_error(202, NULL, NULL);
+CommentPosition complete_commentList_node(CommentPosition P, char* text, char* author){
+    // Se libera si habia algo antes
+    if(P->text){
+        free(P->text);
     }
+    if(P->user->userName){
+        free(P->user->userName);
+    }
+
+    // Se asignan los valores
+    P->text = malloc(strlen(text) + 1);
+    if(P->text == NULL){
+        print_error(200, NULL, NULL);
+    }
+    strcpy(P->text, text);
+
+    P->user->userName = malloc(strlen(author) + 1);
+    if(P->user->userName == NULL){
+        print_error(200, NULL, NULL);
+    }
+    strcpy(P->user->userName, author);
+
     if(!P->complete){
         complete_comment_tags(P);
-    }
-    if(!P->user->userNode){
-        P->user->userNode = find_userTable_node(userTable, P->user->userName);
-        if(!P->user->userNode){
-            print_error(300, P->user->userName, NULL);
-        }
     }
     return P;
 }
@@ -314,6 +333,147 @@ CommentPosition commentList_last(CommentList commentList){
 */
 CommentPosition commentList_advance(CommentPosition P){
     return P->next;
+}
+
+// Funciones para la tabla de comentarios
+
+/**
+ * @brief Crea una tabla de comentarios
+ * @param commentTable Puntero a una tabla de comentarios a vaciar, si es necesario
+ * @return Puntero a la tabla creada
+*/
+CommentTable create_commentTable(CommentTable commentTable)
+{
+    if (commentTable != NULL) {
+        delete_commentTable(commentTable);
+    }
+
+    commentTable = (CommentTable)malloc(sizeof(struct _commentHashTable));
+    if (!commentTable) {
+        print_error(200, NULL, NULL);
+    }
+
+    for (int i = 0; i < COMMENTS_TABLE_SIZE; i++) {
+        commentTable->buckets[i] = create_empty_CommentList(NULL);
+        commentTable->commentCount = 0;
+    }
+
+    commentTable->modified = false;
+
+    return commentTable;
+}
+
+/**
+ * @brief Imprime una tabla de comentarios en la consola
+ * @param commentTable Tabla de comentarios a imprimir
+*/
+void print_commentTable(CommentTable commentTable)
+{
+    printf("Comentarios de la red (%d):\n", commentTable->commentCount);
+    for(int i=0; i<COMMENTS_TABLE_SIZE; i++){
+        printf("Bucket %2d: ", i);
+        print_CommentList(commentTable->buckets[i]);
+        printf("\n");
+    }
+}
+
+/**
+ * @brief Inserta un comentario en una tabla de comentarios
+ *
+ * @param ID ID del comentario
+ * @param text Texto del comentario
+ * @param author Autor del comentario
+ * @param commentTable Tabla de comentarios donde insertar el comentario
+ * @return Puntero al nodo insertado
+*/
+CommentPosition insert_commentTable_comment(time_t ID, const char *text, char* author, CommentTable commentTable)
+{
+    unsigned int index = ID % COMMENTS_TABLE_SIZE;
+    CommentPosition position = insert_CommentList_node(commentTable->buckets[index], create_new_comment(ID, text, author));
+    if (position != NULL) {
+        commentTable->commentCount++;
+    }
+    commentTable->modified = true;
+    return position;
+}
+
+/**
+ * @brief Borra un comentario de una tabla de comentarios
+ * @param ID ID del comentario a borrar
+ * @param commentTable Tabla de comentarios donde buscar el comentario
+*/
+void delete_commentTable_comment(time_t ID, CommentTable commentTable)
+{
+    int index = ID % COMMENTS_TABLE_SIZE;
+    CommentPosition position = find_CommentList_node(commentTable->buckets[index], ID);
+    if (position == NULL) {
+        print_error(301, NULL, NULL);
+        return;
+    }
+    delete_CommentList_node(position, commentTable->buckets[index]);
+    commentTable->modified = true;
+    commentTable->commentCount--;
+}
+
+/**
+ * @brief Borra una tabla de comentarios
+ * @param commentTable Tabla de comentarios a borrar
+*/
+void delete_commentTable(CommentTable commentTable)
+{
+    for (int i = 0; i < COMMENTS_TABLE_SIZE; i++) {
+        delete_CommentList(commentTable->buckets[i]);
+    }
+    free(commentTable);
+}
+
+/**
+ * @brief Verifica si un comentario esta en la tabla de comentarios
+ * @param ID Comentario a verificar
+ * @param commentTable Tabla de comentarios donde buscar
+ * @return TRUE si el genero esta en la tabla, FALSE en caso contrario
+*/
+CommentPosition find_commentTable_comment(time_t ID, CommentTable commentTable)
+{
+    int index = ID % COMMENTS_TABLE_SIZE;
+    return find_CommentList_node(commentTable->buckets[index], ID);
+}
+
+
+/**
+ * @brief Funcion para guardar una tabla de comentarios en su archivo JSON correspondiente
+ *
+ * @param commentTable Tabla de comentarios a guardar
+*/
+void save_commentTable(CommentTable commentTable)
+{
+    FILE* commentTableFile = fopen(COMMENTS_PATH"comments.json", "w");
+    if (commentTableFile == NULL)
+    {
+        print_error(100, COMMENTS_PATH"comments.json", NULL);
+        return;
+    }
+
+    fprintf(commentTableFile, "[\n");
+    for(int i=0; i<COMMENTS_TABLE_SIZE; i++)
+    {
+        if(!commentTable->buckets[i]->next){
+            continue;
+        }
+        if(i!=0){
+            fprintf(commentTableFile, ",\n");
+        }
+        CommentPosition aux = commentTable->buckets[i]->next;
+        while(aux != NULL){
+            if(aux->next != NULL){
+                fprintf(commentTableFile, ",\n");
+            }
+            fprintf(commentTableFile, "\t%ld", aux->ID);
+            aux = aux->next;
+        }
+    }
+    fprintf(commentTableFile, "\n]");
+    fclose(commentTableFile);
 }
 
 // Ordenamiento y completacion

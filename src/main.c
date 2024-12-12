@@ -54,6 +54,24 @@ int main(int argc, char* argv[])
         printf("Ayuda del programa :D\n");
     }
 
+    UserTable loopwebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
+    CommentTable commentTable = get_comments_from_file(COMMENTS_PATH"comments.json", NULL);
+    print_commentTable(commentTable);
+
+    for(int i=0; i<COMMENTS_TABLE_SIZE; i++){
+        CommentPosition aux = commentTable->buckets[i]->next;
+        while(aux != NULL){
+            complete_comment_from_json(aux);
+            print_commentNode(aux);
+            aux = aux->next;
+        }
+    }
+
+    save_commentTable(commentTable);
+
+    delete_commentTable(commentTable);
+    delete_userTable(loopwebUsers);
+
     return 0;
 }
 

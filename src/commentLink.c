@@ -83,7 +83,7 @@ void print_commentLinkList(CommentLinkList linkList){
  * @brief Busca un comentario dentro de una lista de enlaces a comentarios
  *
  * @param linkList Lista en que se desea buscar
- * @param comment Nombre de comentario a buscar
+ * @param commentID ID del comentario a buscar
  * @return Puntero al nodo encontrado
 */
 CommentLinkPosition find_commentLinkList_node(CommentLinkList linkList, time_t commentID){

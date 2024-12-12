@@ -32,11 +32,10 @@ UserTable get_users_from_file(const char *filePath, UserTable table)
         return table;
     }
 
-    size_t total_bands;
-    total_bands = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
+    size_t total_users  = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
 
     // Leemos y procesamos cada uno de los usuarios
-    for (size_t i = 0; i < total_bands; i++) {
+    for (size_t i = 0; i < total_users; i++) {
         json_t *user_json = json_array_get(json, i); // Obtiene el objeto json, basada en el usuario[i]
 
         // Lectura de campos basicos
@@ -97,6 +96,42 @@ UserPosition complete_user_from_json(UserPosition user)
 }
 
 /**
+ * @brief Funcion para completar un comentario leido desde un archivo json
+ *
+ * @param user Puntero al comentario a completar
+ * @return Puntero al comentario completado
+*/
+CommentPosition complete_comment_from_json(CommentPosition comment)
+{
+    if(comment == NULL){
+        print_error(202, NULL, NULL);
+    }
+
+    // Crear estructura JSON
+    char filePath[200];
+    snprintf(filePath, 200, COMMENTS_PATH"%ld.json", comment->ID);
+    FILE *file = fopen(filePath, "r");  // Abre el archivo .json en modo lectura
+    if (!file){
+        print_error(100, (char*)filePath, NULL);
+        return comment;
+    }
+    json_error_t error;     // declaracion de "variable" error basada en una funcion de la libreria jansson
+    json_t *json = json_loadf(file, 0, &error); //<  puntero en el cual se guarda el archivo .json
+    fclose(file);
+    if (!json) {
+        print_error(101, error.text, NULL);
+        return comment;
+    }
+    const char *text = json_string_value(json_object_get(json, "text")); // almacena el texto del comentario[i]
+    const char *author = json_string_value(json_object_get(json, "author")); // almacena el autor del comentario[i]
+
+    complete_commentList_node(comment, (char*)text, (char*)author);
+
+    json_decref(json); // libera la memoria utilizada por el json
+    return comment;
+}
+
+/**
  * @brief Lee bandas de un archivo e inserta en una tabla de bandas
  * @param fileName Nombre del archivo a leer
  * @param bandTable Tabla de bandas donde insertar los bandas
@@ -123,7 +158,7 @@ BandTable get_bands_from_file(const char* filePath, BandTable table)
     }
 
     size_t total_bands;
-    total_bands = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
+    total_bands = json_array_size(json);  // Tamano total de bandas basado en el arreglo json
 
     // Leemos y procesamos cada una de las bandas
     for (size_t i = 0; i < total_bands; i++) {
@@ -166,8 +201,7 @@ GenreTable get_genres_from_file(const char* filePath, GenreTable genreTable)
         return genreTable;
     }
 
-    size_t total_genres;
-    total_genres = json_array_size(json);  // Tamano total de usuarios basado en el arreglo json
+    size_t total_genres = json_array_size(json);  // Tamano total de generos basado en el arreglo json
 
     // Leemos y procesamos cada uno de los generos
     for (size_t i = 0; i < total_genres; i++) {
@@ -182,6 +216,48 @@ GenreTable get_genres_from_file(const char* filePath, GenreTable genreTable)
     json_decref(json); // libera la memoria utilizada por el json
 
     return genreTable;
+}
+
+/**
+ * @brief Lee los comentarios de un archivo e inserta en una tabla de comentarios
+ * @param fileName Nombre del archivo a leer
+ * @param commentTable Tabla de comentarios donde insertar los comentarios leidos
+ * @return Tabla de comentarios con los comentarios leidos
+*/
+CommentTable get_comments_from_file(const char* filePath, CommentTable commentTable)
+{
+    if(commentTable == NULL){
+        commentTable = create_commentTable(commentTable);
+    }
+
+    // Crear estructura JSON
+    FILE *file = fopen(filePath, "r");  // Abre el archivo .json en modo lectura
+    if (!file) {
+        print_error(100, (char*)filePath, NULL);
+        return commentTable;
+    }
+    json_error_t error;     // declaracion de "variable" error basada en una funcion de la libreria jansson
+    json_t *json = json_loadf(file, 0, &error); //<  puntero en el cual se guarda el archivo .json
+    fclose(file);
+    if (!json) {
+        print_error(101, error.text, NULL);
+        return commentTable;
+    }
+
+    size_t total_comments = json_array_size(json);  // Tamano total de comentarios basado en el arreglo json
+
+    // Leemos y procesamos cada una de las bandas
+    for (size_t i = 0; i < total_comments; i++) {
+        time_t comment = json_integer_value(json_array_get(json, i));  // obtener el valor comentario en el indice i del arreglo
+        if (!comment) {
+            print_error(302, NULL, "ID de comentario no valido");
+            continue;
+        }
+        insert_commentTable_comment(comment, "NULL", "NULL", commentTable);
+    }
+    json_decref(json); // libera la memoria utilizada por el json
+
+    return commentTable;
 }
 
 /**
