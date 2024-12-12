@@ -203,6 +203,71 @@ void print_user(UserPosition user)
     printf("\n");
 }
 
+/**
+ * @brief Obtiene los comentarios relevantes para un usuario (todos aquellos que tienen enlazados a sus bandas o generos)
+ *
+ * @param user Puntero al nodo de usuario
+ * @param bandTable Tabla de bandas
+ * @param genreTable Tabla de generos
+ * @param commentTable Tabla de comentarios
+ * @return Lista de comentarios
+ */
+CommentLinkList get_user_feed(UserPosition user, BandTable bandTable, GenreTable genreTable, CommentTable commentTable)
+{
+    complete_user_from_json(user);
+    BandLinkPosition auxBand = user->bands->next;
+    GenreLinkPosition auxGenre = user->genres->next;
+    CommentLinkList feedComments = create_empty_commentLinkList(NULL);
+    CommentLinkPosition auxComment;
+
+    // Obtener los comentarios de los bandas del usuario
+    while(auxBand != NULL){
+        complete_bandLinkList_node(auxBand, bandTable);
+        auxComment = auxBand->bandNode->comments->next;
+        while(auxComment != NULL)
+        {
+            CommentPosition commentNode = find_commentTable_comment(auxComment->commentID, commentTable);
+            insert_commentLinkList_node_completeInfo(feedComments, commentNode);
+            auxComment = auxComment->next;
+        }
+        auxBand = auxBand->next;
+    }
+
+    // Obtener los comentarios de los bandas del usuario
+    while(auxGenre != NULL){
+        complete_genreLinkList_node(auxGenre, genreTable);
+        auxComment = auxGenre->genreNode->comments->next;
+        while(auxComment != NULL)
+        {
+            CommentPosition commentNode = find_commentTable_comment(auxComment->commentID, commentTable);
+            if(!find_commentLinkList_node(feedComments, auxComment->commentID)){
+                insert_commentLinkList_node_completeInfo(feedComments, commentNode);
+            }
+            auxComment = auxComment->next;
+        }
+        auxGenre = auxGenre->next;
+    }
+    return feedComments;
+}
+
+void print_user_feed(UserPosition user, BandTable bandTable, GenreTable genreTable, CommentTable commentTable)
+{
+    CommentLinkList feedComments = get_user_feed(user, bandTable, genreTable, commentTable);
+    sort_commentLinkList_byID(&feedComments->next);
+    CommentLinkPosition aux = feedComments->next;
+
+    printf(CLEAR_SCREEN"Feed de publicaciones para "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET":\n", user->username);
+    printf("\n");
+
+    while (aux != NULL) {
+        complete_comment_from_json(aux->commentNode);
+        print_commentNode(aux->commentNode);
+        aux = aux->next;
+    }
+
+    delete_commentLinkList(feedComments);
+}
+
 // Funciones de la lista de usuarios
 /**
  * @brief Crea una lista vacia de usuarios

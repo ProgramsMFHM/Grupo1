@@ -229,51 +229,75 @@ CommentLinkPosition commentLinkList_advance(CommentLinkPosition P){
 // Funciones de ordenamiento de listas de enlaces a comentarios
 
 /**
- * @brief Ordena una lista de enlaces a comentarios usando el algoritmo de intercambio (BubleSort)
+ * @brief Divide una lista enlazada en dos mitades.
  *
- * @param linkList Puntero a la lista de enlaces a comentarios a ordenar
- * @return Puntero a la lista ordenada
-*/
-CommentLinkList bubbleSort_commentLinkList(CommentLinkList linkList){
-    if(is_empty_commentLinkList(linkList)){
-		return linkList;
-	}
-	unsigned int listSize = 0;
-    CommentLinkPosition P = linkList->next;
-	while(P != NULL){ // Calculo ineficiente de la cantidad de elementos de la lista
-		listSize++;
-		P = P->next;
-	}
-	unsigned int toOrder = listSize-1;
+ * @param source Puntero al nodo inicial de la lista a dividir.
+ * @param frontRef Referencia a la primera mitad de la lista.
+ * @param backRef Referencia a la segunda mitad de la lista.
+ */
+void split_commentLinkList(CommentLinkPosition source, CommentLinkPosition* frontRef, CommentLinkPosition* backRef)
+{
+    CommentLinkPosition slow, fast;
+    slow = source;
+    fast = source->next;
 
-	P=linkList->next;
-	while(toOrder > 0){
-		for(unsigned int i = 0; i < toOrder; i++){
-			if(P->commentID > P->next->commentID){
-				swap_commentLinkList_nodes(P, P->next);
-			}
-			P = P->next;
-		}
-		P=linkList->next;
-		toOrder--;
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
 
-	}
-	return linkList;
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
 }
 
 /**
- * @brief Intercambia los punteros de dos nodos de una lista de enlaces a comentarios
+ * @brief Fusiona dos listas enlazadas ordenadas en una sola lista ordenada
  *
- * @param a Puntero al primer nodo a intercambiar
- * @param b Puntero al segundo nodo a intercambiar
+ * @param a Puntero a la primera lista ordenada
+ * @param b Puntero a la segunda lista ordenada
+ * @return Puntero al nodo inicial de la lista fusionada ordenada
+ */
+CommentLinkPosition merge_commentLinkLists(CommentLinkPosition a, CommentLinkPosition b)
+{
+    if (a == NULL) return b;
+    if (b == NULL) return a;
+
+    CommentLinkPosition result;
+
+    if (a->commentID > b->commentID) {
+        result = a;
+        result->next = merge_commentLinkLists(a->next, b);
+    } else {
+        result = b;
+        result->next = merge_commentLinkLists(a, b->next);
+    }
+    return result;
+}
+
+/**
+ * @brief Ordena una lista de comentarios utilizando el algoritmo merge sort.
+ *
+ * @note Ordena la lista de comentarios de mas reciente a mas antiguo.
+ * @param headRef Referencia al puntero del nodo inicial de la lista a ordenar.
+ * @warning Es necesario pasar a esta funcion la primera posicion de la lista de comentarios NO EL CENTINELA.
 */
-void swap_commentLinkList_nodes(CommentLinkPosition a, CommentLinkPosition b){
-    CommentLinkNode aux;
-    aux = *a;
+void sort_commentLinkList_byID(CommentLinkPosition* headRef)
+{
+    CommentLinkPosition head = *headRef;
+    CommentLinkPosition a, b;
 
-    a->commentID = b->commentID;
-    a->commentNode = b->commentNode;
+    if ((head == NULL) || (head->next == NULL)) {
+        return;  /**<si la lista esta vacia o tiene un solo elemento, no hay que ordenar */
+    }
 
-	b->commentID = aux.commentID;
-    b->commentNode = aux.commentNode;
+    split_commentLinkList(head, &a, &b);
+
+    sort_commentLinkList_byID(&a);  /**<ordena la primera mitad */
+    sort_commentLinkList_byID(&b);  /**<ordena la segunda mitad */
+
+    *headRef = merge_commentLinkLists(a, b);  /**<fusiona las dos mitades ordenadas */
 }

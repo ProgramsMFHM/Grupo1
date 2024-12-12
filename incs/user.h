@@ -54,6 +54,8 @@ struct _userTable {
 // Funciones para un nodo de usuario
 void save_userNode(PtrToUser user);
 void print_user(UserPosition user);
+CommentLinkList get_user_feed(UserPosition user, BandTable bandTable, GenreTable genreTable, CommentTable commentTable);
+void print_user_feed(UserPosition user, BandTable bandTable, GenreTable genreTable, CommentTable commentTable);
 
 // Funciones de la lista de usuarios
 UserList create_empty_UserList(UserList userList);

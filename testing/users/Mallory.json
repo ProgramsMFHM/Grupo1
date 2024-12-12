@@ -1,10 +1,10 @@
 {
-  "userName": "Mallory",
-  "age": 18,
-  "nationality": "Spain",
-  "genres": [ "pop", "jazz" ],
-  "artists": [ "ladyGaga", "ellaFitzgerald" ],
-  "description": "Disfruto de la musica, quiero conocer mas generos.",
-  "friends": [ "Bob", "Alice" ],
-  "comments": []
+	"username": "Mallory",
+	"age": 18,
+	"nationality": "Spain",
+	"description": "Disfruto de la musica, quiero conocer mas generos.",
+	"genres": ["jazz", "pop"],
+	"bands": [],
+	"comments": [1734023671],
+	"friends": ["Alice", "Bob"]
 }

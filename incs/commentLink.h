@@ -49,7 +49,7 @@ CommentLinkPosition commentLinkList_last(CommentLinkList linkList);
 CommentLinkPosition commentLinkList_advance(CommentLinkPosition P);
 
 // Funciones de ordenamiento de listas de enlaces a comentarios
-CommentLinkList bubbleSort_commentLinkList(CommentLinkList linkList);
-void swap_commentLinkList_nodes(CommentLinkPosition a, CommentLinkPosition b);
-
+void split_commentLinkList(CommentLinkPosition source, CommentLinkPosition* frontRef, CommentLinkPosition* backRef);
+CommentLinkPosition merge_commentLinkLists(CommentLinkPosition a, CommentLinkPosition b);
+void sort_commentLinkList_byID(CommentLinkPosition* headRef);
 #endif

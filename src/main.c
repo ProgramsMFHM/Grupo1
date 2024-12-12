@@ -59,8 +59,6 @@ int main(int argc, char* argv[])
 
 void user_mode(char *userName)
 {
-    printf("\t\tUsted a ingresado como usuaro con el nombre "ANSI_COLOR_CYAN"%s\n" ANSI_COLOR_RESET, userName);
-
     int terminate = 0;
     UserTable loopwebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
     UserPosition user = find_userTable_node(loopwebUsers, userName); // Comprobamos que el usuario exista
@@ -76,6 +74,7 @@ void user_mode(char *userName)
     while(!terminate)
     {
         // Usuario escoge camino a seguir
+        printf(CLEAR_SCREEN"\t\tUsted a ingresado como usuaro con el nombre "ANSI_COLOR_CYAN"%s\n" ANSI_COLOR_RESET, userName);
         printf("Que desea hacer?\n");
         printf("\t1. Ver perfiles de mis amigos\n");
         printf("\t2. Ver mi propio perfil\n");
@@ -100,6 +99,7 @@ void user_mode(char *userName)
                 print_user(user);
                 break;
             case 3: // Ver me feed de publicaciones
+                print_user_feed(user, loopwebBands, loopwebGenres, loopwebComments);
                 break;
             case 4: // Realizar una publicacion
                 make_comment(userName, loopwebUsers, loopwebBands, loopwebGenres, loopwebComments);

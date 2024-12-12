@@ -19,15 +19,9 @@ void print_commentNode(PtrToComment comment)
 
     printf(ANSI_COLOR_BLUE "%s " ANSI_COLOR_RESET "( ", comment->user->userName);
     print_date(comment->ID);
-    printf(" )\n\n");
+    printf(" )\n");
     print_loopweb(comment->text);
     printf("\n\n");
-    printf("Generos musicales: ");
-    print_genreLinkList(comment->genres);
-    printf("\n");
-    printf("Bandas: ");
-    print_bandLinkList(comment->bands);
-    printf("\n");
 }
 
 /**
