@@ -454,21 +454,25 @@ void save_commentTable(CommentTable commentTable)
         return;
     }
 
+    bool first = true;
     fprintf(commentTableFile, "[\n");
     for(int i=0; i<COMMENTS_TABLE_SIZE; i++)
     {
         if(!commentTable->buckets[i]->next){
             continue;
         }
-        if(i!=0){
+        if(!first){
             fprintf(commentTableFile, ",\n");
+        }
+        else{
+            first = false;
         }
         CommentPosition aux = commentTable->buckets[i]->next;
         while(aux != NULL){
+            fprintf(commentTableFile, "\t%ld", aux->ID);
             if(aux->next != NULL){
                 fprintf(commentTableFile, ",\n");
             }
-            fprintf(commentTableFile, "\t%ld", aux->ID);
             aux = aux->next;
         }
     }

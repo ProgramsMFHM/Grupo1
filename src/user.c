@@ -553,7 +553,7 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
         BandPosition bandPosition = find_bandTable_band(bandAux->band, bandTable);
         if(!bandPosition)
         {
-            printf("La banda %s no se encuentra en la base de datos, desea agregarla?: (0:Si, 1:No): ", bandAux->band);
+            printf("La banda "ANSI_COLOR_GREEN"%s"ANSI_COLOR_RESET" no se encuentra en la base de datos, desea agregarla?: (0:Si, 1:No): ", bandAux->band);
             if(scanf("%d", &option) != 1){
                 print_error(103, NULL, NULL);
                 bandAux = bandAux->next;
@@ -574,7 +574,7 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
         GenrePosition genrePosition = find_genresTable_genre(genreAux->genre, genreTable);
         if(!genrePosition)
         {
-            printf("El genero %s no se encuentra en la base de datos, desea agregarlo?: (0:Si, 1:No): ", genreAux->genre);
+            printf("El genero "ANSI_COLOR_RED"%s"ANSI_COLOR_RESET" no se encuentra en la base de datos, desea agregarlo?: (0:Si, 1:No): ", genreAux->genre);
             if(scanf("%d", &option) != 1){
                 print_error(103, NULL, NULL);
                 genreAux = genreAux->next;

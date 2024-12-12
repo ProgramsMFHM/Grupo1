@@ -314,14 +314,18 @@ void save_bandTable(BandTable bandTable)
         return;
     }
 
+    bool first = true;
     fprintf(bandTableFile, "[\n");
     for(int i=0; i<BANDS_TABLE_SIZE; i++)
     {
         if(!bandTable->buckets[i]->next){
             continue;
         }
-        if(i != 0){
+        if(!first){
             fprintf(bandTableFile, ",\n");
+        }
+        else{
+            first = false;
         }
         BandPosition aux = bandTable->buckets[i]->next;
         while(aux != NULL){
