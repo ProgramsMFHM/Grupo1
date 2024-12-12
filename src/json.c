@@ -76,9 +76,15 @@ UserPosition complete_user_from_json(UserPosition user)
         print_error(101, error.text, NULL);
         return user;
     }
-    int age = (int)json_integer_value(json_object_get(json, "age"));
+    int age = (int)json_integer_value(json_object_get(json, "age")); // 0 si no existe
     const char *nationality = json_string_value(json_object_get(json, "nationality"));
+    if(!nationality){
+        nationality = "Empty";
+    }
     const char *description = json_string_value(json_object_get(json, "description"));
+    if(!description){
+        description = "Empty";
+    }
 
     json_t *genres_json = json_object_get(json, "genres"); // almacena los generos del usuario
     GenreLinkList genres = read_genres_json(genres_json);
@@ -123,7 +129,13 @@ CommentPosition complete_comment_from_json(CommentPosition comment)
         return comment;
     }
     const char *text = json_string_value(json_object_get(json, "text")); // almacena el texto del comentario[i]
+    if(!text){
+        text = "Empty";
+    }
     const char *author = json_string_value(json_object_get(json, "author")); // almacena el autor del comentario[i]
+    if(!author){
+        author = "Empty";
+    }
 
     complete_commentList_node(comment, (char*)text, (char*)author);
 
@@ -271,12 +283,12 @@ CommentTable get_comments_from_file(const char* filePath, CommentTable commentTa
  * @return Puntero a la lista de enlaces a usuarios creada
 */
 UserLinkList read_friends_json(json_t *friends_json){
+    UserLinkList friends = create_empty_userLinkList(NULL);
     if(friends_json == NULL){
-        return NULL;
+        return friends;
     }
 
     size_t quantity = json_array_size(friends_json); //obtener el numero de elementos en el arreglo json
-    UserLinkList friends = create_empty_userLinkList(NULL);
 
     for (size_t i = 0; i < quantity; i++) {
         char *friendName = (char*)json_string_value(json_array_get(friends_json, i));  // obtener el valor del string en el indice i del arreglo
@@ -296,12 +308,12 @@ UserLinkList read_friends_json(json_t *friends_json){
  * @return Puntero a la lista de enlaces a generos creada
 */
 GenreLinkList read_genres_json(json_t *genres_json){
+    GenreLinkList genres = create_empty_genreLinkList(NULL);
     if(genres_json == NULL){
-        return NULL;
+        return genres;
     }
 
     size_t quantity = json_array_size(genres_json); //obtener el numero de elementos en el arreglo json
-    GenreLinkList genres = create_empty_genreLinkList(NULL);
 
     for (size_t i = 0; i < quantity; i++) {
         char *genreName = (char*)json_string_value(json_array_get(genres_json, i));  // obtener el valor del string en el indice i del arreglo
@@ -321,12 +333,13 @@ GenreLinkList read_genres_json(json_t *genres_json){
  * @return Puntero a la lista de enlaces a bandas creada
 */
 BandLinkList read_band_json(json_t *bands_json){
+    BandLinkList bands = create_empty_bandLinkList(NULL);
+
     if(bands_json == NULL){
-        return NULL;
+        return bands;
     }
 
     size_t quantity = json_array_size(bands_json); //obtener el numero de elementos en el arreglo json
-    BandLinkList bands = create_empty_bandLinkList(NULL);
 
     for (size_t i = 0; i < quantity; i++) {
         char *bandName = (char*)json_string_value(json_array_get(bands_json, i));  // obtener el valor del string en el indice i del arreglo
@@ -347,12 +360,12 @@ BandLinkList read_band_json(json_t *bands_json){
 */
 CommentLinkList read_comments_json(json_t *comments_json)
 {
+    CommentLinkList comments = create_empty_commentLinkList(NULL);
     if(comments_json == NULL){
-        return NULL;
+        return comments;
     }
 
     size_t quantity = json_array_size(comments_json); //obtener el numero de elementos en el arreglo json
-    CommentLinkList comments = create_empty_commentLinkList(NULL);
 
     for (size_t i = 0; i < quantity; i++) {
         time_t commentID = (time_t)json_integer_value(json_array_get(comments_json, i));  // obtener el valor del ID en el indice i del arreglo
