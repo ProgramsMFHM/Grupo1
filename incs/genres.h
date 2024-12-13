@@ -63,5 +63,6 @@ void delete_genresTable_genre(char* genre, GenreTable genresTable);
 void delete_genresTable(GenreTable genresTable);
 GenrePosition find_genresTable_genre(char* genre, GenreTable genresTable);
 void save_genresTable(GenreTable bandTable);
+GenreLinkList get_loopweb_genres(GenreTable table);
 
 #endif

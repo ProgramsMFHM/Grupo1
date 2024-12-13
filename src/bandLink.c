@@ -177,7 +177,84 @@ void delete_bandLinkList_node(BandLinkPosition P, BandLinkList linkList){
     free(P);
 }
 
+// Funciones de ordenamiento de listas de enlaces a bandas
+
+/**
+ * @brief Divide una lista enlazada en dos mitades.
+ *
+ * @param source Puntero al nodo inicial de la lista a dividir.
+ * @param frontRef Referencia a la primera mitad de la lista.
+ * @param backRef Referencia a la segunda mitad de la lista.
+ */
+void split_bandLinkList(BandLinkPosition source, BandLinkPosition* frontRef, BandLinkPosition* backRef)
+{
+    BandLinkPosition slow, fast;
+    slow = source;
+    fast = source->next;
+
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
+
+/**
+ * @brief Fusiona dos listas enlazadas ordenadas en una sola lista ordenada
+ *
+ * @param a Puntero a la primera lista ordenada
+ * @param b Puntero a la segunda lista ordenada
+ * @return Puntero al nodo inicial de la lista fusionada ordenada
+ */
+BandLinkPosition merge_bandLinkLists(BandLinkPosition a, BandLinkPosition b)
+{
+    if (a == NULL) return b;
+    if (b == NULL) return a;
+
+    BandLinkPosition result;
+
+    if (strcmp(a->band, b->band) < 0) {
+        result = a;
+        result->next = merge_bandLinkLists(a->next, b);
+    } else {
+        result = b;
+        result->next = merge_bandLinkLists(a, b->next);
+    }
+    return result;
+}
+
+/**
+ * @brief Ordena una lista de bandas utilizando el algoritmo merge sort.
+ *
+ * @note Ordena la lista de bandas en orden alfabetico ascendente.
+ * @param headRef Referencia al puntero del nodo inicial de la lista a ordenar.
+ * @warning Es necesario pasar a esta funcion la primera posicion de la lista de bandas NO EL CENTINELA.
+*/
+void sort_bandLinkList_byName(BandLinkPosition* headRef)
+{
+    BandLinkPosition head = *headRef;
+    BandLinkPosition a, b;
+
+    if ((head == NULL) || (head->next == NULL)) {
+        return;  /**<si la lista esta vacia o tiene un solo elemento, no hay que ordenar */
+    }
+
+    split_bandLinkList(head, &a, &b);
+
+    sort_bandLinkList_byName(&a);  /**<ordena la primera mitad */
+    sort_bandLinkList_byName(&b);  /**<ordena la segunda mitad */
+
+    *headRef = merge_bandLinkLists(a, b);  /**<fusiona las dos mitades ordenadas */
+}
+
 // Funciones de interaccion con el usuario
+
 /**
  * @brief Completa un enlace a una banda (agregando el puntero al nodo de banda)
  *

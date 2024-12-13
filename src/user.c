@@ -540,6 +540,7 @@ char *get_username(UserPosition P){
 }
 
 // Funciones de ordenamiento de listas de enlaces a usuarios
+
 /**
  * @brief Divide una lista enlazada en dos mitades.
  *
@@ -851,7 +852,6 @@ UserLinkList get_loopweb_users(UserTable table)
         }
     }
     sort_userLinkList_byName(&allUsers->next);
-    printf(CLEAR_SCREEN"Usuarios de la red (%d):\n\n", table->userCount);
     UserLinkPosition current = allUsers->next;
     int counter = 1;
     while (current != NULL) {

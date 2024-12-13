@@ -58,14 +58,18 @@ int main(int argc, char* argv[])
 void admin_mode()
 {
     int terminate = 0;
-    UserLinkList allUsers;
     UserTable looopWebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
+    UserLinkList allUsers;
+    BandTable loopwebBands = get_bands_from_file("./build/bands.json", NULL);
+    BandLinkList allBands;
+    GenreTable loopwebGenres = get_genres_from_file("./build/genres.json", NULL);
+    GenreLinkList allGenres;
 
     while(!terminate)
     {
         printf(CLEAR_SCREEN"\t\tUsted a ingresado como administrador\n");
         printf("Que desea hacer?\n");
-        printf("\t1. Listar todos los usuarios\n");
+        printf("\t1. Listar todos los usuarios y ver un perfil\n");
         printf("\t2. Listar todas las bandas y artistas de la base de datos\n");
         printf("\t3. Listar todos los generos y artistas de la base de datos\n");
         printf("\t4. Crear un nuevo usuario\n");
@@ -82,7 +86,7 @@ void admin_mode()
         switch(option){
             case 1: // Listar todos los usuarios
                 allUsers = get_loopweb_users(looopWebUsers);
-                printf("Desea ver el perfil de un usuario? Ingrese ek numero que aparece junto al usuario deseado: ");
+                printf("Desea ver el perfil de un usuario? Ingrese el numero que aparece junto al usuario deseado (0 para salir): ");
                 if(scanf("%d", &option) != 1){
                     print_error(103, NULL, NULL);
                     continue;
@@ -99,8 +103,12 @@ void admin_mode()
                 delete_userLinkList(allUsers);
                 break;
             case 2: // Listar todas las bandas y artistas de la base de datos
+                allBands = get_loopweb_bands(loopwebBands);
+                delete_bandLinkList(allBands);
                 break;
             case 3: // Listar todos los generos y artistas de la base de datos
+                allGenres = get_loopweb_genres(loopwebGenres);
+                delete_genreLinkList(allGenres);
                 break;
             case 4: // Crear un nuevo usuario
                 break;
@@ -117,6 +125,9 @@ void admin_mode()
             continue;
         }
     }
+
+    delete_bandTable(loopwebBands);
+    delete_genresTable(loopwebGenres);
     delete_userTable(looopWebUsers);
 }
 

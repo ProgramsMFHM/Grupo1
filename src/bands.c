@@ -350,3 +350,37 @@ void save_bandTable(BandTable bandTable)
     fprintf(bandTableFile, "\n]");
     fclose(bandTableFile);
 }
+
+// Funciones de LoopWeb relacionadas a bandas
+
+/**
+ * @brief Imprime de manera estetica la tabla de bandas y devuelve la lista de enlaces a a todas las bandas
+ *
+ * @param table Puntero a la tabla de bandas
+ * @return Puntero a la lista de enlaces a todas las bandas de la red ordenadas alfabeticamente
+*/
+BandLinkList get_loopweb_bands(BandTable table)
+{
+    BandLinkList allBands = create_empty_bandLinkList(NULL);
+
+    for(int i=0; i<BANDS_TABLE_SIZE; i++){
+        BandPosition aux = table->buckets[i]->next;
+        while(aux != NULL){
+            insert_bandLinkList_node_completeInfo(allBands, aux);
+            aux = aux->next;
+        }
+    }
+    sort_bandLinkList_byName(&allBands->next);
+    BandLinkPosition current = allBands->next;
+    int counter = 1;
+    while (current != NULL) {
+        printf("%3d. "ANSI_COLOR_GREEN"%-17s"ANSI_COLOR_RESET, counter, current->band);
+        if(counter % 5 == 0){
+            printf("\n");
+        }
+        counter++;
+        current = current->next;
+    }
+    printf("\n\n");
+    return allBands;
+}

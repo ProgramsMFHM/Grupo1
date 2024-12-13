@@ -342,3 +342,37 @@ void save_genresTable(GenreTable bandTable)
     fprintf(genresTableFile, "\n]");
     fclose(genresTableFile);
 }
+
+// Funciones de LoopWeb relacionadas a geberos
+
+/**
+ * @brief Imprime de manera estetica la tabla de generos y devuelve la lista de enlaces a a todos los generos
+ *
+ * @param table Puntero a la tabla de generos
+ * @return Puntero a la lista de enlaces a todos los generos de la red ordenados alfabeticamente
+*/
+GenreLinkList get_loopweb_genres(GenreTable table)
+{
+    GenreLinkList allGenres = create_empty_genreLinkList(NULL);
+
+    for(int i=0; i<GENRE_TABLE_SIZE; i++){
+        GenrePosition aux = table->buckets[i]->next;
+        while(aux != NULL){
+            insert_genreLinkList_node_completeInfo(allGenres, aux);
+            aux = aux->next;
+        }
+    }
+    sort_genreLinkList_byName(&allGenres->next);
+    GenreLinkPosition current = allGenres->next;
+    int counter = 1;
+    while (current != NULL) {
+        printf("%3d. "ANSI_COLOR_RED"%-17s"ANSI_COLOR_RESET, counter, current->genre);
+        if(counter % 5 == 0){
+            printf("\n");
+        }
+        counter++;
+        current = current->next;
+    }
+    printf("\n\n");
+    return allGenres;
+}

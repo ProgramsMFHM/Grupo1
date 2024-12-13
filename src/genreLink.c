@@ -177,7 +177,84 @@ void delete_genreLinkList_node(GenreLinkPosition P, GenreLinkList linkList){
     free(P);
 }
 
+// Funciones de ordenamiento de listas de enlaces a generos
+
+/**
+ * @brief Divide una lista enlazada en dos mitades.
+ *
+ * @param source Puntero al nodo inicial de la lista a dividir.
+ * @param frontRef Referencia a la primera mitad de la lista.
+ * @param backRef Referencia a la segunda mitad de la lista.
+ */
+void split_genreLinkList(GenreLinkPosition source, GenreLinkPosition* frontRef, GenreLinkPosition* backRef)
+{
+    GenreLinkPosition slow, fast;
+    slow = source;
+    fast = source->next;
+
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
+
+/**
+ * @brief Fusiona dos listas enlazadas ordenadas en una sola lista ordenada
+ *
+ * @param a Puntero a la primera lista ordenada
+ * @param b Puntero a la segunda lista ordenada
+ * @return Puntero al nodo inicial de la lista fusionada ordenada
+ */
+GenreLinkPosition merge_genreLinkLists(GenreLinkPosition a, GenreLinkPosition b)
+{
+    if (a == NULL) return b;
+    if (b == NULL) return a;
+
+    GenreLinkPosition result;
+
+    if (strcmp(a->genre, b->genre) < 0) {
+        result = a;
+        result->next = merge_genreLinkLists(a->next, b);
+    } else {
+        result = b;
+        result->next = merge_genreLinkLists(a, b->next);
+    }
+    return result;
+}
+
+/**
+ * @brief Ordena una lista de generos utilizando el algoritmo merge sort.
+ *
+ * @note Ordena la lista de generos en orden alfabetico ascendente.
+ * @param headRef Referencia al puntero del nodo inicial de la lista a ordenar.
+ * @warning Es necesario pasar a esta funcion la primera posicion de la lista de generos NO EL CENTINELA.
+*/
+void sort_genreLinkList_byName(GenreLinkPosition* headRef)
+{
+    GenreLinkPosition head = *headRef;
+    GenreLinkPosition a, b;
+
+    if ((head == NULL) || (head->next == NULL)) {
+        return;  /**<si la lista esta vacia o tiene un solo elemento, no hay que ordenar */
+    }
+
+    split_genreLinkList(head, &a, &b);
+
+    sort_genreLinkList_byName(&a);  /**<ordena la primera mitad */
+    sort_genreLinkList_byName(&b);  /**<ordena la segunda mitad */
+
+    *headRef = merge_genreLinkLists(a, b);  /**<fusiona las dos mitades ordenadas */
+}
+
 // Funciones de interaccion con el usuario
+
 /**
  * @brief Completa un enlace a un genero (agregando el puntero al nodo de genero)
  *

@@ -41,6 +41,12 @@ GenreLinkPosition insert_genreLinkList_node_basicInfo(GenreLinkPosition prevPosi
 GenreLinkPosition insert_genreLinkList_node_completeInfo(GenreLinkPosition prevPosition, PtrToGenre genreNode);
 void delete_genreLinkList_node(GenreLinkPosition P, GenreLinkList linkList);
 
+// Funciones de ordenamiento de listas de enlaces a generos
+
+void split_genreLinkList(GenreLinkPosition source, GenreLinkPosition* frontRef, GenreLinkPosition* backRef);
+GenreLinkPosition merge_genreLinkLists(GenreLinkPosition a, GenreLinkPosition b);
+void sort_genreLinkList_byName(GenreLinkPosition* headRef);
+
 // Funciones de interaccion con el genero
 GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, GenreTable userTable);
 GenreLinkPosition genreLinkList_first(GenreLinkList linkList);

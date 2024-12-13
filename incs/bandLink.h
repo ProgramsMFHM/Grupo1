@@ -41,7 +41,12 @@ BandLinkPosition insert_bandLinkList_node_basicInfo(BandLinkPosition prevPositio
 BandLinkPosition insert_bandLinkList_node_completeInfo(BandLinkPosition prevPosition, PtrToBand bandNode);
 void delete_bandLinkList_node(BandLinkPosition P, BandLinkList linkList);
 
-// Funciones de interaccion con el banda
+// Funciones de ordenamiento de listas de enlaces a usuarios
+void split_bandLinkList(BandLinkPosition source, BandLinkPosition* frontRef, BandLinkPosition* backRef);
+BandLinkPosition merge_bandLinkLists(BandLinkPosition a, BandLinkPosition b);
+void sort_bandLinkList_byName(BandLinkPosition* headRef);
+
+// Funciones de interaccion con el usuario
 BandLinkPosition complete_bandLinkList_node(BandLinkPosition P, BandTable userTable);
 BandLinkPosition bandLinkList_first(BandLinkList linkList);
 BandLinkPosition bandLinkList_last(BandLinkList linkList);
