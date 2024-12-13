@@ -225,8 +225,16 @@ CommentLinkList get_user_feed(UserPosition user, BandTable bandTable, GenreTable
 
     // Obtener los comentarios de los bandas del usuario
     while(auxBand != NULL){
-        complete_bandLinkList_node(auxBand, bandTable);
-        auxComment = auxBand->bandNode->comments->next;
+        #ifdef DEBUG
+            printf("Procesando banda: %s\n", auxBand->band);
+        #endif
+        BandPosition bandNode = find_bandTable_band(auxBand->band, bandTable);
+        if(!bandNode){
+            print_error(304, auxBand->band, NULL);
+            auxBand = auxBand->next;
+            continue;
+        }
+        auxComment = bandNode->comments->next;
         while(auxComment != NULL)
         {
             CommentPosition commentNode = find_commentTable_comment(auxComment->commentID, commentTable);
@@ -238,8 +246,16 @@ CommentLinkList get_user_feed(UserPosition user, BandTable bandTable, GenreTable
 
     // Obtener los comentarios de los bandas del usuario
     while(auxGenre != NULL){
-        complete_genreLinkList_node(auxGenre, genreTable);
-        auxComment = auxGenre->genreNode->comments->next;
+        #ifdef DEBUG
+            printf("Procesando genero: %s\n", auxGenre->genre);
+        #endif
+        GenrePosition genreNode = find_genresTable_genre(auxGenre->genre, genreTable);
+        if(!genreNode){
+            print_error(305, auxGenre->genre, NULL);
+            auxGenre = auxGenre->next;
+            continue;
+        }
+        auxComment = genreNode->comments->next;
         while(auxComment != NULL)
         {
             CommentPosition commentNode = find_commentTable_comment(auxComment->commentID, commentTable);
@@ -267,6 +283,7 @@ void print_user_feed(UserPosition user, BandTable bandTable, GenreTable genreTab
     sort_commentLinkList_byID(&feedComments->next);
     CommentLinkPosition aux = feedComments->next;
 
+    sleep(1);
     printf(CLEAR_SCREEN"Feed de publicaciones para "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET":\n", user->username);
     printf("\n");
 

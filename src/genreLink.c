@@ -169,7 +169,7 @@ void delete_genreLinkList_node(GenreLinkPosition P, GenreLinkList linkList){
     }
     GenreLinkPosition prevNode = find_genreLinkList_prev_node(P, linkList);
     if(prevNode == NULL){
-        print_error(300, P->genre, NULL);
+        print_error(305, P->genre, NULL);
         return;
     }
     prevNode->next = P->next;
@@ -265,7 +265,7 @@ void sort_genreLinkList_byName(GenreLinkPosition* headRef)
 GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, GenreTable genreTable){
     GenrePosition userNode = find_genresTable_genre(P->genre, genreTable);
     if(userNode == NULL){
-        print_error(300, P->genre, NULL);
+        print_error(305, P->genre, NULL);
         return NULL;
     }
     P->genreNode = userNode;

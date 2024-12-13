@@ -59,6 +59,12 @@ void print_error(int num, char* target, char* obs) {
         case 303:
             printf("Comentario %s no encontrado\n", target);
             break;
+        case 304:
+            printf("Banda %s no encontrada\n", target);
+            break;
+        case 305:
+            printf("Genero %s no encontrado\n", target);
+            break;
         default:
             printf("Codigo de error desconocido\n");
     }

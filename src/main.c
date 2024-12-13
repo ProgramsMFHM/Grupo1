@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
 {
     #ifdef DEBUG
         printf(ANSI_COLOR_RED"\t\tDebug mode enabled\n" ANSI_COLOR_RESET);
+        sleep(1);
     #endif
     int opt;
     // int opt_index = 0

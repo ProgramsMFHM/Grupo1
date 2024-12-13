@@ -169,7 +169,7 @@ void delete_bandLinkList_node(BandLinkPosition P, BandLinkList linkList){
     }
     BandLinkPosition prevNode = find_bandLinkList_prev_node(P, linkList);
     if(prevNode == NULL){
-        print_error(300, P->band, NULL);
+        print_error(304, P->band, NULL);
         return;
     }
     prevNode->next = P->next;
@@ -265,7 +265,7 @@ void sort_bandLinkList_byName(BandLinkPosition* headRef)
 BandLinkPosition complete_bandLinkList_node(BandLinkPosition P, BandTable bandTable){
     BandPosition userNode = find_bandTable_band(P->band, bandTable);
     if(userNode == NULL){
-        print_error(300, P->band, NULL);
+        print_error(304, P->band, NULL);
         return NULL;
     }
     P->bandNode = userNode;
