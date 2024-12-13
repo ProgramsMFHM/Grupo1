@@ -224,3 +224,82 @@ UserLinkPosition userLinkList_last(UserLinkList linkList){
 UserLinkPosition userLinkList_advance(UserLinkPosition P){
     return P->next;
 }
+
+//otras funciones
+
+/**
+ * @brief encuentra recomendaciones de amigos para un usuario
+ *
+ * @param user Usuario a recomendar amigos
+ * @param table Tabla de usuarios
+ * @return Lista de amigos recomendados (amigos en tercer nivel)
+ */
+UserLinkPosition find_possible_friends(UserPosition user, UserTable table)
+{
+    //iniciaciones
+    UserLinkList amigos = create_empty_userLinkList(NULL);
+    UserLinkList visitados = create_empty_userLinkList(NULL);
+    UserLinkList vecino = create_empty_userLinkList(NULL);
+    UserLinkList cola = create_empty_userLinkList(NULL);
+
+    insert_userLinkList_node_basicInfo(cola, user->username);
+    UserLinkPosition rear = insert_userLinkList_node_basicInfo(visitados, user->username);
+    rear->coefficient = 1.0; //nivel inicial (nivel 1)
+
+    //mientas que la cola no este vacia coefficient sea menor a 5.0
+    while(cola->next != NULL && visitados->next->coefficient < 5.0){
+        //procesar nodo actual
+
+        #ifdef DEBUG
+            printf(" - %-10s: ---->   ",rear->userName);
+        #endif
+
+
+        // Obtener nodo de usuario correspondiente
+        UserPosition userNode = find_userTable_node(table, rear->userName);
+        if(userNode == NULL){
+            print_error(300, rear->userName, NULL);
+            return NULL;
+        }
+        complete_user_from_json(userNode);
+        amigos = userNode->friends;
+
+        // Iterar sobre vecinos
+        vecino = amigos->next;
+
+        while(vecino != NULL){
+            //si el amigo es nuevo, agregarlo a visitados
+            if(!find_userLinkList_node(visitados, vecino->userName)&& rear->coefficient + 1 <= 4.0)
+                {
+                    //enqueue
+                    insert_userLinkList_node_basicInfo(cola, vecino->userName);
+                    cola->next->coefficient = rear->coefficient +1;
+                    #ifdef DEBUG
+                        printf("%-10s",vecino->userName);
+                    #endif
+                    insert_userLinkList_node_basicInfo(visitados, vecino->userName);
+                    visitados->next->coefficient = rear->coefficient +1;
+                }
+            vecino = vecino->next;
+        }
+        #ifdef DEBUG
+            printf("\n");
+        #endif
+
+        //dequeue
+        rear = find_userLinkList_prev_node(rear, cola);
+        delete_userLinkList_node(rear->next, cola);
+    }
+
+    // Eliminamos los nodos que tengan coeficiente 2 (amigos directos) y 1 (El propio usuario)
+    UserLinkPosition aux = visitados->next;
+    while(aux != NULL){
+        if(aux->coefficient == 2.0 || aux->coefficient == 1.0){
+            delete_userLinkList_node(aux, visitados);
+        }
+        aux = aux->next;
+    }
+
+    delete_userLinkList(cola);
+    return visitados;
+}

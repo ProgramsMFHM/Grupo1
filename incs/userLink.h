@@ -48,4 +48,7 @@ UserLinkPosition userLinkList_first(UserLinkList linkList);
 UserLinkPosition userLinkList_last(UserLinkList linkList);
 UserLinkPosition userLinkList_advance(UserLinkPosition P);
 
+// Otras funciones
+UserLinkPosition find_possible_friends(UserPosition user, UserTable table);
+
 #endif

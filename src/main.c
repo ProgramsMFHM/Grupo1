@@ -151,6 +151,8 @@ void user_mode(char *userName)
     GenreTable loopwebGenres = get_genres_from_file("./build/genres.json", NULL);
     CommentTable loopwebComments = get_comments_from_file(COMMENTS_PATH"comments.json", NULL);
 
+    UserLinkList possibleFriends;
+
     while(!terminate)
     {
         // Usuario escoge camino a seguir
@@ -185,6 +187,9 @@ void user_mode(char *userName)
                 make_comment(userName, loopwebUsers, loopwebBands, loopwebGenres, loopwebComments);
                 break;
             case 5: // Ver mis recomendaciones de amigos
+                possibleFriends = find_possible_friends(user, loopwebUsers);
+                print_userLinkList(possibleFriends);
+                delete_userLinkList(possibleFriends);
                 break;
             case 6: // Salir
                 printf("Nos vemos pronto\n");
