@@ -11,15 +11,13 @@
 #include "json.h"
 #include "utilities.h"
 
+void admin_mode();
 void user_mode(char *user_name);
 
 int main(int argc, char* argv[])
 {
     #ifdef DEBUG
-        fprintf(stdout,"EN MODO DEBUG\n");
-    #endif
-    #ifndef DEBUG
-        fprintf(stdout,"EN MODO NO DEBUG\n");
+        printf(ANSI_COLOR_RED"\t\tDebug mode enabled\n" ANSI_COLOR_RESET);
     #endif
     int opt;
     // int opt_index = 0
@@ -36,7 +34,7 @@ int main(int argc, char* argv[])
     if ((opt = getopt_long(argc, argv, "hau:", long_options, NULL)) != -1) {
         switch (opt) {
             case 'a': // Modo Admin
-                printf("Usted a ingresado como administrador de LoopWeb\n");
+                admin_mode();
                 break;
             case 'u': // Modo usuario
                 user_mode(optarg);
@@ -57,6 +55,77 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+void admin_mode()
+{
+    int terminate = 0;
+    UserLinkList allUsers;
+    UserTable looopWebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
+
+    while(!terminate)
+    {
+        printf(CLEAR_SCREEN"\t\tUsted a ingresado como administrador\n");
+        printf("Que desea hacer?\n");
+        printf("\t1. Listar todos los usuarios\n");
+        printf("\t2. Listar todas las bandas y artistas de la base de datos\n");
+        printf("\t3. Listar todos los generos y artistas de la base de datos\n");
+        printf("\t4. Crear un nuevo usuario\n");
+        printf("\t5. Salir\n");
+        int option;
+        do{
+            printf("Opcion: ");
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+        }while(option < 1 || option > 5);
+
+        switch(option){
+            case 1: // Listar todos los usuarios
+                allUsers = get_loopweb_users(looopWebUsers);
+                printf("Desea ver el perfil de un usuario? Ingrese ek numero que aparece junto al usuario deseado: ");
+                if(scanf("%d", &option) != 1){
+                    print_error(103, NULL, NULL);
+                    continue;
+                }
+                if(option > 1 && option <= looopWebUsers->userCount){
+                    UserLinkPosition aux = allUsers->next;
+                    for(int i=1; i<option; i++){
+                        aux = aux->next;
+                    }
+                    if(aux){
+                        print_user(aux->userNode);
+                    }
+                }
+                delete_userLinkList(allUsers);
+                break;
+            case 2: // Listar todas las bandas y artistas de la base de datos
+                break;
+            case 3: // Listar todos los generos y artistas de la base de datos
+                break;
+            case 4: // Crear un nuevo usuario
+                break;
+            case 5: // Salir
+                printf("Nos vemos pronto\n");
+                break;
+            default:
+                break;
+        }
+
+        printf("\n¿Desea realizar otra accion? (0:si, 1:no): ");
+        if(scanf("%d", &terminate) != 1){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+    }
+    delete_userTable(looopWebUsers);
+}
+
+
+/**
+ * @brief Funcion para manejar el comportamiento del programa en modo usuario
+ *
+ * @param userName Nombre del usuario que desea realizar acciones
+*/
 void user_mode(char *userName)
 {
     int terminate = 0;

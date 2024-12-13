@@ -76,6 +76,11 @@ UserPosition userList_last(UserList userList);
 UserPosition userList_advance(UserPosition P);
 char *get_username(UserPosition P);
 
+// Funciones de ordenamiento de la lista de usuarios
+void split_userLinkList(UserLinkPosition source, UserLinkPosition* frontRef, UserLinkPosition* backRef);
+UserLinkPosition merge_userLinkLists(UserLinkPosition a, UserLinkPosition b);
+void sort_userLinkList_byName(UserLinkPosition* headRef);
+
 // Funciones de la tabla de usuarios
 UserTable create_userTable(UserTable table);
 void delete_userTable(UserTable table);
@@ -86,5 +91,6 @@ void print_userTable(UserTable table);
 
 // Funciones de loopweb relacionadas a usuarios
 void make_comment(char* userName, UserTable users, BandTable band, GenreTable genre, CommentTable comments);
+UserLinkList get_loopweb_users(UserTable table);
 
 #endif

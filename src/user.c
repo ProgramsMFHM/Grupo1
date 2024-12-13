@@ -165,6 +165,7 @@ void print_user(UserPosition user)
             }
             genres = genres->next;
         }
+        printf("\n");
     } else {
         printf("  No tengo generos favoritos.\n");
     }
@@ -181,6 +182,7 @@ void print_user(UserPosition user)
             }
             bands = bands->next;
         }
+        printf("\n");
     } else {
         printf("  No tengo bandas favoritas.\n");
     }
@@ -197,6 +199,7 @@ void print_user(UserPosition user)
             }
             friends = friends->next;
         }
+        printf("\n");
     } else {
         printf("  No tengo amigos.\n");
     }
@@ -250,6 +253,14 @@ CommentLinkList get_user_feed(UserPosition user, BandTable bandTable, GenreTable
     return feedComments;
 }
 
+/**
+ * @brief Imprime el feed de publicaciones de un usuario (Los comentarios que tiene enlazados a sus bandas o generos)
+ *
+ * @param user Puntero al nodo de usuario
+ * @param bandTable Puntero a la tabla de bandas
+ * @param genreTable Puntero a la tabla de generos
+ * @param commentTable Puntero a la tabla de comentarios
+*/
 void print_user_feed(UserPosition user, BandTable bandTable, GenreTable genreTable, CommentTable commentTable)
 {
     CommentLinkList feedComments = get_user_feed(user, bandTable, genreTable, commentTable);
@@ -528,6 +539,81 @@ char *get_username(UserPosition P){
     return P->username;
 }
 
+// Funciones de ordenamiento de listas de enlaces a usuarios
+/**
+ * @brief Divide una lista enlazada en dos mitades.
+ *
+ * @param source Puntero al nodo inicial de la lista a dividir.
+ * @param frontRef Referencia a la primera mitad de la lista.
+ * @param backRef Referencia a la segunda mitad de la lista.
+ */
+void split_userLinkList(UserLinkPosition source, UserLinkPosition* frontRef, UserLinkPosition* backRef)
+{
+    UserLinkPosition slow, fast;
+    slow = source;
+    fast = source->next;
+
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
+
+/**
+ * @brief Fusiona dos listas enlazadas ordenadas en una sola lista ordenada
+ *
+ * @param a Puntero a la primera lista ordenada
+ * @param b Puntero a la segunda lista ordenada
+ * @return Puntero al nodo inicial de la lista fusionada ordenada
+ */
+UserLinkPosition merge_userLinkLists(UserLinkPosition a, UserLinkPosition b)
+{
+    if (a == NULL) return b;
+    if (b == NULL) return a;
+
+    UserLinkPosition result;
+
+    if (strcmp(a->userName, b->userName) < 0) {
+        result = a;
+        result->next = merge_userLinkLists(a->next, b);
+    } else {
+        result = b;
+        result->next = merge_userLinkLists(a, b->next);
+    }
+    return result;
+}
+
+/**
+ * @brief Ordena una lista de usuarios utilizando el algoritmo merge sort.
+ *
+ * @note Ordena la lista de usuarios en orden alfabetico ascendente.
+ * @param headRef Referencia al puntero del nodo inicial de la lista a ordenar.
+ * @warning Es necesario pasar a esta funcion la primera posicion de la lista de usuarios NO EL CENTINELA.
+*/
+void sort_userLinkList_byName(UserLinkPosition* headRef)
+{
+    UserLinkPosition head = *headRef;
+    UserLinkPosition a, b;
+
+    if ((head == NULL) || (head->next == NULL)) {
+        return;  /**<si la lista esta vacia o tiene un solo elemento, no hay que ordenar */
+    }
+
+    split_userLinkList(head, &a, &b);
+
+    sort_userLinkList_byName(&a);  /**<ordena la primera mitad */
+    sort_userLinkList_byName(&b);  /**<ordena la segunda mitad */
+
+    *headRef = merge_userLinkLists(a, b);  /**<fusiona las dos mitades ordenadas */
+}
+
 // Funciones de la tabla de usuarios
 
 /**
@@ -745,4 +831,37 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
     printf(CLEAR_SCREEN"El siguiente comentario fue agregado a loopweb:\n\n");
     print_commentNode(commentNode);
 
+}
+
+/**
+ * @brief Imprime de manera estetica la tabla de usuarios y devuelve la lista de enlaces a todos los usuarios
+ *
+ * @param table Puntero a la tabla de usuarios
+ * @return Puntero a la lista de enlaces a todos los usuarios de la red ordenados alfabeticamente
+*/
+UserLinkList get_loopweb_users(UserTable table)
+{
+    UserLinkList allUsers = create_empty_userLinkList(NULL);
+
+    for(int i=0; i<USER_TABLE_SIZE; i++){
+        UserPosition aux = table->buckets[i]->next;
+        while(aux != NULL){
+            insert_userLinkList_node_completeInfo(allUsers, aux);
+            aux = aux->next;
+        }
+    }
+    sort_userLinkList_byName(&allUsers->next);
+    printf(CLEAR_SCREEN"Usuarios de la red (%d):\n\n", table->userCount);
+    UserLinkPosition current = allUsers->next;
+    int counter = 1;
+    while (current != NULL) {
+        printf("%3d. "ANSI_COLOR_CYAN"%-10s"ANSI_COLOR_RESET, counter, current->userName);
+        if(counter % 5 == 0){
+            printf("\n");
+        }
+        counter++;
+        current = current->next;
+    }
+    printf("\n\n");
+    return allUsers;
 }
