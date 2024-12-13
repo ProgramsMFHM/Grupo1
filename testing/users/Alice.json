@@ -1,7 +1,9 @@
 {
-   "userName": "Alice",
-    "age": 18,
-    "nationality": "Spain",
-    "genres": ["rock", "lofi"],
-    "friends": ["Bob", "Carol", "Dave"]
+  "userName": "Alice",
+  "age": 18,
+  "nationality": "Spain",
+  "genres": [ "rock", "pop" ],
+  "artists": [ "rihanna", "ladyGaga" ],
+  "description": "Amante de los festivales de musica.",
+  "friends": [ "Bob", "Carol", "Mallory" ]
 }

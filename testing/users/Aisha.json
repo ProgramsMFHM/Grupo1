@@ -1,0 +1,9 @@
+{
+  "userName": "Aisha",
+  "age": 31,
+  "nationality": "Kenya",
+  "genres": [ "gospel", "rnb" ],
+  "artists": [ "kirkFranklin", "whitneyHouston" ],
+  "description": "Canto en un coro local.",
+  "friends": [ "Quinn", "Zane" ]
+}

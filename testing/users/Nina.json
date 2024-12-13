@@ -1,0 +1,9 @@
+{
+  "userName": "Nina",
+  "age": 24,
+  "nationality": "Argentina",
+  "genres": [ "dubstep", "house" ],
+  "artists": [ "skrillex", "deadmau5" ],
+  "description": "Fanatica de los festivales electronicos.",
+  "friends": [ "Leo", "Mia" ]
+}

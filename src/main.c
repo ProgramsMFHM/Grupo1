@@ -1,16 +1,84 @@
 #include <stdlib.h>
+#include "getopt.h"
 #include "comment.h"
 #include "user.h"
 #include "userLink.h"
 #include "musicGenres.h"
 #include "genreLink.h"
+#include "bands.h"
 #include "json.h"
-//#include "utilities.h"
+#include "utilities.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-    /*
-    // PRUEBA DE COMENTARIOS
+    int opt;
+    // int opt_index = 0
+
+    // Definir las opciones largas
+    struct option long_options[] = {
+        {"help", no_argument, 0, 'h'},
+        {"administrador", no_argument, 0, 'a'},
+        {"user", required_argument, 0, 'u'},
+        {0, 0, 0, 0} // Terminador
+    };
+
+    // Analizar opciones
+    if ((opt = getopt_long(argc, argv, "hau:", long_options, NULL)) != -1) {
+        switch (opt) {
+            case 'a': // Modo Admin
+                printf("Usted a ingresado como administrador de LoopWeb\n");
+                break;
+            case 'u': // Modo usuario
+                printf("Usted a ingresado como usuaro con el nombre %s\n", optarg);
+                break;
+            case '?': // Error
+                return 0;
+                break;
+            case 'h': // Modo ayuda
+            default:
+                printf("Ayuda del programa\n");
+                break;
+        }
+    }
+    else{
+        printf("Ayuda del programa\n");
+    }
+
+    // PRUEBA DE TABLA DE USUARIOS
+        UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
+        // print_userTable(table);
+
+        printf("--- Completando usuarios ---\n");
+        for(int i = 0; i < USER_TABLE_SIZE; i++){
+            UserPosition user = table->buckets[i]->next;
+            while(user != NULL){
+                complete_user_from_json(user);
+                user = user->next;
+            }
+        }
+        print_userTable(table);
+
+        for(int i = 0; i < USER_TABLE_SIZE; i++){
+            UserPosition user = table->buckets[i]->next;
+            while(user != NULL){
+                printf(ANSI_COLOR_GREEN "%s: " ANSI_COLOR_RESET, user->username);
+                print_loopweb(user->description);
+                printf("\n");
+                user = user->next;
+            }
+        }
+        
+       
+        print_user(find_userTable_node(table, "Alice"));
+        delete_userTable(table);
+    // FIN PRUEBA DE TABLA DE USUARIOS
+
+    
+    return 0;
+}
+
+
+/* PRUEBA DE COMENTARIOS
     CommentList comentarios = NULL;
     comentarios = read_comments_from_file(comentarios, "./build/com.txt");
     if(comentarios == NULL){
@@ -22,17 +90,15 @@ int main()
     print_comments(comentarios);
 
     delete_comment_list(comentarios);
-    // FIN PRUEBA DE COMENTARIOS
-    */
+FIN PRUEBA DE COMENTARIOS */
 
-   /* PRUEBA DE GÉNEROS MUSICALES
+ /* PRUEBA DE GÉNEROS MUSICALES
    MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
    print_musicGenresTable(genresTable);
    delete_musicGenresTable(genresTable);
-   // FIN PRUEBA DE GÉNEROS MUSICALES */
+FIN PRUEBA DE GÉNEROS MUSICALES */
 
-    /*
-    // PRUEBA DE LECTURA DE DATOS JSON
+/* PRUEBA DE LECTURA DE DATOS JSON
     User usuarios[MAX_USERS];
     int total_users = 0;
 
@@ -60,11 +126,9 @@ int main()
             printf("\n");
         }
     }
-     // FIN PRUEBA DE LECTURA DE DATOS JSON
-    */
+FIN PRUEBA DE LECTURA DE DATOS JSON */
 
-   /*
-   // PRUEBA DE TABLA DE USUARIOS
+/* PRUEBA DE TABLA DE USUARIOS
    // Crear la tabla hash
     UserTable table = create_userTable(NULL);
 
@@ -127,11 +191,9 @@ int main()
     delete_userTable_node(table, "Bob");
     print_userTable(table);
 
-    // FIN PRUEBA DE TABLA DE USUARIOS
-    */
+FIN PRUEBA DE TABLA DE USUARIOS */
 
-    /*
-    // PRUEBA DE TABLA DE USUARIOS
+/* PRUEBA DE TABLA DE USUARIOS
     UserTable table = get_users_from_file(USERS_PATH"users.json", NULL);
     // print_userTable(table);
 
@@ -145,8 +207,33 @@ int main()
     }
     print_userTable(table);
 
+    printf("Gustos musicales de Allice:\n");
+    bubbleSort_genreLinkList(find_userTable_node(table, "Alice")->genres);
+    print_genreLinkList(find_userTable_node(table, "Alice")->genres);
+    printf("\n");
+
+    printf("Gustos musicales de Bob:\n");
+    bubbleSort_genreLinkList(find_userTable_node(table, "Bob")->genres);
+    print_genreLinkList(find_userTable_node(table, "Bob")->genres);
+    printf("\n");
+
     delete_userTable(table);
-    */
-    printf_loopweb();
-    return 0;
-}
+FIN PRUEBA DE TABLA DE USUARIOS */
+
+
+/* PRUEBA DE TABLA DE BANDAS
+    BandTable bandsTable = read_band_file("./build/bands.txt", NULL);
+    print_bandTable(bandsTable);
+    delete_bandTable(bandsTable);
+
+    MusicGenresTable genresTable = read_musicGenre_file("./build/music_genres.txt", NULL);
+    print_musicGenresTable(genresTable);
+    delete_musicGenresTable(genresTable);
+
+FIN PRUEBA DE TABLA DE BANDAS */
+
+/* PRUEBA FUNCION DE IMPRESION
+    printf_loopweb("Hello World\n");
+    printf_loopweb("Este es un texto de descripcion de un comentario sobre #rock y @rock\nSomos entusiastas de #rock\n");
+    printf_loopweb("@rock#rock@pop#pop@rock#rock\n");
+FIN PRUEBA FUNCION DE IMPRESION */

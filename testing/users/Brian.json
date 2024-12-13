@@ -1,0 +1,9 @@
+{
+  "userName": "Brian",
+  "age": 23,
+  "nationality": "Ghana",
+  "genres": [ "dancehall", "reggae" ],
+  "artists": [ "burnaBoy", "seanPaul" ],
+  "description": "La musica es mi escape.",
+  "friends": [ "Dylan", "Cleo" ]
+}

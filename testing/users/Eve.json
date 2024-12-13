@@ -1,7 +1,9 @@
 {
-    "userName": "Eve",
-    "age": 22,
-    "nationality": "Spain",
-    "genres": ["rock"],
-    "friends": ["Carol"]
+  "userName": "Eve",
+  "age": 22,
+  "nationality": "Australia",
+  "genres": [ "folk", "indie" ],
+  "artists": [ "bonIver", "fleetFoxes" ],
+  "description": "Viajar y componer son mis hobbies.",
+  "friends": [ "Carol", "Dave", "Dylan" ]
 }

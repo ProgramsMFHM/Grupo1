@@ -1,7 +1,9 @@
 {
-    "userName": "Carol",
-    "age": 20,
-    "nationality": "France",
-    "genres": ["rock"],
-    "friends": ["Alice", "Dave", "Eve"]
+  "userName": "Carol",
+  "age": 20,
+  "nationality": "UK",
+  "genres": [ "kpop", "electronic" ],
+  "artists": [ "bts", "blackpink" ],
+  "description": "Exploradora de sonidos modernos.",
+  "friends": [ "Alice", "Eve" ]
 }

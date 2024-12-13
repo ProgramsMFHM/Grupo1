@@ -25,7 +25,6 @@ typedef PtrToGenreLinkNode GenreLinkList;
  * @brief Lista de enlaces a generos
 */
 struct _genreLinkNode {
-    bool completed; /*!< Indica si el enlace a un genero esta completo, es decir si el genreNode apunta a la tabla de generos */
     char* genre /*!< Nombre del Genero */;
     PtrToMusicGenre genreNode; /*!< Genero en la red */
     GenreLinkPosition next; /*!< Posicion siguiente en la lista */
@@ -47,5 +46,9 @@ GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, MusicGenresTa
 GenreLinkPosition genreLinkList_first(GenreLinkList linkList);
 GenreLinkPosition genreLinkList_last(GenreLinkList linkList);
 GenreLinkPosition genreLinkList_advance(GenreLinkPosition P);
+
+// Funciones de ordenamiento de listas de enlaces a generos
+GenreLinkList bubbleSort_genreLinkList(GenreLinkList linkList);
+void swap_genreLinkList_nodes(GenreLinkPosition a, GenreLinkPosition b);
 
 #endif

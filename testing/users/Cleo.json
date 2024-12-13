@@ -1,0 +1,9 @@
+{
+  "userName": "Cleo",
+  "age": 21,
+  "nationality": "Nigeria",
+  "genres": [ "afrobeats", "lofi" ],
+  "artists": [ "wizkid", "jorjaSmith" ],
+  "description": "Siempre buscando nuevas mezclas.",
+  "friends": [ "Sam", "Brian" ]
+}

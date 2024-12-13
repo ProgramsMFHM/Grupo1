@@ -30,6 +30,7 @@ void to_low_case(char* s1);
 void remove_punctuation(char* s1);
 char* get_only_fileName(char* file);
 bool is_valid_extension(char* extension);
+void print_loopweb(char* str);
 
 // Funciones para usar como parametros
 bool increasing(double a, double b);

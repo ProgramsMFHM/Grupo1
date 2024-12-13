@@ -1,0 +1,9 @@
+{
+  "userName": "Yara",
+  "age": 28,
+  "nationality": "Turkey",
+  "genres": [ "reggaeton", "latinPop" ],
+  "artists": [ "badBunny", "karolG" ],
+  "description": "Siempre lista para bailar.",
+  "friends": [ "Xander", "Zane" ]
+}

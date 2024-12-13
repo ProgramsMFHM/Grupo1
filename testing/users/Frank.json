@@ -1,0 +1,9 @@
+{
+  "userName": "Frank",
+  "age": 30,
+  "nationality": "Germany",
+  "genres": [ "classical", "opera" ],
+  "artists": [ "beethoven", "mozart" ],
+  "description": "Musico clasico profesional. #classical",
+  "friends": [ "Grace", "Hannah" ]
+}

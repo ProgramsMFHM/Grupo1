@@ -1,0 +1,9 @@
+{
+  "userName": "Leo",
+  "age": 26,
+  "nationality": "Japan",
+  "genres": [ "ambient", "chillout" ],
+  "artists": [ "brianEno", "tycho" ],
+  "description": "Relajacion y musica son esenciales.",
+  "friends": [ "Mia", "Nina", "Victor" ]
+}

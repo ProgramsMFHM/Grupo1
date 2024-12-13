@@ -1,7 +1,9 @@
 {
-    "userName": "Bob",
-    "age": 19,
-    "nationality": "Italy",
-    "genres": ["rock"],
-    "friends": ["Alice"]
+  "userName": "Bob",
+  "age": 19,
+  "nationality": "USA",
+  "genres": [ "jazz", "blues" ],
+  "artists": [ "milesDavis", "johnColtrane" ],
+  "description": "Fanatico del #jazz y la fotografia.",
+  "friends": [ "Alice", "Dave", "Mallory" ]
 }

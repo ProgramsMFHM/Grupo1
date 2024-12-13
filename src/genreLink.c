@@ -59,6 +59,10 @@ bool is_empty_genreLinkList(GenreLinkList linkList){
  * @param linkList Lista de enlaces a generos
 */
 void print_genreLinkList(GenreLinkList linkList){
+    if(linkList == NULL){
+        printf("NULL");
+        return;
+    }
     GenreLinkPosition current = linkList->next;
     printf("{%s", current->genre);
     current = current->next;
@@ -72,10 +76,10 @@ void print_genreLinkList(GenreLinkList linkList){
 }
 
 /**
- * @brief Busca un usuario dentro de una lista de enlaces a generos
+ * @brief Busca un genero dentro de una lista de enlaces a generos
  *
  * @param linkList Lista en que se desea buscar
- * @param genre Nombre de usuario a buscar
+ * @param genre Nombre de genero a buscar
  * @return Puntero al nodo encontrado
 */
 GenreLinkPosition find_genreLinkList_node(GenreLinkList linkList, char* genre){
@@ -105,10 +109,10 @@ GenreLinkPosition find_genreLinkList_prev_node(GenreLinkPosition P, GenreLinkLis
 }
 
 /**
- * @brief Crea el nodo correspondiente a un enlace a un usuario (sin apuntar a un nodo de usuario)
+ * @brief Crea el nodo correspondiente a un enlace a un genero (sin apuntar a un nodo de genero)
  *
  * @param prevPosition Puntero al nodo anterior al que se desea insertar
- * @param genre Nombre del usuario al que se desea enlazar
+ * @param genre Nombre del genero al que se desea enlazar
  * @return Puntero al nodo creado
 */
 GenreLinkPosition insert_genreLinkList_node_basicInfo(GenreLinkPosition prevPosition, char* genre){
@@ -127,10 +131,10 @@ GenreLinkPosition insert_genreLinkList_node_basicInfo(GenreLinkPosition prevPosi
 }
 
 /**
- * @brief Crea el nodo correspondiente a un enlace a un usuario (apuntando a un nodo de usuario)
+ * @brief Crea el nodo correspondiente a un enlace a un genero (apuntando a un nodo de genero)
  *
  * @param prevPosition Puntero al nodo anterior al que se desea insertar
- * @param userNode Puntero al nodo de usuario al que se desea enlazar
+ * @param userNode Puntero al nodo de genero al que se desea enlazar
  * @return Puntero al nodo creado
 */
 GenreLinkPosition insert_genreLinkList_node_completeInfo(GenreLinkPosition prevPosition, PtrToMusicGenre userNode){
@@ -171,11 +175,11 @@ void delete_genreLinkList_node(GenreLinkPosition P, GenreLinkList linkList){
 
 // Funciones de interaccion con el usuario
 /**
- * @brief Completa un enlace a un usuario (agregando el puntero al nodo de usuario)
+ * @brief Completa un enlace a un genero (agregando el puntero al nodo de genero)
  *
- * @param P Puntero al nodo de enlace a usuario
+ * @param P Puntero al nodo de enlace a genero
  * @param genreTable Puntero a la tabla de generos
- * @return Puntero al nodo de enlace a usuario completado
+ * @return Puntero al nodo de enlace a genero completado
 */
 GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, MusicGenresTable genreTable){
     MusicGenrePosition userNode = find_musicGenresTable_genre(P->genre, genreTable);
@@ -191,7 +195,7 @@ GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, MusicGenresTa
  * @brief Obtiene el primer nodo de una lista de enlaces a generos
  *
  * @param linkList Puntero a la lista de enlaces a generos
- * @return Puntero al primer enlace a usuario de la lista
+ * @return Puntero al primer enlace a genero de la lista
 */
 GenreLinkPosition genreLinkList_first(GenreLinkList linkList){
     return linkList->next;
@@ -201,7 +205,7 @@ GenreLinkPosition genreLinkList_first(GenreLinkList linkList){
  * @brief Obtiene el ultimo nodo de una lista de enlaces a generos
  *
  * @param linkList Puntero a la lista de enlaces a generos
- * @return Puntero al ultimo enlace a usuario de la lista
+ * @return Puntero al ultimo enlace a genero de la lista
 */
 GenreLinkPosition genreLinkList_last(GenreLinkList linkList){
     GenreLinkPosition P = linkList->next;
@@ -212,11 +216,64 @@ GenreLinkPosition genreLinkList_last(GenreLinkList linkList){
 }
 
 /**
- * @brief Obtiene el seiguiente nodo a @p P de una lista de enlaces de usuario.
+ * @brief Obtiene el seiguiente nodo a @p P de una lista de enlaces de genero.
  *
  * @param P Nodo del que se quiere obtener el siguiente.
- * @return El siguiente nodo de la lista de enlaces de usuario.
+ * @return El siguiente nodo de la lista de enlaces de genero.
 */
 GenreLinkPosition genreLinkList_advance(GenreLinkPosition P){
     return P->next;
+}
+
+
+// Funciones de ordenamiento de listas de enlaces a generos
+
+/**
+ * @brief Ordena una lista de enlaces a generos usando el algoritmo de intercambio (BubleSort)
+ *
+ * @param linkList Puntero a la lista de enlaces a generos a ordenar
+ * @return Puntero a la lista ordenada
+*/
+GenreLinkList bubbleSort_genreLinkList(GenreLinkList linkList){
+    if(is_empty_genreLinkList(linkList)){
+		return linkList;
+	}
+	unsigned int listSize = 0;
+    GenreLinkPosition P = linkList->next;
+	while(P != NULL){ // Calculo ineficiente de la cantidad de elementos de la lista
+		listSize++;
+		P = P->next;
+	}
+	unsigned int toOrder = listSize-1;
+
+	P=linkList->next;
+	while(toOrder > 0){
+		for(unsigned int i = 0; i < toOrder; i++){
+			if(strcmp(P->genre, P->next->genre) > 0){
+				swap_genreLinkList_nodes(P, P->next);
+			}
+			P = P->next;
+		}
+		P=linkList->next;
+		toOrder--;
+
+	}
+	return linkList;
+}
+
+/**
+ * @brief Intercambia los punteros de dos nodos de una lista de enlaces a generos
+ *
+ * @param a Puntero al primer nodo a intercambiar
+ * @param b Puntero al segundo nodo a intercambiar
+*/
+void swap_genreLinkList_nodes(GenreLinkPosition a, GenreLinkPosition b){
+    GenreLinkNode aux;
+    aux = *a;
+
+	a->genre = b->genre;
+    a->genreNode = b->genreNode;
+
+	b->genre = aux.genre;
+    b->genreNode = aux.genreNode;
 }

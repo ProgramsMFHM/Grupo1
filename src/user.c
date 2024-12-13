@@ -5,6 +5,18 @@
 */
 #include "user.h"
 
+
+// Colores para texto
+#define CLEAR_SCREEN "\033[H\033[J"
+#define ANSI_COLOR_RED      "\x1b[31m"
+#define ANSI_COLOR_GREEN    "\x1b[32m"
+#define ANSI_COLOR_YELLOW   "\x1b[33m"
+#define ANSI_COLOR_BLUE     "\x1b[34m"
+#define ANSI_COLOR_MAGENTA  "\x1b[35m"
+#define ANSI_COLOR_CYAN     "\x1b[36m"
+#define ANSI_COLOR_RESET    "\x1b[0m"
+
+
 // Funciones de la lista de usuarios
 /**
  * @brief Crea una lista vacia de usuarios
@@ -65,8 +77,10 @@ void print_UserList(UserList userList){
             printf("[%s, %d, %s, ", current->username, current->age, current->nationality);
             print_genreLinkList(current->genres);
             printf(", ");
+            print_bandLinkList(current->bands);
+            printf(", ");
             print_userLinkList(current->friends);
-            printf("] -> ");
+            printf("]\n\t-> ");
             current = current->next;
         }
         printf("NULL\n");
@@ -115,7 +129,7 @@ UserPosition find_UserList_prev_node(UserPosition P, UserList userList){
  * @param genres0 Gustos musicales del usuario
  * @return Puntero al nodo creado
 */
-UserPosition create_new_user(const char *username, int age, const char *nationality, GenreLinkList genres, UserLinkList friends){
+UserPosition create_new_user(const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends){
     PtrToUser newUser = (PtrToUser) malloc(sizeof(UserNode));
     if (newUser == NULL) {
         print_error(200, NULL, NULL);
@@ -133,8 +147,15 @@ UserPosition create_new_user(const char *username, int age, const char *national
     }
     strcpy(newUser->nationality, nationality);
 
+    newUser->description = malloc(strlen(description) + 1);
+    if(newUser->description == NULL){
+        print_error(200, NULL, NULL);
+    }
+    strcpy(newUser->description, description);
+
     newUser->age = age;
     newUser->genres = genres;
+    newUser->bands = bands;
     newUser->friends = friends;
     newUser->next = NULL;
     return newUser;
@@ -162,7 +183,7 @@ UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNod
  * @param genres Gustos musicales del usuario
  * @return Puntero al nodo completado
 */
-UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, GenreLinkList genres){
+UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands){
     if(P == NULL){
         print_error(202, NULL, NULL);
     }
@@ -170,8 +191,12 @@ UserPosition complete_userList_node(UserPosition P, int age, const char *nationa
 
     P->nationality = (char*)realloc(P->nationality, strlen(nationality) + 1);
     strcpy(P->nationality, nationality);
-    P->genres = genres;
 
+    P->description = (char*)realloc(P->description, strlen(description) + 1);
+    strcpy(P->description, description);
+
+    P->genres = genres;
+    P->bands = bands;
     return P;
 }
 
@@ -194,8 +219,10 @@ bool delete_UserList_node(UserPosition P, UserList userList){
     prevNode->next = P->next;
     delete_userLinkList(P->friends);
     delete_genreLinkList(P->genres);
+    delete_bandLinkList(P->bands);
     free(P->username);
     free(P->nationality);
+    free(P->description);
     free(P);
     return true;
 }
@@ -294,7 +321,7 @@ void delete_userTable(UserTable table){
  * @param genres Gustos musicales del usuario
  * @return Puntero al nodo insertado
 */
-UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, GenreLinkList genres, UserLinkList friends){
+UserPosition insert_userTable_node(UserTable table, const char *username, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, UserLinkList friends){
     if(find_userTable_node(table, username) != NULL){
         print_error(301, NULL, NULL);
         return NULL;
@@ -302,7 +329,7 @@ UserPosition insert_userTable_node(UserTable table, const char *username, int ag
 
     unsigned int index = jenkins_hash((char*)username) % USER_TABLE_SIZE;
 
-    PtrToUser newUser = create_new_user(username, age, nationality, genres, friends);
+    PtrToUser newUser = create_new_user(username, age, nationality, description, genres, bands, friends);
     if (!newUser) {
         print_error(200, NULL, NULL);
     }
@@ -352,3 +379,105 @@ void print_userTable(UserTable table){
         print_UserList(table->buckets[i]);
     }
 }
+
+
+/**
+ * @brief Imprime la información de un usuario en la consola
+ * 
+ * @param user Puntero al nodo de usuario
+ * @param table Tabla de usuarios
+ */
+void print_user(UserPosition user) {
+    if (user == NULL) {
+        printf("\n** Error: Usuario no encontrado **\n");
+        return;
+    }
+
+     // Burbuja de texto con el saludo
+    printf("\n");
+    printf("  ---------------------\n");
+    printf(" /                     \\\n");
+    printf("|  Hola %s!               |\n", user->username);  // Saludo personalizado
+    printf(" \\_____________________/ \n");
+    printf("  ---------------------\n");
+
+    // Vacas dibujadas en ASCII
+    printf("   \\   ^__^\n");
+    printf("    \\  (oo)\\_______\n");
+    printf("       (__)\\       )\\/\\\n");
+    printf("           ||----w |\n");
+    printf("           ||     ||\n");
+
+   
+
+    // Imprimir la información general del usuario con color
+    printf("\n" ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_RED "           Información de Usuario           " ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_GREEN "Nombre de usuario:     " ANSI_COLOR_RESET "%-20s" ANSI_COLOR_RESET "\n", user->username);
+    printf(ANSI_COLOR_GREEN "Edad:                  " ANSI_COLOR_RESET "%-20d" ANSI_COLOR_RESET "\n", user->age);
+    printf(ANSI_COLOR_GREEN "Nacionalidad:          " ANSI_COLOR_RESET "%-20s" ANSI_COLOR_RESET "\n", user->nationality);
+
+    // Imprime la descripción utilizando la función printf_loopweb
+    printf("\n" ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_RED "                 Descripcion           " ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    print_loopweb(user->description);
+    printf("\n");
+
+    // Imprime los géneros musicales favoritos
+    printf("\n" ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_RED "        Generos musicales favoritos             " ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    GenreLinkList genres = user->genres;
+    if (genres != NULL && genres->next != NULL) {
+        genres = genres->next; // Avanzamos al primer nodo real
+        while (genres != NULL) {
+            printf(ANSI_COLOR_RESET "- %-20s" ANSI_COLOR_RESET, genres->genre);
+            if (genres->next != NULL) {
+                printf("\n");
+            }
+            genres = genres->next;
+        }
+    } else {
+        printf("  No tiene géneros favoritos.\n");
+    }
+
+    // Imprime las bandas favoritas
+    printf("\n" ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_RED "              Bandas favoritas             " ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    BandLinkList bands = user->bands;
+    if (bands != NULL && bands->next != NULL) {
+        bands = bands->next; // Avanzamos al primer nodo real
+        while (bands != NULL) {
+            printf(ANSI_COLOR_RESET "- %-20s" ANSI_COLOR_RESET, bands->band);
+            if (bands->next != NULL) {
+                printf("\n");
+            }
+            bands = bands->next;
+        }
+    } else {
+        printf("  No tiene bandas favoritas.\n");
+    }
+
+    // Imprime los amigos del usuario
+    printf("\n" ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_RED "              Amistades de Usuario           " ANSI_COLOR_RESET "\n");
+    printf(ANSI_COLOR_CYAN "=============================================" ANSI_COLOR_RESET "\n");
+    UserLinkList friends = user->friends;
+    if (friends != NULL && friends->next != NULL) {
+        friends = friends->next; // Avanzamos al primer nodo real
+        while (friends != NULL) {
+            printf(ANSI_COLOR_RESET "- %-20s" ANSI_COLOR_RESET, friends->userName);
+            if (friends->next != NULL) {
+                printf("\n");
+            }
+            friends = friends->next;
+        }
+    } else {
+        printf("  No tiene amigos.\n");
+    }
+    printf("\n");
+}
+

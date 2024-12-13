@@ -1,0 +1,9 @@
+{
+  "userName": "Tina",
+  "age": 19,
+  "nationality": "South Africa",
+  "genres": [ "lofi", "chillout" ],
+  "artists": [ "joji", "chillhopMusic" ],
+  "description": "Relajada y creativa.",
+  "friends": [ "Rachel", "Sam" ]
+}

@@ -1,26 +1,130 @@
 [
     {
         "userName": "Alice",
-        "friends": ["Bob", "Carol", "Dave"]
+        "friends": ["Bob", "Carol","Mallory"]
     },
     {
         "userName": "Bob",
-        "friends": ["Alice"]
+        "friends": ["Alice", "Dave","Mallory"]
     },
     {
         "userName": "Carol",
-        "friends": ["Alice", "Dave", "Eve", "France"]
+        "friends": ["Alice", "Eve"]
     },
     {
         "userName": "Dave",
-        "friends": ["Alice", "Carol"]
+        "friends": ["Bob", "Eve"]
     },
     {
         "userName": "Eve",
-        "friends": ["Carol", "France"]
+        "friends": ["Carol", "Dave","Dylan"]
     },
     {
-        "userName": "France",
-        "friends": ["Eve", "Carol"]
+        "userName": "Frank",
+        "friends": ["Grace", "Hannah"]
+    },
+    {
+        "userName": "Grace",
+        "friends": ["Frank", "Hannah"]
+    },
+    {
+        "userName": "Hannah",
+        "friends": ["Frank", "Grace"]
+    },
+    {
+        "userName": "Ivan",
+        "friends": ["Jake", "Karen","Abby"]
+    },
+    {
+        "userName": "Jake",
+        "friends": ["Ivan", "Karen"]
+    },
+    {
+        "userName": "Karen",
+        "friends": ["Ivan", "Jake","Abby"]
+    },
+    {
+        "userName": "Leo",
+        "friends": ["Mia", "Nina","Victor"]
+    },
+    {
+        "userName": "Mia",
+        "friends": ["Leo", "Nina"]
+    },
+    {
+        "userName": "Nina",
+        "friends": ["Leo", "Mia"]
+    },
+    {
+        "userName": "Oscar",
+        "friends": ["Patricia", "Quinn"]
+    },
+    {
+        "userName": "Patricia",
+        "friends": ["Oscar", "Quinn"]
+    },
+    {
+        "userName": "Quinn",
+        "friends": ["Oscar", "Patricia","Aisha"]
+    },
+    {
+        "userName": "Rachel",
+        "friends": ["Sam", "Tina","Abby"]
+    },
+    {
+        "userName": "Sam",
+        "friends": ["Rachel", "Tina","Cleo","Dylan"]
+    },
+    {
+        "userName": "Tina",
+        "friends": ["Rachel", "Sam"]
+    },
+    {
+        "userName": "Trent",
+        "friends": ["Victor", "Wendy","Uma"]
+    },
+    {
+        "userName": "Victor",
+        "friends": ["Uma", "Trent","Leo"]
+    },
+    {
+        "userName": "Wendy",
+        "friends": ["Uma", "Trent"]
+    },
+    {
+        "userName": "Xander",
+        "friends": ["Yara", "Zane"]
+    },
+    {
+        "userName": "Yara",
+        "friends": ["Xander", "Zane"]
+    },
+    {
+        "userName": "Zane",
+        "friends": ["Xander", "Yara","Aisha"]
+    },
+    {
+        "userName": "Aisha",
+        "friends": ["Quinn", "Zane"]
+    },
+    {
+        "userName": "Brian",
+        "friends": ["Dylan", "Cleo"]
+    },
+    {
+        "userName": "Cleo",
+        "friends": ["Sam", "Brian"]
+    },
+    {
+        "userName": "Dylan",
+        "friends": ["Eve", "Sam","Brian"]
+    },
+    {
+        "userName": "Uma",
+        "friends": ["Victor","Trent","Wendy"]
+    },
+    {
+        "userName": "Mallory",
+        "friends": ["Bob","Alice"]
     }
 ]
