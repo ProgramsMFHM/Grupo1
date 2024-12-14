@@ -3,7 +3,7 @@
   "age": 23,
   "nationality": "Mexico",
   "genres": [ "cumbia", "bolero" ],
-  "artists": [ "losAngelesAzules", "luisMiguel" ],
+  "bands": [ "losAngelesAzules", "luisMiguel" ],
   "description": "Coleccionista de musica latina.",
   "friends": [ "Ivan", "Jake", "Abby" ],
   "comments": []

@@ -3,7 +3,7 @@
   "age": 22,
   "nationality": "USA",
   "genres": [ "hipHop", "cumbia" ],
-  "artists": [ "drake", "losAngelesAzules" ],
+  "bands": [ "drake", "losAngelesAzules" ],
   "description": "Apasionada por la guitarra acustica.",
   "friends": [ "Ivan", "Karen", "Rachel" ],
   "comments": []

@@ -3,7 +3,7 @@
   "age": 27,
   "nationality": "Sweden",
   "genres": [ "house", "techno" ],
-  "artists": [ "avicii", "carlCox" ],
+  "bands": [ "avicii", "carlCox" ],
   "description": "DJ en eventos locales.",
   "friends": [ "Yara", "Zane" ],
   "comments": []

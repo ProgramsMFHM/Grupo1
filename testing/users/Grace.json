@@ -3,7 +3,7 @@
   "age": 31,
   "nationality": "France",
   "genres": [ "rnb", "soul" ],
-  "artists": [ "aliciaKeys", "arethaFranklin" ],
+  "bands": [ "aliciaKeys", "arethaFranklin" ],
   "description": "Amante del RnB y las baladas. #rnb #balada",
   "friends": [ "Frank", "Hannah" ],
   "comments": []

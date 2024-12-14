@@ -46,6 +46,11 @@ void split_bandLinkList(BandLinkPosition source, BandLinkPosition* frontRef, Ban
 BandLinkPosition merge_bandLinkLists(BandLinkPosition a, BandLinkPosition b);
 void sort_bandLinkList_byName(BandLinkPosition* headRef);
 
+// Operaciones de conjunto sobre LES
+BandLinkList union_bandLinkList(BandLinkList list1, BandLinkList list2, int* size);
+BandLinkList intersection_bandLinkList(BandLinkList list1, BandLinkList list2, int* size);
+double jacardIndex_bandLinkList(BandLinkList list1, BandLinkList list2);
+
 // Funciones de interaccion con el usuario
 BandLinkPosition complete_bandLinkList_node(BandLinkPosition P, BandTable userTable);
 BandLinkPosition bandLinkList_first(BandLinkList linkList);

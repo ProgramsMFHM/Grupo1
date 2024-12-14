@@ -253,6 +253,101 @@ void sort_genreLinkList_byName(GenreLinkPosition* headRef)
     *headRef = merge_genreLinkLists(a, b);  /**<fusiona las dos mitades ordenadas */
 }
 
+// Operaciones de conjunto sobre LES
+
+/**
+ * @brief Calcula la unión de dos listas de enlaces a generos.
+ *
+ * @param list1 Primera lista de enlaces a generos.
+ * @param list2 Segunda lista de enlaces a generos.
+ * @param size Variable donde se almacenara el numero de elementos de la union (NULL si no se desea).
+ * @return Una nueva lista que contiene todos los generos presentes en al menos una de las dos listas de entrada, sin duplicados.
+ * @warning La lista devuelta debe ser liberada con `delete_genreLinkList` cuando ya no se necesite.
+*/
+GenreLinkList union_genreLinkList(GenreLinkList list1, GenreLinkList list2, int* size)
+{
+    if(size) *size = 0;
+
+    // Crear una nueva lista para almacenar la unión
+    GenreLinkList unionList = create_empty_genreLinkList(NULL);
+
+    // Agregar todos los elementos de list1 a unionList
+    GenreLinkPosition current = genreLinkList_first(list1);
+    while (current != NULL) {
+        if (find_genreLinkList_node(unionList, current->genre) == NULL) {
+            insert_genreLinkList_node_basicInfo(unionList, current->genre);
+            if(size) (*size)++;
+        }
+        current = genreLinkList_advance(current);
+    }
+
+    // Agregar elementos de list2 que no estén en unionList
+    current = genreLinkList_first(list2);
+    while (current != NULL) {
+        if (find_genreLinkList_node(unionList, current->genre) == NULL) {
+            insert_genreLinkList_node_basicInfo(unionList, current->genre);
+            if(size) (*size)++;
+        }
+        current = genreLinkList_advance(current);
+    }
+
+    return unionList;
+}
+
+/**
+ * @brief Calcula la intersección de dos listas de enlaces a generos.
+ *
+ * @param list1 Primera lista de enlaces a generos.
+ * @param list2 Segunda lista de enlaces a generos.
+ * @param size Variable donde se almacenara el numero de elementos de la interseccion (NULL si no se desea).
+ * @return Una nueva lista que contiene solo los generos presentes en ambas listas de entrada.
+ *
+ * @note La lista devuelta debe ser liberada con `delete_genreLinkList` cuando ya no se necesite.
+ */
+GenreLinkList intersection_genreLinkList(GenreLinkList list1, GenreLinkList list2, int* size)
+{
+    if(size) *size = 0;
+    // Crear una nueva lista para almacenar la intersección
+    GenreLinkList intersectionList = create_empty_genreLinkList(NULL);
+
+    // Recorrer list1 y verificar si los elementos están en list2
+    GenreLinkPosition current = genreLinkList_first(list1);
+    while (current != NULL) {
+        if (find_genreLinkList_node(list2, current->genre) != NULL) {
+            insert_genreLinkList_node_basicInfo(intersectionList, current->genre);
+            if(size) (*size)++;
+        }
+        current = genreLinkList_advance(current);
+    }
+
+    return intersectionList;
+}
+
+/**
+ * @brief Calcula el índice de Jaccard de dos listas de enlaces a generos.
+ *
+* @param list1 Primera lista de enlaces a generos.
+ * @param list2 Segunda lista de enlaces a generos.
+ * @return El índice de Jaccard de las dos listas de enlaces a generos.
+*/
+double jacardIndex_genreLinkList(GenreLinkList list1, GenreLinkList list2)
+{
+    int unionSize = 0, intersectionSize = 0;
+    double jacardIndex = 0;
+    GenreLinkList unionList = union_genreLinkList(list1, list2, &unionSize);
+    GenreLinkList intersectionList = intersection_genreLinkList(list1, list2, &intersectionSize);
+    if(unionSize == 0 || intersectionSize == 0){
+        jacardIndex = 0;
+    }
+    jacardIndex = (double)intersectionSize / (double)unionSize;
+    #ifdef DEBUG
+        printf("GENRES: unionSize: %d, intersectionSize: %d; jacardIndex: %lf\n", unionSize, intersectionSize, jacardIndex);
+    #endif
+    delete_genreLinkList(unionList);
+    delete_genreLinkList(intersectionList);
+    return jacardIndex;
+}
+
 // Funciones de interaccion con el usuario
 
 /**

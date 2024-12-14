@@ -3,7 +3,7 @@
   "age": 27,
   "nationality": "Portugal",
   "genres": [ "opera", "classical" ],
-  "artists": [ "pavarotti", "vivaldi" ],
+  "bands": [ "pavarotti", "vivaldi" ],
   "description": "Disfruto de la musica clasica en vivo. #classical",
   "friends": [ "Uma", "Trent", "Leo" ],
   "comments": []

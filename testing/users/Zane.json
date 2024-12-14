@@ -3,7 +3,7 @@
   "age": 30,
   "nationality": "Norway",
   "genres": [ "grunge", "hardRock" ],
-  "artists": [ "pearlJam", "soundgarden" ],
+  "bands": [ "pearlJam", "soundgarden" ],
   "description": "Amante de la musica de los 90s.",
   "friends": [ "Xander", "Yara", "Aisha" ],
   "comments": []

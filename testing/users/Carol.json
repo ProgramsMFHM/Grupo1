@@ -3,7 +3,7 @@
   "age": 20,
   "nationality": "UK",
   "genres": [ "kpop", "electronic" ],
-  "artists": [ "bts", "blackpink" ],
+  "bands": [ "bts", "blackpink" ],
   "description": "Exploradora de sonidos modernos.",
   "friends": [ "Alice", "Eve" ],
   "comments": []

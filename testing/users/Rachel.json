@@ -3,7 +3,7 @@
   "age": 20,
   "nationality": "India",
   "genres": [ "acoustic", "dancehall" ],
-  "artists": [ "edSheeran", "seanPaul" ],
+  "bands": [ "edSheeran", "seanPaul" ],
   "description": "Amante de la musica acustica.",
   "friends": [ "Sam", "Tina", "Abby" ],
   "comments": []

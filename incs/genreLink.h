@@ -25,7 +25,7 @@ typedef PtrToGenreLinkNode GenreLinkList;
  * @brief Lista de enlaces a generos
 */
 struct _genreLinkNode {
-    char* genre /*!< Nombre del Genero */;
+    char* genre          /*!< Nombre del Genero */;
     PtrToGenre genreNode; /*!< Genero en la red */
     GenreLinkPosition next; /*!< Posicion siguiente en la lista */
 };
@@ -42,10 +42,14 @@ GenreLinkPosition insert_genreLinkList_node_completeInfo(GenreLinkPosition prevP
 void delete_genreLinkList_node(GenreLinkPosition P, GenreLinkList linkList);
 
 // Funciones de ordenamiento de listas de enlaces a generos
-
 void split_genreLinkList(GenreLinkPosition source, GenreLinkPosition* frontRef, GenreLinkPosition* backRef);
 GenreLinkPosition merge_genreLinkLists(GenreLinkPosition a, GenreLinkPosition b);
 void sort_genreLinkList_byName(GenreLinkPosition* headRef);
+
+// Operaciones de conjunto sobre LES
+GenreLinkList union_genreLinkList(GenreLinkList list1, GenreLinkList list2, int* size);
+GenreLinkList intersection_genreLinkList(GenreLinkList list1, GenreLinkList list2, int* size);
+double jacardIndex_genreLinkList(GenreLinkList list1, GenreLinkList list2);
 
 // Funciones de interaccion con el genero
 GenreLinkPosition complete_genreLinkList_node(GenreLinkPosition P, GenreTable userTable);

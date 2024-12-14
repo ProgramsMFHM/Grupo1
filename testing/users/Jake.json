@@ -3,7 +3,7 @@
   "age": 21,
   "nationality": "Brazil",
   "genres": [ "latinPop", "salsa" ],
-  "artists": [ "shakira", "marcAnthony" ],
+  "bands": [ "shakira", "marcAnthony" ],
   "description": "Ritmos latinos son mi pasion.",
   "friends": [ "Ivan", "Karen" ],
   "comments": []

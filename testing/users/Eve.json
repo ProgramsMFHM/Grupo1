@@ -3,7 +3,7 @@
   "age": 22,
   "nationality": "Australia",
   "genres": [ "folk", "indie" ],
-  "artists": [ "bonIver", "fleetFoxes" ],
+  "bands": [ "bonIver", "fleetFoxes"],
   "description": "Viajar y componer son mis hobbies.",
   "friends": [ "Carol", "Dave", "Dylan" ],
   "comments": []

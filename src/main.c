@@ -200,8 +200,20 @@ void user_mode(char *userName)
                         continue;
                     }
                     complete_user_from_json(aux->userNode);
-                    double parameter = abs(user->age - aux->userNode->age); // Cercania entre edades
-                    aux->coefficient = pow(EULER, -0.09*parameter); // Coeficiente de edad (Lo tomamos como una variable aleatoria de tipo exponencial)
+
+                    /* Se calcula el coeficiente para cada usuario como sigue:
+                       - Un 20% del valor dado por la diferencia de edades
+                       - Un 40% del valor dado por el indice de Jaccard entre los generos de ambos usuarios
+                       - Un 60% del valor dado por el indice de Jaccard entre las bandas de ambos usuarios
+                    Esto da un maximo del indice de 1.0 */
+                    aux->coefficient = 0;
+                    #ifdef DEBUG
+                        printf("%s AND %s\n", aux->userName, user->username);
+                    #endif
+                    aux->coefficient += 0.2 * pow(EULER, -0.09*abs(user->age - aux->userNode->age)); // Coeficiente de edad (Lo tomamos como una variable aleatoria de tipo exponencial)
+                    aux->coefficient += 0.4 * jacardIndex_genreLinkList(user->genres, aux->userNode->genres);
+                    aux->coefficient += 0.4 * jacardIndex_bandLinkList(user->bands, aux->userNode->bands);
+
                     aux = aux->next;
                 }
                 sort_userLinkList_byCoefficient(&possibleFriends->next);

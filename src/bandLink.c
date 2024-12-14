@@ -358,3 +358,98 @@ void swap_bandLinkList_nodes(BandLinkPosition a, BandLinkPosition b){
 	b->band = aux.band;
     b->bandNode = aux.bandNode;
 }
+
+// Operaciones de conjunto sobre LES
+
+/**
+ * @brief Calcula la unión de dos listas de enlaces a bandas.
+ *
+ * @param list1 Primera lista de enlaces a bandas.
+ * @param list2 Segunda lista de enlaces a bandas.
+ * @param size Variable donde se almacenara el numero de elementos de la union (NULL si no se desea).
+ * @return Una nueva lista que contiene todos los bandas presentes en al menos una de las dos listas de entrada, sin duplicados.
+ * @warning La lista devuelta debe ser liberada con `delete_bandLinkList` cuando ya no se necesite.
+*/
+BandLinkList union_bandLinkList(BandLinkList list1, BandLinkList list2, int* size)
+{
+    if(size) *size = 0;
+
+    // Crear una nueva lista para almacenar la unión
+    BandLinkList unionList = create_empty_bandLinkList(NULL);
+
+    // Agregar todos los elementos de list1 a unionList
+    BandLinkPosition current = bandLinkList_first(list1);
+    while (current != NULL) {
+        if (find_bandLinkList_node(unionList, current->band) == NULL) {
+            insert_bandLinkList_node_basicInfo(unionList, current->band);
+            if(size) (*size)++;
+        }
+        current = bandLinkList_advance(current);
+    }
+
+    // Agregar elementos de list2 que no estén en unionList
+    current = bandLinkList_first(list2);
+    while (current != NULL) {
+        if (find_bandLinkList_node(unionList, current->band) == NULL) {
+            insert_bandLinkList_node_basicInfo(unionList, current->band);
+            if(size) (*size)++;
+        }
+        current = bandLinkList_advance(current);
+    }
+
+    return unionList;
+}
+
+/**
+ * @brief Calcula la intersección de dos listas de enlaces a bandas.
+ *
+ * @param list1 Primera lista de enlaces a bandas.
+ * @param list2 Segunda lista de enlaces a bandas.
+ * @param size Variable donde se almacenara el numero de elementos de la interseccion (NULL si no se desea).
+ * @return Una nueva lista que contiene solo los bandas presentes en ambas listas de entrada.
+ *
+ * @note La lista devuelta debe ser liberada con `delete_bandLinkList` cuando ya no se necesite.
+ */
+BandLinkList intersection_bandLinkList(BandLinkList list1, BandLinkList list2, int* size)
+{
+    if(size) *size = 0;
+    // Crear una nueva lista para almacenar la intersección
+    BandLinkList intersectionList = create_empty_bandLinkList(NULL);
+
+    // Recorrer list1 y verificar si los elementos están en list2
+    BandLinkPosition current = bandLinkList_first(list1);
+    while (current != NULL) {
+        if (find_bandLinkList_node(list2, current->band) != NULL) {
+            insert_bandLinkList_node_basicInfo(intersectionList, current->band);
+            if(size) (*size)++;
+        }
+        current = bandLinkList_advance(current);
+    }
+
+    return intersectionList;
+}
+
+/**
+ * @brief Calcula el índice de Jaccard de dos listas de enlaces a bandas.
+ *
+* @param list1 Primera lista de enlaces a bandas.
+ * @param list2 Segunda lista de enlaces a bandas.
+ * @return El índice de Jaccard de las dos listas de enlaces a bandas.
+*/
+double jacardIndex_bandLinkList(BandLinkList list1, BandLinkList list2)
+{
+    int unionSize = 0, intersectionSize = 0;
+    double jacardIndex = 0;
+    BandLinkList unionList = union_bandLinkList(list1, list2, &unionSize);
+    BandLinkList intersectionList = intersection_bandLinkList(list1, list2, &intersectionSize);
+    if(unionSize == 0 || intersectionSize == 0){
+        jacardIndex = 0;
+    }
+    jacardIndex = (double)intersectionSize / (double)unionSize;
+    #ifdef DEBUG
+        printf("BANDS: unionSize: %d, intersectionSize: %d; jacardIndex: %lf\n", unionSize, intersectionSize, jacardIndex);
+    #endif
+    delete_bandLinkList(unionList);
+    delete_bandLinkList(intersectionList);
+    return jacardIndex;
+}

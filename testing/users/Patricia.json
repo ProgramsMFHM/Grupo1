@@ -3,7 +3,7 @@
   "age": 28,
   "nationality": "Chile",
   "genres": [ "ska", "reggae" ],
-  "artists": [ "bobMarley", "theSpecials" ],
+  "bands": [ "bobMarley", "theSpecials" ],
   "description": "Exploradora de ritmos caribennos.",
   "friends": [ "Oscar", "Quinn" ],
   "comments": []

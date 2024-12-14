@@ -3,7 +3,7 @@
   "age": 30,
   "nationality": "Colombia",
   "genres": [ "salsa", "bachata" ],
-  "artists": [ "juanLuisGuerra", "hectorLavoe" ],
+  "bands": [ "juanLuisGuerra", "hectorLavoe" ],
   "description": "Bailar es mi vida.",
   "friends": [ "Patricia", "Quinn" ],
   "comments": []
