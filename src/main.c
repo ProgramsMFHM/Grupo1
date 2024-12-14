@@ -118,6 +118,8 @@ void admin_mode()
                 break;
             case 5: // Salir
                 printf("Nos vemos pronto\n");
+                terminate = 1;
+                continue;
                 break;
             default:
                 break;
@@ -179,6 +181,16 @@ void user_mode(char *userName)
 
         switch(option){
             case 1: // Ver perfiles de mis amigos
+                user = complete_user_from_json(user);
+                UserLinkList friend = user->friends->next;
+                printf(CLEAR_SCREEN"\t\t\tAmigos de "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET":\n", user->username);
+                while(friend != NULL){
+                    printf(ANSI_COLOR_MAGENTA "========================================================================="ANSI_COLOR_RESET"\n");
+                    friend = complete_userLinkList_node(friend, loopwebUsers);
+                    print_user(friend->userNode);
+                    sleep(1);
+                    friend = friend->next;
+                }
                 break;
             case 2: // Ver mi propio perfil
                 printf(CLEAR_SCREEN);
@@ -224,6 +236,9 @@ void user_mode(char *userName)
                 break;
             case 6: // Salir
                 printf("Nos vemos pronto\n");
+                terminate = 1;
+                continue;
+                break;
             default:
                 break;
         }
