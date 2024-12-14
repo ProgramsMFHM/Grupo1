@@ -1,10 +1,10 @@
 {
-  "userName": "Dylan",
-  "age": 22,
-  "nationality": "USA",
-  "genres": [ "alternativeRock", "punk"],
-  "bands": [ "blink182", "arcticMonkeys" ],
-  "description": "Apasionado del rock alternativo. #alternativeRock",
-  "friends": [ "Eve", "Sam", "Brian" ],
-  "comments": []
+	"username": "Dylan",
+	"age": 22,
+	"nationality": "USA",
+	"description": "Apasionado del rock alternativo. #alternativeRock",
+	"genres": ["punk", "alternativeRock"],
+	"bands": ["arcticMonkeys", "blink182"],
+	"comments": [1734205436],
+	"friends": ["Eve", "Sam", "Brian"]
 }

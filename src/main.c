@@ -92,9 +92,9 @@ void admin_mode()
                     print_error(103, NULL, NULL);
                     continue;
                 }
-                if(option > 1 && option <= loopWebUsers->userCount){
-                    UserLinkPosition aux = allUsers->next;
-                    for(int i=1; i<option; i++){
+                if(option >= 1 && option <= loopWebUsers->userCount){
+                    UserLinkPosition aux = allUsers;
+                    for(int i=0; i<option; i++){
                         aux = aux->next;
                     }
                     if(aux){

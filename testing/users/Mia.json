@@ -1,10 +1,10 @@
 {
-  "userName": "Mia",
-  "age": 25,
-  "nationality": "South Korea",
-  "genres": [ "kpop", "edm" ],
-  "bands": [ "twice", "exo" ],
-  "description": "Siempre actualizada en tendencias K-pop. #kpop",
-  "friends": [ "Leo", "Nina" ],
-  "comments": []
+	"username": "Mia",
+	"age": 25,
+	"nationality": "South Korea",
+	"description": "Siempre actualizada en tendencias K-pop. #kpop",
+	"genres": ["edm", "kpop"],
+	"bands": ["exo", "twice"],
+	"comments": [1734205305],
+	"friends": ["Nina", "Leo"]
 }

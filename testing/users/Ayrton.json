@@ -3,8 +3,8 @@
 	"age": 19,
 	"nationality": "Chile",
 	"description": "Me gusta el #rock, mis bandas favoritas son @pearlJam, @radioHead y @queen",
-	"genres": ["dreamRock", "punk", "rock"],
-	"bands": ["radioHead", "pearlJam"],
+	"genres": ["rock", "punk", "dreamRock"],
+	"bands": ["pearlJam", "radioHead"],
 	"comments": [1734204610],
-	"friends": ["Milton", "Alice"]
+	"friends": ["Abbo", "Milton", "Alice"]
 }

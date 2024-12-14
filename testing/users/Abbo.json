@@ -1,0 +1,10 @@
+{
+	"username": "Abbo",
+	"age": 20,
+	"nationality": "Chile",
+	"description": "Computin fan de @slipknot",
+	"genres": ["punk", "pop", "rock"],
+	"bands": ["slipknot", "losBunkers"],
+	"comments": [],
+	"friends": ["Milton", "Ayrton"]
+}
