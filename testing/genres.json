@@ -28,6 +28,10 @@
 		"comments":[]
 	},
 	{
+		"genre":"dreamRock",
+		"comments":[]
+	},
+	{
 		"genre":"rock",
 		"comments":[1734190804]
 	},
@@ -120,6 +124,10 @@
 		"comments":[]
 	},
 	{
+		"genre":"celta",
+		"comments":[1734204797]
+	},
+	{
 		"genre":"trap",
 		"comments":[]
 	},
@@ -166,5 +174,9 @@
 	{
 		"genre":"alternativeRock",
 		"comments":[]
+	},
+	{
+		"genre":"medieval",
+		"comments":[1734204797]
 	}
 ]

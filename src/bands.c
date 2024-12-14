@@ -248,6 +248,9 @@ void print_bandTable(BandTable bandTable)
 */
 BandPosition insert_bandTable_band(char* band, BandTable bandTable)
 {
+    #ifdef DEBUG
+        printf("Insertando banda %s en la tabla de bandas...\n", band);
+    #endif
     unsigned int index = jenkins_hash(band) % BANDS_TABLE_SIZE;
     BandPosition position = insert_bandList_band(bandTable->buckets[index], band);
     if (position != NULL) {

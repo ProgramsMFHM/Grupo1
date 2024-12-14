@@ -1,0 +1,10 @@
+{
+	"username": "Milton",
+	"age": 20,
+	"nationality": "Colombia",
+	"description": "En mis tiempos libres toco flauta dulce, gran fan de la musica #celta",
+	"genres": ["celta", "rock", "pop", "lofi"],
+	"bands": ["sodaStereo", "adele", "avicii", "mozart"],
+	"comments": [1734204797],
+	"friends": ["Ayrton", "Alice"]
+}

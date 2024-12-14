@@ -11,9 +11,6 @@
 #include "json.h"
 #include "utilities.h"
 
-#include <math.h>
-#define EULER 2.71828
-
 void admin_mode();
 void user_mode(char *user_name);
 
@@ -62,7 +59,7 @@ int main(int argc, char* argv[])
 void admin_mode()
 {
     int terminate = 0;
-    UserTable looopWebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
+    UserTable loopWebUsers = get_users_from_file(USERS_PATH"users.json", NULL);
     UserLinkList allUsers;
     BandTable loopwebBands = get_bands_from_file("./build/bands.json", NULL);
     BandLinkList allBands;
@@ -89,13 +86,13 @@ void admin_mode()
 
         switch(option){
             case 1: // Listar todos los usuarios
-                allUsers = get_loopweb_users(looopWebUsers, true);
+                allUsers = get_loopweb_users(loopWebUsers, true);
                 printf("Desea ver el perfil de un usuario? Ingrese el numero que aparece junto al usuario deseado (0 para salir): ");
                 if(scanf("%d", &option) != 1){
                     print_error(103, NULL, NULL);
                     continue;
                 }
-                if(option > 1 && option <= looopWebUsers->userCount){
+                if(option > 1 && option <= loopWebUsers->userCount){
                     UserLinkPosition aux = allUsers->next;
                     for(int i=1; i<option; i++){
                         aux = aux->next;
@@ -115,6 +112,7 @@ void admin_mode()
                 delete_genreLinkList(allGenres);
                 break;
             case 4: // Crear un nuevo usuario
+                create_user_profile(loopWebUsers, loopwebBands, loopwebGenres);
                 break;
             case 5: // Salir
                 printf("Nos vemos pronto\n");
@@ -125,16 +123,24 @@ void admin_mode()
                 break;
         }
 
-        printf("\n¿Desea realizar otra accion? (0:si, 1:no): ");
+        printf("\n¿ADMIN: Desea realizar otra accion? (0:si, 1:no): ");
         if(scanf("%d", &terminate) != 1){
             print_error(103, NULL, NULL);
             continue;
         }
     }
 
+    // Guardamos todo aquello que haya sido modificado
+    if(loopwebBands->modified)
+        save_bandTable(loopwebBands);
+    if(loopwebGenres->modified)
+        save_genresTable(loopwebGenres);
+    if(loopWebUsers->modified)
+        save_userTable(loopWebUsers);
+
     delete_bandTable(loopwebBands);
     delete_genresTable(loopwebGenres);
-    delete_userTable(looopWebUsers);
+    delete_userTable(loopWebUsers);
 }
 
 
@@ -243,7 +249,7 @@ void user_mode(char *userName)
                 break;
         }
 
-        printf("\n¿Desea realizar otra accion? (0:si, 1:no): ");
+        printf("\n%s: ¿Desea realizar otra accion? (0:si, 1:no): ", userName);
         if(scanf("%d", &terminate) != 1){
             print_error(103, NULL, NULL);
             continue;

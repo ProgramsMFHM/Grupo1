@@ -768,8 +768,6 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
         return;
     }
     author = complete_user_from_json(author);
-    print_bandLinkList(author->bands);
-    printf("\n");
 
     char commentText[MAX_COMMENT_LENGTH+1];
     do{
@@ -795,10 +793,6 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
             print_error(103, NULL, NULL);
             continue;
         }
-
-        // Limpiamos el buffer de entrada
-        while (getchar() != '\n');
-
     }while(option != 0);
 
     CommentPosition commentNode = create_new_comment(time(NULL), commentText, userName);
@@ -957,4 +951,297 @@ void request_for_friendship(UserPosition user, UserLinkList possibleFriends, Use
             noMoreFriends = 1;
         }
     }
+}
+
+/**
+ * @brief Interactua con un usuario para crear su perfil
+ *
+ * @param users Tabla de usuarios
+ * @param bands Tabla de bandas
+ * @param genres Tabla de generos
+ * @param comments Tabla de comentarios
+ * @return Puntero al usuario creado
+*/
+UserPosition create_user_profile(UserTable users, BandTable bands, GenreTable genres)
+{
+    char userName[21];
+    int age;
+    char nationality[50];
+    char description[MAX_COMMENT_LENGTH+1];
+    GenreLinkList genresList = create_empty_genreLinkList(NULL);
+    char genreText[20];
+    char bandText[20];
+    BandLinkList bandsList = create_empty_bandLinkList(NULL);
+    UserLinkList friendsList = create_empty_userLinkList(NULL);
+    CommentLinkList commentsList = create_empty_commentLinkList(NULL);
+    bool notValid = true;
+    int option;
+    size_t len;
+
+    printf(CLEAR_SCREEN"Bienvenido al creador de perfiles de usuarios de LoopWeb!\n\n");
+
+    // Nombre de usuario
+    printf(CLEAR_SCREEN);
+    do{
+        printf("Ingrese su nombre de usuario: ");
+        if(scanf("%s", userName) != 1){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+        while (getchar() != '\n'); // Limpiamos el buffer de entrada
+
+        len = strlen(userName);
+        if (len > 0 && userName[len - 1] == '\n') {
+            userName[len - 1] = '\0';
+        }
+        if(userName[0] >= 'A' && userName[0] <= 'Z' && len >= 3 && len <= 20){
+            notValid = false;
+        }
+
+        if(notValid){
+            printf("Nombre de usuario no válido, debe tener entre 3 y 20 caracteres y empezar por una letra mayuscula\n");
+        }
+        else{
+            printf("Nombre ingresado: " ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET" desea continuar? (0:si, 1:no): ", userName);
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+            if(option != 0){ // Hubo un error al ingresar el nombre y el usuario quiere corregirlo
+                notValid = true;
+            }
+            else if(find_userTable_node(users, userName) != NULL){ // El usuario ya existe
+                printf("El usuario ya existe, intente con otro nombre\n");
+                notValid = true;
+            }
+        }
+    }while(notValid);
+
+    notValid = true;
+    // Edad
+    printf(CLEAR_SCREEN);
+    do{
+        printf("Ingrese su edad: ");
+        if(scanf("%d", &age) != 1){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+        while (getchar() != '\n'); // Limpiamos el buffer de entrada
+
+        if(age >= 18 && age <= 99){
+            notValid = false;
+        }
+
+        if(notValid == true){
+            printf("Edad no válida, debe ser entre 18 y 98\n");
+        }
+        else{
+            printf("Edad ingresada: "ANSI_COLOR_MAGENTA"%d"ANSI_COLOR_RESET" desea continuar? (0:si, 1:no): ", age);
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+            if(option != 0){ // Hubo un error al ingresar la edad y el usuario quiere corregirlo
+                notValid = true;
+            }
+        }
+    }while(notValid);
+
+    notValid = true;
+    // Nacionalidad
+    printf(CLEAR_SCREEN);
+    do{
+        printf("Ingrese su nacionalidad (Ej: Chile, Colombia, Canada, France, Spain, etc): ");
+        if(scanf("%s", nationality) != 1){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+        while (getchar() != '\n'); // Limpiamos el buffer de entrada
+
+        len = strlen(nationality);
+        if (len > 0 && nationality[len - 1] == '\n') {
+            nationality[len - 1] = '\0';
+        }
+        if(nationality[0] >= 'A' && nationality[0] <= 'Z' && len >= 2 && len <= 50){
+            notValid = false;
+        }
+
+        if(notValid){
+            printf("Nacionalidad no válida, debe tener entre 2 y 50 caracteres y empezar por una letra mayuscula\n");
+        }
+        else{
+            printf("Nacionalidad ingresada: "ANSI_COLOR_YELLOW"%s"ANSI_COLOR_RESET" desea continuar? (0:si, 1:no): ", nationality);
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+            if(option != 0){ // Hubo un error al ingresar la nacionalidad y el usuario quiere corregirlo
+                notValid = true;
+            }
+        }
+    }while(notValid);
+
+    notValid = true;
+    // Descripcion
+    printf(CLEAR_SCREEN);
+    do{
+        printf("Ingrese una descripcion de su perfil: ");
+
+        while (getchar() != '\n'); // Limpiamos el buffer de entrada
+        if(fgets(description, sizeof(description), stdin) == NULL){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+
+        // Elimina el '\n' si está presente
+        size_t len = strlen(description);
+        if (len > 0 && description[len - 1] == '\n') {
+            description[len - 1] = '\0';
+        }
+        if(len >= 1 && len <= MAX_COMMENT_LENGTH){
+            notValid = false;
+        }
+
+        if(notValid){
+            printf("Descripcion no válida, debe tener entre 1 y %d caracteres\n", MAX_COMMENT_LENGTH);
+        }
+        else{
+            printf("Descripcion ingresada: \"");
+            print_loopweb(description);
+            printf("\" desea continuar? (0:si, 1:no): ");
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+            if(option != 0){ // Hubo un error al ingresar la descripcion y el usuario quiere corregirlo
+                notValid = true;
+            }
+        }
+    }while(notValid);
+
+    notValid = true;
+    // Gustos musicales
+    printf(CLEAR_SCREEN);
+    printf("A continuacion, ingrese los gustos musicales de su perfil indicando el numero correspondiente: \n");
+    GenreLinkList programGenreList = get_loopweb_genres(genres);
+    GenrePosition genrePosition;
+    do{
+        printf("Genro: ");
+        if(scanf("%s", genreText) != 1){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+        while (getchar() != '\n'); // Limpiamos el buffer de entrada
+        genrePosition = find_genresTable_genre(genreText, genres);
+        if(genrePosition){
+            insert_genreLinkList_node_completeInfo(genresList, genrePosition);
+            notValid = false;
+        }
+        else{
+            printf("El genero "ANSI_COLOR_RED"%s"ANSI_COLOR_RESET" no existe, desea ingresarlo en la tabla de generos? (0:si, 1:no): ", genreText);
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+            if(option == 0){
+                genrePosition = insert_genre(genreText, genres);
+                insert_genreLinkList_node_completeInfo(genresList, genrePosition);
+                notValid = false;
+            }
+        }
+
+        if(notValid==false){
+            printf("Desea ingresar otro genero? (0:si, 1:no): ");
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+            if(option == 0){ // El usuario desea ingresar otro genero
+                notValid = true;
+            }
+        }
+    }while(notValid);
+
+    notValid = true;
+    // Bandas
+    printf(CLEAR_SCREEN);
+    printf("A continuacion, ingrese las bandas de su perfil indicando el numero correspondiente: \n");
+    BandLinkList programBandList = get_loopweb_bands(bands);
+    BandPosition bandPosition;
+    do{
+        printf("Banda: ");
+        if(scanf("%s", bandText) != 1){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+        while (getchar() != '\n'); // Limpiamos el buffer de entrada
+        bandPosition = find_bandTable_band(bandText, bands);
+        if(bandPosition){
+            insert_bandLinkList_node_completeInfo(bandsList, bandPosition);
+            notValid = false;
+        }
+        else{
+            printf("La banda "ANSI_COLOR_GREEN"%s"ANSI_COLOR_RESET" no existe, desea ingresarla en la tabla de bandas? (0:si, 1:no): ", bandText);
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+            if(option == 0){
+                bandPosition = insert_bandTable_band(bandText, bands);
+                insert_bandLinkList_node_completeInfo(bandsList, bandPosition);
+                notValid = false;
+            }
+        }
+
+        if(notValid == false){
+            printf("Desea ingresar otra banda? (0:si, 1:no): ");
+            if(scanf("%d", &option) != 1){
+                print_error(103, NULL, NULL);
+                continue;
+            }
+            if(option == 0){ // El usuario desea ingresar otra banda
+                notValid = true;
+            }
+        }
+    }while(notValid);
+
+    // Creamos el nodo con toda la informacion
+    UserPosition user = insert_userTable_node(users, userName, age, nationality, description, genresList, bandsList, friendsList, commentsList);
+
+    printf(CLEAR_SCREEN);
+    print_user(user);
+
+    // Damos la posibilidad de tener amigos
+    UserLinkList possibleFriends = find_possible_friends(user, users);
+    UserLinkPosition aux = possibleFriends->next;
+    while(aux != NULL){
+        complete_userLinkList_node(aux, users);
+        if(aux == NULL){
+            continue;
+        }
+        complete_user_from_json(aux->userNode);
+        /* Se calcula el coeficiente para cada usuario como sigue:
+            - Un 20% del valor dado por la diferencia de edades
+            - Un 40% del valor dado por el indice de Jaccard entre los generos de ambos usuarios
+            - Un 60% del valor dado por el indice de Jaccard entre las bandas de ambos usuarios
+        Esto da un maximo del indice de 1.0 */
+        aux->coefficient = 0;
+        #ifdef DEBUG
+            printf("%s AND %s\n", aux->userName, user->username);
+        #endif
+        aux->coefficient += 0.2 * pow(EULER, -0.09*abs(user->age - aux->userNode->age)); // Coeficiente de edad (Lo tomamos como una variable aleatoria de tipo exponencial)
+        aux->coefficient += 0.4 * jacardIndex_genreLinkList(user->genres, aux->userNode->genres);
+        aux->coefficient += 0.4 * jacardIndex_bandLinkList(user->bands, aux->userNode->bands);
+
+        aux = aux->next;
+    }
+    sort_userLinkList_byCoefficient(&possibleFriends->next);
+    print_user_recommendations(user, possibleFriends);
+    request_for_friendship(user, possibleFriends, users);
+
+    // Liberamos toda la memoria utilizada
+    delete_userLinkList(possibleFriends);
+    delete_genreLinkList(programGenreList);
+    delete_bandLinkList(programBandList);
+    return user;
 }

@@ -84,6 +84,10 @@
 		"friends":["Yara", "Zane"]
 	},
 	{
+		"userName":"Ayrton",
+		"friends":["Alice", "Milton"]
+	},
+	{
 		"userName":"Bob",
 		"friends":["Alice", "Dave", "Mallory"]
 	},
@@ -98,6 +102,10 @@
 	{
 		"userName":"Cleo",
 		"friends":["Sam", "Brian"]
+	},
+	{
+		"userName":"Milton",
+		"friends":["Alice", "Ayrton"]
 	},
 	{
 		"userName":"Grace",
@@ -125,7 +133,7 @@
 	},
 	{
 		"userName":"Alice",
-		"friends":["Bob", "Carol", "Mallory"]
+		"friends":["Bob", "Carol", "Mallory", "Ayrton", "Milton"]
 	},
 	{
 		"userName":"Sam",

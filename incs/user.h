@@ -88,5 +88,6 @@ void save_userTable(UserTable userTable);
 void make_comment(char* userName, UserTable users, BandTable band, GenreTable genre, CommentTable comments);
 UserLinkList get_loopweb_users(UserTable table, bool print);
 void request_for_friendship(UserPosition user, UserLinkList possibleFriends, UserTable table);
+UserPosition create_user_profile(UserTable users, BandTable bands, GenreTable genres);
 
 #endif

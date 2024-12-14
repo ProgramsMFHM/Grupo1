@@ -1,0 +1,10 @@
+{
+	"username": "Ayrton",
+	"age": 19,
+	"nationality": "Chile",
+	"description": "Me gusta el #rock, mis bandas favoritas son @pearlJam, @radioHead y @queen",
+	"genres": ["dreamRock", "punk", "rock"],
+	"bands": ["radioHead", "pearlJam"],
+	"comments": [1734204610],
+	"friends": ["Milton", "Alice"]
+}

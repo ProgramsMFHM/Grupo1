@@ -245,6 +245,9 @@ void print_genresTable(GenreTable genresTable)
 */
 GenrePosition insert_genre(char* genre, GenreTable genresTable)
 {
+    #ifdef DEBUG
+        printf("Insertando genero %s en la tabla de generos...\n", genre);
+    #endif
     unsigned int index = jenkins_hash(genre) % GENRE_TABLE_SIZE;
     GenrePosition position = insert_genreList_genre(genresTable->buckets[index], genre);
     if (position != NULL) {

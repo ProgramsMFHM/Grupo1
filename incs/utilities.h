@@ -7,6 +7,7 @@
 #define UTILITIES_H
 
 #include <stdbool.h>
+#include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -25,6 +26,8 @@
 #define ANSI_COLOR_CYAN     "\x1b[36m"
 #define ANSI_COLOR_RESET    "\x1b[0m"
 
+// Otras definiciones
+#define EULER 2.71828
 
 // Para cadenas de caracteres
 void to_low_case(char* s1);
