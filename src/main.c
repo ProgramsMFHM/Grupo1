@@ -86,7 +86,7 @@ void admin_mode()
 
         switch(option){
             case 1: // Listar todos los usuarios
-                allUsers = get_loopweb_users(looopWebUsers);
+                allUsers = get_loopweb_users(looopWebUsers, true);
                 printf("Desea ver el perfil de un usuario? Ingrese el numero que aparece junto al usuario deseado (0 para salir): ");
                 if(scanf("%d", &option) != 1){
                     print_error(103, NULL, NULL);

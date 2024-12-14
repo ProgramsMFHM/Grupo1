@@ -63,6 +63,10 @@ void print_userLinkList(UserLinkList linkList){
         printf("NULL");
         return;
     }
+    if(linkList->next == NULL){
+        printf("Empty");
+        return;
+    }
     UserLinkPosition current = linkList->next;
     printf("{%s", current->userName);
     current = current->next;
@@ -288,16 +292,34 @@ UserLinkPosition find_possible_friends(UserPosition user, UserTable table)
 
         //dequeue
         rear = find_userLinkList_prev_node(rear, cola);
+        if(rear == cola){
+            break;
+        }
         delete_userLinkList_node(rear->next, cola);
     }
 
-    // Eliminamos los nodos que tengan coeficiente 2 (amigos directos) y 1 (El propio usuario)
+    // Eliminamos el nodo correspondiente al usuario
+    delete_userLinkList_node(find_userLinkList_node(visitados, user->username), visitados);
+
+    // Eliminamos los nodos que tengan coeficiente 2 (amigos directos)
     UserLinkPosition aux = visitados->next;
     while(aux != NULL){
-        if(aux->coefficient == 2.0 || aux->coefficient == 1.0){
+        if(aux->coefficient == 2.0){
             delete_userLinkList_node(aux, visitados);
         }
         aux = aux->next;
+    }
+
+    if(visitados->next == NULL){ // Si no hay recomendaciones las recomendaciones son todos los usuarios de la web
+        UserLinkList allUsers = get_loopweb_users(table, false); // Obtenemos todos los usuarios
+        UserLinkPosition aux = allUsers->next;
+        while(aux != NULL){
+            // Si el usuario no es el propio y no esta en la lista de amigos, lo agregamos
+            if(aux->userName != user->username && !find_userLinkList_node(user->friends, aux->userName)){
+                insert_userLinkList_node_completeInfo(visitados, aux->userNode);
+            }
+            aux = aux->next;
+        }
     }
 
     delete_userLinkList(cola);

@@ -855,9 +855,10 @@ void make_comment(char* userName, UserTable userTable, BandTable bandTable, Genr
  * @brief Imprime de manera estetica la tabla de usuarios y devuelve la lista de enlaces a todos los usuarios
  *
  * @param table Puntero a la tabla de usuarios
+ * @param print TRUE si se desea imprimir la lista de usuarios, FALSE en caso contrario
  * @return Puntero a la lista de enlaces a todos los usuarios de la red ordenados alfabeticamente
 */
-UserLinkList get_loopweb_users(UserTable table)
+UserLinkList get_loopweb_users(UserTable table, bool print)
 {
     UserLinkList allUsers = create_empty_userLinkList(NULL);
 
@@ -869,16 +870,18 @@ UserLinkList get_loopweb_users(UserTable table)
         }
     }
     sort_userLinkList_byName(&allUsers->next);
-    UserLinkPosition current = allUsers->next;
-    int counter = 1;
-    while (current != NULL) {
-        printf("%3d. "ANSI_COLOR_CYAN"%-10s"ANSI_COLOR_RESET, counter, current->userName);
-        if(counter % 5 == 0){
-            printf("\n");
+    if(print){
+        UserLinkPosition current = allUsers->next;
+        int counter = 1;
+        while (current != NULL) {
+            printf("%3d. "ANSI_COLOR_CYAN"%-10s"ANSI_COLOR_RESET, counter, current->userName);
+            if(counter % 5 == 0){
+                printf("\n");
+            }
+            counter++;
+            current = current->next;
         }
-        counter++;
-        current = current->next;
+        printf("\n\n");
     }
-    printf("\n\n");
     return allUsers;
 }

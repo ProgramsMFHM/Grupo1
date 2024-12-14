@@ -91,6 +91,6 @@ void print_userTable(UserTable table);
 
 // Funciones de loopweb relacionadas a usuarios
 void make_comment(char* userName, UserTable users, BandTable band, GenreTable genre, CommentTable comments);
-UserLinkList get_loopweb_users(UserTable table);
+UserLinkList get_loopweb_users(UserTable table, bool print);
 
 #endif
