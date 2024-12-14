@@ -180,6 +180,13 @@ void delete_commentLinkList_node(CommentLinkPosition P, CommentLinkList linkList
  * @return Puntero al nodo de enlace a comentario completado
 */
 CommentLinkPosition complete_commentLinkList_node(CommentLinkPosition P, CommentTable commentTable){
+    if(P->commentNode)
+    {
+        #ifdef DEBUG
+            printf("Comentario %ld ya completado anteriormente\n", P->commentID);
+        #endif
+        return P;
+    }
     CommentPosition commentNode = find_commentTable_comment(P->commentID, commentTable);
     if(commentNode == NULL){
         char commentID[20];

@@ -162,7 +162,7 @@ void user_mode(char *userName)
     while(!terminate)
     {
         // Usuario escoge camino a seguir
-        printf(CLEAR_SCREEN"\t\tUsted a ingresado como usuaro con el nombre "ANSI_COLOR_CYAN"%s\n" ANSI_COLOR_RESET, userName);
+        printf(CLEAR_SCREEN"\t\tUsted a ingresado como usuario con el nombre "ANSI_COLOR_CYAN"%s\n" ANSI_COLOR_RESET, userName);
         printf("Que desea hacer?\n");
         printf("\t1. Ver perfiles de mis amigos\n");
         printf("\t2. Ver mi propio perfil\n");

@@ -286,6 +286,17 @@ CommentLinkList get_user_feed(UserPosition user, BandTable bandTable, GenreTable
         }
         auxGenre = auxGenre->next;
     }
+
+    if(feedComments->next == NULL){ // Si no hay comentarios el feed seran todos los comentarios del programa
+        for(int i=0; i<COMMENTS_TABLE_SIZE; i++){
+            CommentPosition aux = commentTable->buckets[i]->next;
+            while(aux != NULL){
+                printf("Procesando comentario %ld\n", aux->ID);
+                insert_commentLinkList_node_basicInfo(feedComments, aux->ID);
+                aux = aux->next;
+            }
+        }
+    }
     return feedComments;
 }
 
@@ -302,12 +313,14 @@ void print_user_feed(UserPosition user, BandTable bandTable, GenreTable genreTab
     CommentLinkList feedComments = get_user_feed(user, bandTable, genreTable, commentTable);
     sort_commentLinkList_byID(&feedComments->next);
     CommentLinkPosition aux = feedComments->next;
-
-    sleep(1);
+    #ifdef DEBUG
+        sleep(1);
+    #endif
     printf(CLEAR_SCREEN"Feed de publicaciones para "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET":\n", user->username);
     printf("\n");
 
     while (aux != NULL) {
+        complete_commentLinkList_node(aux, commentTable);
         complete_comment_from_json(aux->commentNode);
         print_commentNode(aux->commentNode);
         aux = aux->next;
