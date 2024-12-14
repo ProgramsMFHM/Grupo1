@@ -177,7 +177,132 @@ void delete_userLinkList_node(UserLinkPosition P, UserLinkList linkList){
     free(P);
 }
 
+// Funciones de ordenamiento de listas de enlaces a usuarios
+
+/**
+ * @brief Divide una lista enlazada en dos mitades.
+ *
+ * @param source Puntero al nodo inicial de la lista a dividir.
+ * @param frontRef Referencia a la primera mitad de la lista.
+ * @param backRef Referencia a la segunda mitad de la lista.
+ */
+void split_userLinkList(UserLinkPosition source, UserLinkPosition* frontRef, UserLinkPosition* backRef)
+{
+    UserLinkPosition slow, fast;
+    slow = source;
+    fast = source->next;
+
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
+
+/**
+ * @brief Fusiona dos listas enlazadas ordenadas en una sola lista ordenada (Usando el nombre de usuario)
+ *
+ * @param a Puntero a la primera lista ordenada
+ * @param b Puntero a la segunda lista ordenada
+ * @return Puntero al nodo inicial de la lista fusionada ordenada
+*/
+UserLinkPosition merge_userLinkLists_withName(UserLinkPosition a, UserLinkPosition b)
+{
+    if (a == NULL) return b;
+    if (b == NULL) return a;
+
+    UserLinkPosition result;
+
+    if (strcmp(a->userName, b->userName) < 0) {
+        result = a;
+        result->next = merge_userLinkLists_withName(a->next, b);
+    } else {
+        result = b;
+        result->next = merge_userLinkLists_withName(a, b->next);
+    }
+    return result;
+}
+
+/**
+ * @brief Ordena una lista de usuarios utilizando el algoritmo merge sort.
+ *
+ * @note Ordena la lista de usuarios en orden alfabetico ascendente.
+ * @param headRef Referencia al puntero del nodo inicial de la lista a ordenar.
+ * @warning Es necesario pasar a esta funcion la primera posicion de la lista de usuarios NO EL CENTINELA.
+*/
+void sort_userLinkList_byName(UserLinkPosition* headRef)
+{
+    UserLinkPosition head = *headRef;
+    UserLinkPosition a, b;
+
+    if ((head == NULL) || (head->next == NULL)) {
+        return;  /**<si la lista esta vacia o tiene un solo elemento, no hay que ordenar */
+    }
+
+    split_userLinkList(head, &a, &b);
+
+    sort_userLinkList_byName(&a);  /**<ordena la primera mitad */
+    sort_userLinkList_byName(&b);  /**<ordena la segunda mitad */
+
+    *headRef = merge_userLinkLists_withName(a, b);  /**<fusiona las dos mitades ordenadas */
+}
+
+/**
+ * @brief Fusiona dos listas enlazadas ordenadas en una sola lista ordenada (Usando el coediciente de usuario)
+ *
+ * @param a Puntero a la primera lista ordenada
+ * @param b Puntero a la segunda lista ordenada
+ * @return Puntero al nodo inicial de la lista fusionada ordenada
+*/
+UserLinkPosition merge_userLinkLists_withCoefficient(UserLinkPosition a, UserLinkPosition b)
+{
+    if (a == NULL) return b;
+    if (b == NULL) return a;
+
+    UserLinkPosition result;
+
+    if (a->coefficient > b->coefficient) {
+        result = a;
+        result->next = merge_userLinkLists_withCoefficient(a->next, b);
+    } else {
+        result = b;
+        result->next = merge_userLinkLists_withCoefficient(a, b->next);
+    }
+    return result;
+}
+
+/**
+ * @brief Ordena una lista de usuarios utilizando el algoritmo merge sort.
+ *
+ * @note Ordena la lista de usuarios de mayor a menor segun el valor del coeficiente de cada usuario.
+ * @param headRef Referencia al puntero del nodo inicial de la lista a ordenar.
+ * @warning Es necesario pasar a esta funcion la primera posicion de la lista de usuarios NO EL CENTINELA.
+*/
+void sort_userLinkList_byCoefficient(UserLinkPosition* headRef)
+{
+    UserLinkPosition head = *headRef;
+    UserLinkPosition a, b;
+
+    if ((head == NULL) || (head->next == NULL)) {
+        return;  /**<si la lista esta vacia o tiene un solo elemento, no hay que ordenar */
+    }
+
+    split_userLinkList(head, &a, &b);
+
+    sort_userLinkList_byCoefficient(&a);  /**<ordena la primera mitad */
+    sort_userLinkList_byCoefficient(&b);  /**<ordena la segunda mitad */
+
+    *headRef = merge_userLinkLists_withCoefficient(a, b);  /**<fusiona las dos mitades ordenadas */
+}
+
 // Funciones de interaccion con el usuario
+
 /**
  * @brief Completa un enlace a un usuario (agregando el puntero al nodo de usuario)
  *
@@ -237,21 +362,22 @@ UserLinkPosition userLinkList_advance(UserLinkPosition P){
  * @param user Usuario a recomendar amigos
  * @param table Tabla de usuarios
  * @return Lista de amigos recomendados (amigos en tercer nivel)
- */
+ * @name Los usuarios son completados por esta funcion
+*/
 UserLinkPosition find_possible_friends(UserPosition user, UserTable table)
 {
     //iniciaciones
-    UserLinkList amigos = create_empty_userLinkList(NULL);
-    UserLinkList visitados = create_empty_userLinkList(NULL);
-    UserLinkList vecino = create_empty_userLinkList(NULL);
-    UserLinkList cola = create_empty_userLinkList(NULL);
+    UserLinkList friends;
+    UserLinkList visited = create_empty_userLinkList(NULL);
+    UserLinkList vecino;
+    UserLinkList queue = create_empty_userLinkList(NULL);
 
-    insert_userLinkList_node_basicInfo(cola, user->username);
-    UserLinkPosition rear = insert_userLinkList_node_basicInfo(visitados, user->username);
+    insert_userLinkList_node_basicInfo(queue, user->username);
+    UserLinkPosition rear = insert_userLinkList_node_basicInfo(visited, user->username);
     rear->coefficient = 1.0; //nivel inicial (nivel 1)
 
     //mientas que la cola no este vacia coefficient sea menor a 5.0
-    while(cola->next != NULL && visitados->next->coefficient < 5.0){
+    while(queue->next != NULL && visited->next->coefficient < 5.0){
         //procesar nodo actual
 
         #ifdef DEBUG
@@ -266,23 +392,23 @@ UserLinkPosition find_possible_friends(UserPosition user, UserTable table)
             return NULL;
         }
         complete_user_from_json(userNode);
-        amigos = userNode->friends;
+        friends = userNode->friends;
 
         // Iterar sobre vecinos
-        vecino = amigos->next;
+        vecino = friends->next;
 
         while(vecino != NULL){
             //si el amigo es nuevo, agregarlo a visitados
-            if(!find_userLinkList_node(visitados, vecino->userName)&& rear->coefficient + 1 <= 4.0)
+            if(!find_userLinkList_node(visited, vecino->userName)&& rear->coefficient + 1 <= 4.0)
                 {
                     //enqueue
-                    insert_userLinkList_node_basicInfo(cola, vecino->userName);
-                    cola->next->coefficient = rear->coefficient +1;
+                    insert_userLinkList_node_basicInfo(queue, vecino->userName);
+                    queue->next->coefficient = rear->coefficient +1;
                     #ifdef DEBUG
                         printf("%-10s",vecino->userName);
                     #endif
-                    insert_userLinkList_node_basicInfo(visitados, vecino->userName);
-                    visitados->next->coefficient = rear->coefficient +1;
+                    insert_userLinkList_node_basicInfo(visited, vecino->userName);
+                    visited->next->coefficient = rear->coefficient +1;
                 }
             vecino = vecino->next;
         }
@@ -291,37 +417,60 @@ UserLinkPosition find_possible_friends(UserPosition user, UserTable table)
         #endif
 
         //dequeue
-        rear = find_userLinkList_prev_node(rear, cola);
-        if(rear == cola){
+        rear = find_userLinkList_prev_node(rear, queue);
+        if(rear == queue){
             break;
         }
-        delete_userLinkList_node(rear->next, cola);
+        delete_userLinkList_node(rear->next, queue);
     }
 
     // Eliminamos el nodo correspondiente al usuario
-    delete_userLinkList_node(find_userLinkList_node(visitados, user->username), visitados);
+    delete_userLinkList_node(find_userLinkList_node(visited, user->username), visited);
 
     // Eliminamos los nodos que tengan coeficiente 2 (amigos directos)
-    UserLinkPosition aux = visitados->next;
+    UserLinkPosition aux = visited->next;
     while(aux != NULL){
+        UserLinkPosition aux2 = aux->next;
         if(aux->coefficient == 2.0){
-            delete_userLinkList_node(aux, visitados);
+            delete_userLinkList_node(aux, visited);
         }
-        aux = aux->next;
+        aux = aux2;
     }
 
-    if(visitados->next == NULL){ // Si no hay recomendaciones las recomendaciones son todos los usuarios de la web
+    if(visited->next == NULL){ // Si no hay recomendaciones las recomendaciones son todos los usuarios de la web
         UserLinkList allUsers = get_loopweb_users(table, false); // Obtenemos todos los usuarios
         UserLinkPosition aux = allUsers->next;
         while(aux != NULL){
             // Si el usuario no es el propio y no esta en la lista de amigos, lo agregamos
             if(aux->userName != user->username && !find_userLinkList_node(user->friends, aux->userName)){
-                insert_userLinkList_node_completeInfo(visitados, aux->userNode);
+                insert_userLinkList_node_completeInfo(visited, aux->userNode);
             }
             aux = aux->next;
         }
+
+        // Eliminamos el nodo correspondiente al usuario
+        delete_userLinkList_node(find_userLinkList_node(visited, user->username), visited);
+        // Eliminamos las referencias a todos los usuarios de la tabla
+        delete_userLinkList(allUsers);
     }
 
-    delete_userLinkList(cola);
-    return visitados;
+    delete_userLinkList(queue);
+    return visited;
+}
+
+void print_user_recommendations(UserPosition user, UserLinkList recommendations)
+{
+    UserLinkPosition aux = recommendations->next;
+    int counter = 1;
+
+    printf("\t\t Posibles amigos para: "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET" ("ANSI_COLOR_MAGENTA"%d"ANSI_COLOR_RESET"):\n", user->username, user->age);
+    printf("___________________________________________________________________________\n");
+    printf("| ID |        Nombre       |    Edad   |      Nacionalidad      |  Coef.  |\n");
+    while(aux != NULL){
+        printf("| %-3d|        "ANSI_COLOR_CYAN"%-13s"ANSI_COLOR_RESET"|"ANSI_COLOR_MAGENTA"    %-7d"ANSI_COLOR_RESET"|"ANSI_COLOR_YELLOW"      %-18s"ANSI_COLOR_RESET"|  %-5.3f  |\n", counter, aux->userName, aux->userNode->age, aux->userNode->nationality, aux->coefficient);
+        counter++;
+        aux = aux->next;
+    }
+    printf("___________________________________________________________________________\n");
+    printf("\n");
 }

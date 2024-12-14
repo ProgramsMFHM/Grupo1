@@ -61,6 +61,10 @@ UserPosition complete_user_from_json(UserPosition user)
         print_error(202, NULL, NULL);
     }
 
+    if(user->bands && user->friends && user->comments && user->genres && user->nationality && user->description){
+        return user;
+    }
+
     // Crear estructura JSON
     char filePath[200];
     snprintf(filePath, 200, USERS_PATH"%s.json", user->username);

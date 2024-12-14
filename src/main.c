@@ -11,6 +11,9 @@
 #include "json.h"
 #include "utilities.h"
 
+#include <math.h>
+#define EULER 2.71828
+
 void admin_mode();
 void user_mode(char *user_name);
 
@@ -189,7 +192,22 @@ void user_mode(char *userName)
                 break;
             case 5: // Ver mis recomendaciones de amigos
                 possibleFriends = find_possible_friends(user, loopwebUsers);
-                print_userLinkList(possibleFriends);
+
+                UserLinkPosition aux = possibleFriends->next;
+                while(aux != NULL){
+                    complete_userLinkList_node(aux, loopwebUsers);
+                    if(aux == NULL){
+                        continue;
+                    }
+                    complete_user_from_json(aux->userNode);
+                    double parameter = abs(user->age - aux->userNode->age); // Cercania entre edades
+                    aux->coefficient = pow(EULER, -0.09*parameter); // Coeficiente de edad (Lo tomamos como una variable aleatoria de tipo exponencial)
+                    aux = aux->next;
+                }
+                sort_userLinkList_byCoefficient(&possibleFriends->next);
+
+                print_user_recommendations(user, possibleFriends);
+                request_for_friendship(user, possibleFriends, loopwebUsers);
                 delete_userLinkList(possibleFriends);
                 break;
             case 6: // Salir
@@ -204,6 +222,16 @@ void user_mode(char *userName)
             continue;
         }
     }
+
+    // Guardamos todo aquello que haya sido modificado
+    if(loopwebBands->modified)
+        save_bandTable(loopwebBands);
+    if(loopwebGenres->modified)
+        save_genresTable(loopwebGenres);
+    if(loopwebComments->modified)
+        save_commentTable(loopwebComments);
+    if(loopwebUsers->modified)
+        save_userTable(loopwebUsers);
 
     delete_bandTable(loopwebBands);
     delete_genresTable(loopwebGenres);

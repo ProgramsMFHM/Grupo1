@@ -14,7 +14,7 @@
 */
 void save_userNode(PtrToUser user){
     #ifdef DEBUG
-        printf("Guardando usuario %s\n", user->username);
+        printf("Guardando usuario %s...\n", user->username);
         if(!user){
             printf("\tUsuario Nulo\n");
         }
@@ -71,6 +71,11 @@ void save_userNode(PtrToUser user){
     fprintf(file,"\t\"description\": \"%s\",\n", user->description);
 
     // Gustos musicales de la lista de gustos musicales
+    #ifdef DEBUG
+        printf("Guardando gustos musicales de la lista de gustos musicales: \n");
+        print_genreLinkList(user->genres);
+        printf("\n");
+    #endif
     fprintf(file,"\t\"genres\": [");
     GenreLinkPosition aux = user->genres->next;
     while (aux != NULL) {
@@ -83,6 +88,11 @@ void save_userNode(PtrToUser user){
     fprintf(file,"],\n");
 
     // Bandas de la lista de bandas
+    #ifdef DEBUG
+        printf("Guardando bandas de la lista de bandas: \n");
+        print_bandLinkList(user->bands);
+        printf("\n");
+    #endif
     fprintf(file,"\t\"bands\": [");
     BandLinkPosition aux2 = user->bands->next;
     while (aux2 != NULL) {
@@ -95,6 +105,11 @@ void save_userNode(PtrToUser user){
     fprintf(file,"],\n");
 
     // Comentarios de la lista de comentarios
+    #ifdef DEBUG
+        printf("Guardando comentarios de la lista de comentarios: \n");
+        print_commentLinkList(user->comments);
+        printf("\n");
+    #endif
     fprintf(file,"\t\"comments\": [");
     CommentLinkPosition aux3 = user->comments->next;
     while (aux3 != NULL) {
@@ -107,6 +122,11 @@ void save_userNode(PtrToUser user){
     fprintf(file,"],\n");
 
     // Amigos de la lista de amigos
+    #ifdef DEBUG
+        printf("Guardando amigos de la lista de amigos: \n");
+        print_userLinkList(user->friends);
+        printf("\n");
+    #endif
     fprintf(file,"\t\"friends\": [");
     UserLinkPosition aux4 = user->friends->next;
     while (aux4 != NULL) {
@@ -556,82 +576,6 @@ char *get_username(UserPosition P){
     return P->username;
 }
 
-// Funciones de ordenamiento de listas de enlaces a usuarios
-
-/**
- * @brief Divide una lista enlazada en dos mitades.
- *
- * @param source Puntero al nodo inicial de la lista a dividir.
- * @param frontRef Referencia a la primera mitad de la lista.
- * @param backRef Referencia a la segunda mitad de la lista.
- */
-void split_userLinkList(UserLinkPosition source, UserLinkPosition* frontRef, UserLinkPosition* backRef)
-{
-    UserLinkPosition slow, fast;
-    slow = source;
-    fast = source->next;
-
-    while (fast != NULL) {
-        fast = fast->next;
-        if (fast != NULL) {
-            slow = slow->next;
-            fast = fast->next;
-        }
-    }
-
-    *frontRef = source;
-    *backRef = slow->next;
-    slow->next = NULL;
-}
-
-/**
- * @brief Fusiona dos listas enlazadas ordenadas en una sola lista ordenada
- *
- * @param a Puntero a la primera lista ordenada
- * @param b Puntero a la segunda lista ordenada
- * @return Puntero al nodo inicial de la lista fusionada ordenada
- */
-UserLinkPosition merge_userLinkLists(UserLinkPosition a, UserLinkPosition b)
-{
-    if (a == NULL) return b;
-    if (b == NULL) return a;
-
-    UserLinkPosition result;
-
-    if (strcmp(a->userName, b->userName) < 0) {
-        result = a;
-        result->next = merge_userLinkLists(a->next, b);
-    } else {
-        result = b;
-        result->next = merge_userLinkLists(a, b->next);
-    }
-    return result;
-}
-
-/**
- * @brief Ordena una lista de usuarios utilizando el algoritmo merge sort.
- *
- * @note Ordena la lista de usuarios en orden alfabetico ascendente.
- * @param headRef Referencia al puntero del nodo inicial de la lista a ordenar.
- * @warning Es necesario pasar a esta funcion la primera posicion de la lista de usuarios NO EL CENTINELA.
-*/
-void sort_userLinkList_byName(UserLinkPosition* headRef)
-{
-    UserLinkPosition head = *headRef;
-    UserLinkPosition a, b;
-
-    if ((head == NULL) || (head->next == NULL)) {
-        return;  /**<si la lista esta vacia o tiene un solo elemento, no hay que ordenar */
-    }
-
-    split_userLinkList(head, &a, &b);
-
-    sort_userLinkList_byName(&a);  /**<ordena la primera mitad */
-    sort_userLinkList_byName(&b);  /**<ordena la segunda mitad */
-
-    *headRef = merge_userLinkLists(a, b);  /**<fusiona las dos mitades ordenadas */
-}
-
 // Funciones de la tabla de usuarios
 
 /**
@@ -739,6 +683,58 @@ void print_userTable(UserTable table){
         print_UserList(table->buckets[i]);
     }
 }
+
+/**
+ * @brief Funcion para guardar una tabla de usuarios en su archivo JSON correspondiente
+ *
+ * @param userTable Tabla de usuarios a guardar
+*/
+void save_userTable(UserTable userTable)
+{
+    FILE* userTableFile = fopen(USERS_PATH"users.json", "w");
+    if (userTableFile == NULL)
+    {
+        print_error(100, USERS_PATH"users.json", NULL);
+        return;
+    }
+
+    bool first = true;
+    fprintf(userTableFile, "[\n");
+    for(int i=0; i<USER_TABLE_SIZE; i++)
+    {
+        if(!userTable->buckets[i]->next){
+            continue;
+        }
+        if(!first){
+            fprintf(userTableFile, ",\n");
+        }
+        else{
+            first = false;
+        }
+        UserPosition aux = userTable->buckets[i]->next;
+        while(aux != NULL){
+            fprintf(userTableFile, "\t{\n\t\t\"userName\":\"%s\",\n\t\t\"friends\":[", aux->username);
+            if(aux->friends->next){
+                UserLinkPosition aux2 = aux->friends->next;
+                while(aux2 != NULL){
+                    fprintf(userTableFile, "\"%s\"", aux2->userName);
+                    if(aux2->next != NULL){
+                        fprintf(userTableFile, ", ");
+                    }
+                    aux2 = aux2->next;
+                }
+            }
+            fprintf(userTableFile, "]\n\t}");
+            if(aux->next != NULL){
+                fprintf(userTableFile, ",\n");
+            }
+            aux = aux->next;
+        }
+    }
+    fprintf(userTableFile, "\n]");
+    fclose(userTableFile);
+}
+
 
 // Funciones de LoopWeb relacionadas a usuarios
 
@@ -884,4 +880,68 @@ UserLinkList get_loopweb_users(UserTable table, bool print)
         printf("\n\n");
     }
     return allUsers;
+}
+
+/**
+ * @brief Funcion que maneja la creacion de nuevas amistades de un usuario basado en una lista de recomendaciones PREVIAMENTE IMPRESA
+ *
+ * @param user Nodo de usuario a hacer amigos
+ * @param possibleFriends Puntero a la lista de amigos recomendados
+*/
+void request_for_friendship(UserPosition user, UserLinkList possibleFriends, UserTable table)
+{
+    int noMoreFriends = 0, friendOption=0, counter = 1;
+    UserLinkPosition aux;
+
+    while(noMoreFriends == 0){
+        counter = 1;
+        printf("Desea hacerse amigo/a de alguno de los usuarios recomendados? Ingrese el numero que aparece junto al usuario deseado (0 para salir): ");
+        if(scanf("%d", &friendOption) != 1){
+            print_error(103, NULL, NULL);
+            continue;
+        }
+        if(friendOption == 0){
+            noMoreFriends = 1;
+            break;
+        }
+        aux = possibleFriends->next;
+        while(aux != NULL){
+            if(counter == friendOption){
+                if(find_userLinkList_node(user->friends, aux->userName)){
+                    printf("Ya eres amigo/a de "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET"\n", aux->userName);
+                    counter++;
+                    aux = aux->next;
+                    continue;
+                }
+                // Evitamos errores por ausencia de punteros
+                aux = complete_userLinkList_node(aux, table);
+                aux->userNode = complete_user_from_json(aux->userNode);
+                user = complete_user_from_json(user);
+
+                // Generamos amistad
+                insert_userLinkList_node_completeInfo(user->friends, aux->userNode);
+                #ifdef DEBUG
+                    printf("Lista de amigos de "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET" actualizada:\n", user->username);
+                    print_userLinkList(user->friends);
+                    printf("\n");
+                #endif
+                save_userNode(user);
+                insert_userLinkList_node_completeInfo(aux->userNode->friends, user);
+                #ifdef DEBUG
+                    printf("Lista de amigos de "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET" actualizada:\n", aux->userNode->username);
+                    print_userLinkList(aux->userNode->friends);
+                    printf("\n");
+                #endif
+                save_userNode(aux->userNode);
+                printf("Ahora eres amigo/a de "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET"\n", aux->userNode->username);
+                table->modified = true;
+                break;
+            }
+            counter++;
+            aux = aux->next;
+        }
+        if(aux == NULL){
+            noMoreFriends = 1;
+        }
+    }
 }

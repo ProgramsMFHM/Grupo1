@@ -69,17 +69,11 @@ UserPosition insert_UserList_node(UserPosition prevPosition, UserPosition newNod
 UserPosition complete_userList_node(UserPosition P, int age, const char *nationality, const char *description, GenreLinkList genres, BandLinkList bands, CommentLinkList comments);
 bool delete_UserList_node(UserPosition P, UserList userList);
 
-
 // Funciones de interaccion con el usuario
 UserPosition userList_first(UserList userList);
 UserPosition userList_last(UserList userList);
 UserPosition userList_advance(UserPosition P);
 char *get_username(UserPosition P);
-
-// Funciones de ordenamiento de la lista de usuarios
-void split_userLinkList(UserLinkPosition source, UserLinkPosition* frontRef, UserLinkPosition* backRef);
-UserLinkPosition merge_userLinkLists(UserLinkPosition a, UserLinkPosition b);
-void sort_userLinkList_byName(UserLinkPosition* headRef);
 
 // Funciones de la tabla de usuarios
 UserTable create_userTable(UserTable table);
@@ -88,9 +82,11 @@ UserPosition insert_userTable_node(UserTable table, const char *username, int ag
 UserPosition find_userTable_node(UserTable table, const char *username);
 void delete_userTable_node(UserTable table, const char* username);
 void print_userTable(UserTable table);
+void save_userTable(UserTable userTable);
 
 // Funciones de loopweb relacionadas a usuarios
 void make_comment(char* userName, UserTable users, BandTable band, GenreTable genre, CommentTable comments);
 UserLinkList get_loopweb_users(UserTable table, bool print);
+void request_for_friendship(UserPosition user, UserLinkList possibleFriends, UserTable table);
 
 #endif

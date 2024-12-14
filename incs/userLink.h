@@ -42,6 +42,13 @@ UserLinkPosition insert_userLinkList_node_basicInfo(UserLinkPosition prevPositio
 UserLinkPosition insert_userLinkList_node_completeInfo(UserLinkPosition prevPosition, PtrToUser userNode);
 void delete_userLinkList_node(UserLinkPosition P, UserLinkList linkList);
 
+// Funciones de ordenamiento de la lista de usuarios
+void split_userLinkList(UserLinkPosition source, UserLinkPosition* frontRef, UserLinkPosition* backRef);
+UserLinkPosition merge_userLinkLists_withName(UserLinkPosition a, UserLinkPosition b);
+void sort_userLinkList_byName(UserLinkPosition* headRef);
+UserLinkPosition merge_userLinkLists_withCoefficient(UserLinkPosition a, UserLinkPosition b);
+void sort_userLinkList_byCoefficient(UserLinkPosition* headRef);
+
 // Funciones de interaccion con el usuario
 UserLinkPosition complete_userLinkList_node(UserLinkPosition P, UserTable userTable);
 UserLinkPosition userLinkList_first(UserLinkList linkList);
@@ -50,5 +57,6 @@ UserLinkPosition userLinkList_advance(UserLinkPosition P);
 
 // Otras funciones
 UserLinkPosition find_possible_friends(UserPosition user, UserTable table);
+void print_user_recommendations(UserPosition user, UserLinkList recommendations);
 
 #endif
