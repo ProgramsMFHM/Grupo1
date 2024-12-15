@@ -216,7 +216,7 @@ void print_loopweb_help()
     printf("║  Para ingresar como " ANSI_COLOR_BLUE "administrador" ANSI_COLOR_RESET ", ingrese la opción '-a' o '--admin'             ║\n");
     printf("║  Para ingresar como " ANSI_COLOR_CYAN "usuario" ANSI_COLOR_RESET ", ingrese la opción '-u <nombre>' o '--user <nombre>'  ║\n");
     printf("║                                                                                   ║\n");
-    printf("║           La ejecusión del programa es de la forma "ANSI_COLOR_RED"loopweb.out [opción]"ANSI_COLOR_RESET"           ║\n");
+    printf("║      La ejecusión del programa es de la forma "ANSI_COLOR_RED"./build/loopweb.out [opción]"ANSI_COLOR_RESET"        ║\n");
     printf("╚═══════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
 }

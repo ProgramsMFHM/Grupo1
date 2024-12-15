@@ -4,7 +4,7 @@
 - [Rodolfo Sebastian Cifuentes Kamann](https://github.com/Fitooooooooo)
 - [Bruno Benjamin Martinez flores](https://github.com/pin0no)
 - [Milton Fabricio Hernández Morales](https://github.com/ProgramsMFHM)
-- Guliana Patricia Ruiz Millacari
+- [Guliana Patricia Ruiz Millacari](https://github.com/GulianaRu)
 
 ## Descripción
 Este proyecto es una aplicación de terminal que pretende emular una red social de usuarios (se plantea que sea basada principalmente en música) por medio de grafos y otras estructuras de datos.
