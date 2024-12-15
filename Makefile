@@ -37,8 +37,8 @@ clean:
 folders:
 	mkdir -p src obj incs build docs
 
-#doc:
-#doxygen
+doc:
+	doxygen
 
 run:
 	@./build/$(EXEC)

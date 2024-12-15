@@ -1,146 +1,150 @@
 [
 	{
-		"userName":"Dylan",
-		"friends":["Brian", "Sam", "Eve"]
+		"userName":"Ivan",
+		"friends":["Jake", "Karen", "Abby"]
 	},
 	{
 		"userName":"Brian",
-		"friends":["Cleo", "Dylan"]
+		"friends":["Dylan", "Cleo"]
 	},
 	{
-		"userName":"Ivan",
-		"friends":["Abby", "Karen", "Jake"]
+		"userName":"Dylan",
+		"friends":["Eve", "Sam", "Brian"]
 	},
 	{
 		"userName":"Nina",
-		"friends":["Mia", "Leo"]
-	},
-	{
-		"userName":"Aisha",
-		"friends":["Zane", "Quinn"]
+		"friends":["Leo", "Mia"]
 	},
 	{
 		"userName":"Oscar",
-		"friends":["Quinn", "Patricia"]
+		"friends":["Patricia", "Quinn"]
+	},
+	{
+		"userName":"Aisha",
+		"friends":["Quinn", "Zane"]
 	},
 	{
 		"userName":"Tina",
-		"friends":["Sam", "Rachel"]
+		"friends":["Rachel", "Sam"]
 	},
 	{
 		"userName":"Abby",
-		"friends":["Alice", "Bob"]
-	},
-	{
-		"userName":"Mallory",
-		"friends":["Alice", "Bob"]
-	},
-	{
-		"userName":"Yara",
-		"friends":["Zane", "Xander"]
+		"friends":["Bob", "Alice"]
 	},
 	{
 		"userName":"Wendy",
-		"friends":["Trent", "Uma"]
+		"friends":["Uma", "Trent"]
 	},
 	{
-		"userName":"Victor",
-		"friends":["Leo", "Trent", "Uma"]
+		"userName":"Yara",
+		"friends":["Xander", "Zane"]
+	},
+	{
+		"userName":"Mallory",
+		"friends":["Bob", "Alice"]
 	},
 	{
 		"userName":"Frank",
-		"friends":["Hannah", "Grace"]
+		"friends":["Grace", "Hannah"]
+	},
+	{
+		"userName":"Victor",
+		"friends":["Uma", "Trent", "Leo"]
 	},
 	{
 		"userName":"Mia",
-		"friends":["Nina", "Leo"]
+		"friends":["Leo", "Nina"]
 	},
 	{
 		"userName":"Abbo",
-		"friends":["Milton", "Ayrton"]
-	},
-	{
-		"userName":"Uma",
-		"friends":["Wendy", "Trent", "Victor"]
+		"friends":["Rodolfo", "Ayrton", "Milton"]
 	},
 	{
 		"userName":"Carol",
-		"friends":["Eve", "Alice"]
+		"friends":["Alice", "Eve"]
 	},
 	{
-		"userName":"Rachel",
-		"friends":["Abby", "Tina", "Sam"]
-	},
-	{
-		"userName":"Leo",
-		"friends":["Victor", "Nina", "Mia"]
-	},
-	{
-		"userName":"Hannah",
-		"friends":["Grace", "Frank"]
+		"userName":"Uma",
+		"friends":["Victor", "Trent", "Wendy"]
 	},
 	{
 		"userName":"Eve",
-		"friends":["Dylan", "Dave", "Carol"]
+		"friends":["Carol", "Dave", "Dylan"]
 	},
 	{
-		"userName":"Ayrton",
-		"friends":["Abbo", "Milton", "Alice"]
+		"userName":"Hannah",
+		"friends":["Rodolfo", "Frank", "Grace"]
+	},
+	{
+		"userName":"Leo",
+		"friends":["Mia", "Nina", "Victor"]
+	},
+	{
+		"userName":"Rachel",
+		"friends":["Sam", "Tina", "Abby"]
 	},
 	{
 		"userName":"Xander",
-		"friends":["Zane", "Yara"]
+		"friends":["Yara", "Zane"]
 	},
 	{
-		"userName":"Zane",
-		"friends":["Aisha", "Yara", "Xander"]
-	},
-	{
-		"userName":"Patricia",
-		"friends":["Quinn", "Oscar"]
+		"userName":"Ayrton",
+		"friends":["Alice", "Milton", "Abbo"]
 	},
 	{
 		"userName":"Bob",
-		"friends":["Mallory", "Dave", "Alice"]
+		"friends":["Alice", "Dave", "Mallory"]
 	},
 	{
-		"userName":"Milton",
-		"friends":["Abbo", "Ayrton", "Alice"]
+		"userName":"Patricia",
+		"friends":["Oscar", "Quinn"]
+	},
+	{
+		"userName":"Zane",
+		"friends":["Xander", "Yara", "Aisha"]
+	},
+	{
+		"userName":"Rodolfo",
+		"friends":["Abbo", "Hannah"]
 	},
 	{
 		"userName":"Cleo",
-		"friends":["Brian", "Sam"]
+		"friends":["Sam", "Brian"]
 	},
 	{
-		"userName":"Karen",
-		"friends":["Abby", "Jake", "Ivan"]
+		"userName":"Milton",
+		"friends":["Alice", "Ayrton", "Abbo"]
 	},
 	{
 		"userName":"Grace",
-		"friends":["Hannah", "Frank"]
+		"friends":["Frank", "Hannah"]
+	},
+	{
+		"userName":"Karen",
+		"friends":["Ivan", "Jake", "Abby"]
 	},
 	{
 		"userName":"Quinn",
-		"friends":["Aisha", "Patricia", "Oscar"]
-	},
-	{
-		"userName":"Trent",
-		"friends":["Uma", "Wendy", "Victor"]
-	},
-	{
-		"userName":"Jake",
-		"friends":["Karen", "Ivan"]
+		"friends":["Oscar", "Patricia", "Aisha"]
 	},
 	{
 		"userName":"Dave",
-		"friends":["Eve", "Bob"]
+		"friends":["Bob", "Eve"]
 	},
 	{
-		"userName":"Sam",
-		"friends":["Dylan", "Cleo", "Tina", "Rachel"]
+		"userName":"Jake",
+		"friends":["Ivan", "Karen"]
+	},
+	{
+		"userName":"Trent",
+		"friends":["Victor", "Wendy", "Uma"]
 	},
 	{
 		"userName":"Alice",
-		"friends":["Milton", "Ayrton", "Mallory", "Carol", "Bob"]
+		"friends":["Bob", "Carol", "Mallory", "Ayrton", "Milton"]
+	},
+	{
+		"userName":"Sam",
+		"friends":["Rachel", "Tina", "Cleo", "Dylan"]
 	}
 ]

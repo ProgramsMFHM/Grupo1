@@ -3,8 +3,8 @@
 	"age": 20,
 	"nationality": "Chile",
 	"description": "Computin fan de @slipknot",
-	"genres": ["punk", "pop", "rock"],
-	"bands": ["slipknot", "losBunkers"],
+	"genres": ["rock", "pop", "punk"],
+	"bands": ["losBunkers", "slipknot"],
 	"comments": [],
-	"friends": ["Milton", "Ayrton"]
+	"friends": ["Rodolfo", "Ayrton", "Milton"]
 }

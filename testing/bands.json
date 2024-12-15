@@ -1,22 +1,14 @@
 [
 	{
-		"band":"ancestralia",
-		"comments":[1734204797]
-	},
-	{
 		"band":"blackpink",
 		"comments":[1734190804]
 	},
 	{
-		"band":"bts",
-		"comments":[]
+		"band":"ancestralia",
+		"comments":[1734204797]
 	},
 	{
-		"band":"kanyeWest",
-		"comments":[]
-	},
-	{
-		"band":"ladyGaga",
+		"band":"pinkFloyd",
 		"comments":[]
 	},
 	{
@@ -24,23 +16,19 @@
 		"comments":[]
 	},
 	{
-		"band":"pinkFloyd",
+		"band":"ladyGaga",
 		"comments":[]
 	},
 	{
-		"band":"avicii",
+		"band":"kanyeWest",
 		"comments":[]
 	},
 	{
-		"band":"chic",
+		"band":"bts",
 		"comments":[]
 	},
 	{
-		"band":"enya",
-		"comments":[]
-	},
-	{
-		"band":"exo",
+		"band":"megaDeth",
 		"comments":[]
 	},
 	{
@@ -48,15 +36,19 @@
 		"comments":[1734205436]
 	},
 	{
-		"band":"adele",
+		"band":"exo",
 		"comments":[]
 	},
 	{
-		"band":"aliceKeys",
+		"band":"enya",
 		"comments":[]
 	},
 	{
-		"band":"bobMarley",
+		"band":"chic",
+		"comments":[]
+	},
+	{
+		"band":"avicii",
 		"comments":[]
 	},
 	{
@@ -64,27 +56,19 @@
 		"comments":[]
 	},
 	{
+		"band":"bobMarley",
+		"comments":[]
+	},
+	{
+		"band":"aliceKeys",
+		"comments":[]
+	},
+	{
+		"band":"adele",
+		"comments":[]
+	},
+	{
 		"band":"edSheeran",
-		"comments":[]
-	},
-	{
-		"band":"chillhopMusic",
-		"comments":[]
-	},
-	{
-		"band":"fooFighters",
-		"comments":[]
-	},
-	{
-		"band":"joji",
-		"comments":[]
-	},
-	{
-		"band":"marcAnthony",
-		"comments":[]
-	},
-	{
-		"band":"skrillex",
 		"comments":[]
 	},
 	{
@@ -92,11 +76,31 @@
 		"comments":[]
 	},
 	{
-		"band":"arethaFranklin",
+		"band":"skrillex",
 		"comments":[]
 	},
 	{
-		"band":"losAngelesAzules",
+		"band":"marcAnthony",
+		"comments":[]
+	},
+	{
+		"band":"joji",
+		"comments":[]
+	},
+	{
+		"band":"fooFighters",
+		"comments":[]
+	},
+	{
+		"band":"chillhopMusic",
+		"comments":[]
+	},
+	{
+		"band":"dreamThater",
+		"comments":[1734227484]
+	},
+	{
+		"band":"twice",
 		"comments":[]
 	},
 	{
@@ -104,7 +108,15 @@
 		"comments":[]
 	},
 	{
-		"band":"twice",
+		"band":"losAngelesAzules",
+		"comments":[]
+	},
+	{
+		"band":"arethaFranklin",
+		"comments":[]
+	},
+	{
+		"band":"brunoMars",
 		"comments":[]
 	},
 	{
@@ -112,7 +124,11 @@
 		"comments":[]
 	},
 	{
-		"band":"sodaStereo",
+		"band":"norahJones",
+		"comments":[1733941879]
+	},
+	{
+		"band":"whitneyHouston",
 		"comments":[]
 	},
 	{
@@ -120,15 +136,7 @@
 		"comments":[]
 	},
 	{
-		"band":"whitneyHouston",
-		"comments":[]
-	},
-	{
-		"band":"norahJones",
-		"comments":[1733941879]
-	},
-	{
-		"band":"drake",
+		"band":"sodaStereo",
 		"comments":[]
 	},
 	{
@@ -136,7 +144,7 @@
 		"comments":[]
 	},
 	{
-		"band":"jorjaSmith",
+		"band":"drake",
 		"comments":[]
 	},
 	{
@@ -144,15 +152,7 @@
 		"comments":[]
 	},
 	{
-		"band":"blink182",
-		"comments":[]
-	},
-	{
-		"band":"burnaBoy",
-		"comments":[]
-	},
-	{
-		"band":"nirvana",
+		"band":"jorjaSmith",
 		"comments":[]
 	},
 	{
@@ -160,23 +160,15 @@
 		"comments":[]
 	},
 	{
-		"band":"imagineDragons",
-		"comments":[1733949300]
-	},
-	{
-		"band":"ellaFitzgerald",
+		"band":"nirvana",
 		"comments":[]
 	},
 	{
-		"band":"fleetFoxes",
+		"band":"burnaBoy",
 		"comments":[]
 	},
 	{
-		"band":"hectorLavoe",
-		"comments":[]
-	},
-	{
-		"band":"karolG",
+		"band":"blink182",
 		"comments":[]
 	},
 	{
@@ -184,15 +176,27 @@
 		"comments":[]
 	},
 	{
-		"band":"arcticMonkeys",
+		"band":"karolG",
 		"comments":[]
 	},
 	{
-		"band":"beethoven",
+		"band":"hectorLavoe",
 		"comments":[]
 	},
 	{
-		"band":"brianEno",
+		"band":"fleetFoxes",
+		"comments":[]
+	},
+	{
+		"band":"ellaFitzgerald",
+		"comments":[]
+	},
+	{
+		"band":"imagineDragons",
+		"comments":[1733949300]
+	},
+	{
+		"band":"shakira",
 		"comments":[]
 	},
 	{
@@ -200,15 +204,15 @@
 		"comments":[]
 	},
 	{
-		"band":"shakira",
+		"band":"brianEno",
 		"comments":[]
 	},
 	{
-		"band":"theCardigans",
-		"comments":[1734204610]
+		"band":"beethoven",
+		"comments":[]
 	},
 	{
-		"band":"earth,Wind&Fire",
+		"band":"arcticMonkeys",
 		"comments":[]
 	},
 	{
@@ -216,11 +220,15 @@
 		"comments":[]
 	},
 	{
-		"band":"slipknot",
+		"band":"earth,Wind&Fire",
 		"comments":[]
 	},
 	{
-		"band":"radioHead",
+		"band":"theCardigans",
+		"comments":[1734204610]
+	},
+	{
+		"band":"theSpecials",
 		"comments":[]
 	},
 	{
@@ -228,11 +236,15 @@
 		"comments":[]
 	},
 	{
-		"band":"theSpecials",
+		"band":"radioHead",
 		"comments":[]
 	},
 	{
-		"band":"losBunkers",
+		"band":"slipknot",
+		"comments":[]
+	},
+	{
+		"band":"tycho",
 		"comments":[]
 	},
 	{
@@ -240,11 +252,7 @@
 		"comments":[1734023671]
 	},
 	{
-		"band":"tycho",
-		"comments":[]
-	},
-	{
-		"band":"johnColtrane",
+		"band":"losBunkers",
 		"comments":[]
 	},
 	{
@@ -252,19 +260,11 @@
 		"comments":[]
 	},
 	{
-		"band":"amyWinehouse",
+		"band":"johnColtrane",
 		"comments":[]
 	},
 	{
-		"band":"badBunny",
-		"comments":[]
-	},
-	{
-		"band":"bonIver",
-		"comments":[]
-	},
-	{
-		"band":"carlCox",
+		"band":"wizkid",
 		"comments":[]
 	},
 	{
@@ -272,7 +272,19 @@
 		"comments":[]
 	},
 	{
-		"band":"wizkid",
+		"band":"carlCox",
+		"comments":[]
+	},
+	{
+		"band":"bonIver",
+		"comments":[]
+	},
+	{
+		"band":"badBunny",
+		"comments":[]
+	},
+	{
+		"band":"amyWinehouse",
 		"comments":[]
 	}
 ]

@@ -1122,7 +1122,7 @@ UserPosition create_user_profile(UserTable users, BandTable bands, GenreTable ge
     notValid = true;
     // Gustos musicales
     printf(CLEAR_SCREEN);
-    printf("A continuacion, ingrese los gustos musicales de su perfil indicando el numero correspondiente: \n");
+    printf("A continuacion, ingrese los gustos musicales de su perfil (Puede no estar en la lista): \n");
     GenreLinkList programGenreList = get_loopweb_genres(genres);
     GenrePosition genrePosition;
     do{
@@ -1138,7 +1138,7 @@ UserPosition create_user_profile(UserTable users, BandTable bands, GenreTable ge
             notValid = false;
         }
         else{
-            printf("El genero "ANSI_COLOR_RED"%s"ANSI_COLOR_RESET" no existe, desea ingresarlo en la tabla de generos? (0:si, 1:no): ", genreText);
+            printf("El genero "ANSI_COLOR_RED"\"%s\""ANSI_COLOR_RESET" no existe, desea ingresarlo en la tabla de generos? (0:si, 1:no): ", genreText);
             if(scanf("%d", &option) != 1){
                 print_error(103, NULL, NULL);
                 continue;
@@ -1165,7 +1165,7 @@ UserPosition create_user_profile(UserTable users, BandTable bands, GenreTable ge
     notValid = true;
     // Bandas
     printf(CLEAR_SCREEN);
-    printf("A continuacion, ingrese las bandas de su perfil indicando el numero correspondiente: \n");
+    printf("A continuacion, ingrese las bandas de su perfil (Puede no estar en la lista): \n");
     BandLinkList programBandList = get_loopweb_bands(bands);
     BandPosition bandPosition;
     do{
@@ -1181,7 +1181,7 @@ UserPosition create_user_profile(UserTable users, BandTable bands, GenreTable ge
             notValid = false;
         }
         else{
-            printf("La banda "ANSI_COLOR_GREEN"%s"ANSI_COLOR_RESET" no existe, desea ingresarla en la tabla de bandas? (0:si, 1:no): ", bandText);
+            printf("La banda "ANSI_COLOR_GREEN"\"%s\""ANSI_COLOR_RESET" no existe, desea ingresarla en la tabla de bandas? (0:si, 1:no): ", bandText);
             if(scanf("%d", &option) != 1){
                 print_error(103, NULL, NULL);
                 continue;
@@ -1243,5 +1243,6 @@ UserPosition create_user_profile(UserTable users, BandTable bands, GenreTable ge
     delete_userLinkList(possibleFriends);
     delete_genreLinkList(programGenreList);
     delete_bandLinkList(programBandList);
+    printf("Usuario "ANSI_COLOR_CYAN"%s"ANSI_COLOR_RESET" creado exitosamente\n\n", userName);
     return user;
 }

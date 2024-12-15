@@ -200,3 +200,23 @@ void print_date(time_t time)
 
     printf("%s", string);
 }
+
+// Otras funciones
+
+/**
+ * @brief Imprime la ayuda del programa por consola
+*/
+void print_loopweb_help()
+{
+    printf("\n");
+    printf("╔═══════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║                                " ANSI_COLOR_BLUE "¡Bienvenido a LoopWeb!" ANSI_COLOR_RESET "                             ║\n");
+    printf("╠═══════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║  Para ver la " ANSI_COLOR_GREEN "ayuda del programa" ANSI_COLOR_RESET ", ingrese la opción '-h' o '--help'                ║\n");
+    printf("║  Para ingresar como " ANSI_COLOR_BLUE "administrador" ANSI_COLOR_RESET ", ingrese la opción '-a' o '--admin'             ║\n");
+    printf("║  Para ingresar como " ANSI_COLOR_CYAN "usuario" ANSI_COLOR_RESET ", ingrese la opción '-u <nombre>' o '--user <nombre>'  ║\n");
+    printf("║                                                                                   ║\n");
+    printf("║           La ejecusión del programa es de la forma "ANSI_COLOR_RED"loopweb.out [opción]"ANSI_COLOR_RESET"           ║\n");
+    printf("╚═══════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+}

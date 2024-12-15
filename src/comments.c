@@ -1,5 +1,5 @@
 /**
- * @file comment.c
+ * @file comments.c
  * @author Constanza Araya, Rodolfo Cifuentes, Bruno Martinez, Milton Hernández, Guliana Ruiz
  * @brief Funciones para manejo de commentarios dentro de loopweb
 */

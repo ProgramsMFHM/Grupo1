@@ -43,4 +43,7 @@ bool decreasing(double a, double b);
 // Tiempo
 void print_date(time_t time);
 
+// Otras funciones
+void print_loopweb_help();
+
 #endif

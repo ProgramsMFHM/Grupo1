@@ -42,7 +42,7 @@ struct _userNode {
     PtrToUser next;               /**< Puntero al siguiente nodo de la lista enlazada */
 };
 
-/** \struct _userUserTable
+/** \struct _userTable
  * @brief Estructura que representa la tabla hash de usuarios.
 */
 struct _userTable {

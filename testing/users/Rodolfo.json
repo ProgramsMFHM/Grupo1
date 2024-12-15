@@ -1,0 +1,10 @@
+{
+	"username": "Rodolfo",
+	"age": 24,
+	"nationality": "Chile",
+	"description": "Nada bueno que contar",
+	"genres": ["metal", "funk", "disco"],
+	"bands": ["megaDeth", "brunoMars"],
+	"comments": [1734227484],
+	"friends": ["Hannah", "Abbo"]
+}

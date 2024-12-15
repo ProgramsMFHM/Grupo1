@@ -1,3 +1,9 @@
+/**
+ * @file main.c
+ * @author Constanza Araya, Rodolfo Cifuentes, Bruno Martinez, Milton Hernández, Guliana Ruiz
+ * @brief Inicio de la ejecución del programa
+*/
+
 #include <stdlib.h>
 #include "getopt.h"
 #include "comments.h"
@@ -45,12 +51,12 @@ int main(int argc, char* argv[])
                 break;
             case 'h': // Modo ayuda
             default:
-                printf("Ayuda del programa :D\n");
+                print_loopweb_help();
                 break;
         }
     }
     else{
-        printf("Ayuda del programa :D\n");
+        print_loopweb_help();
     }
 
     return 0;
@@ -123,7 +129,7 @@ void admin_mode()
                 break;
         }
 
-        printf("\n¿ADMIN: Desea realizar otra accion? (0:si, 1:no): ");
+        printf("\nADMIN: Desea realizar otra accion? (0:si, 1:no): ");
         if(scanf("%d", &terminate) != 1){
             print_error(103, NULL, NULL);
             continue;
