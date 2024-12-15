@@ -1,0 +1,117 @@
+\section{Algunos algoritmos y funciones destacables}
+A continuación se explican algunas de las funciones más interesantes que se construyeron durante el desarrollo del programa.
+%----------------------------%
+\subsection{Funcion GetOPT}
+
+\textbf{getOPT} es una función parte de las librerías estándar de C que permite una cómoda interacción con la línea de comandos facilitando el uso de banderas de opciones.
+
+Esta función recibe como argumento un string de texto y devuelve un entero que representa el código de acceso con el que se quiere ingresar.
+
+A pesar de que esta funcionalidad que es de por sí bastante útil se optó por el uso de la función \textbf{getoptLong()} para poder utilizar banderas más extensas. Así dentro de \loopweb se pueden ocupar las opciones \texttt{./build/loopweb.out -h},  \texttt{./build/loopweb.out -a}, \texttt{./build/loopweb.out -u <nombre>}, \texttt{./build/loopweb.out ----help}, \texttt{./build/loopweb.out ----administrador} ó \texttt{./build/loopweb.out ----user <nombre>}.
+
+
+%----------------------------%
+\subsection{Implementacion de mergeSort para Listas enlazadas}
+El algoritmo de ordenamiento de merge sort es utilizado principalmente sobre arreglos de datos, pero también puede ser utilizado sobre listas enlazadas. En el presente proyecto se implementó una triada de funciones que juntas permiten implementar merge sort sobre listas enlazadas (A continuación se muestra un ejemplo con listas de enlaces a géneros, aunque se puede implementar con cualquier lista enlazada simple):
+\begin{enumerate}
+    \item \textbf{split\_genreLinkList}: Esta función divide una lista enlazada en dos mitades, parte importante y esencial para el merge sort.
+    \begin{lstlisting}[language=C, caption={split\_genreLinkList}, label={lst:codigo}]
+/**
+* @brief Divide una lista enlazada en dos mitades.
+* @param source Puntero al nodo inicial de la lista a dividir.
+* @param frontRef Referencia a la primera mitad de la lista.
+* @param backRef Referencia a la segunda mitad de la lista.
+*/
+void split_genreLinkList(GenreLinkPosition source, GenreLinkPosition* frontRef, GenreLinkPosition* backRef)
+{
+    GenreLinkPosition slow, fast;
+    slow = source;
+    fast = source->next;
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
+\end{lstlisting}
+    \item \textbf{merge\_genreLinkLists:} Esta función fusiona dos listas enlazadas ordenadas en una sola lista ordenada.
+\begin{lstlisting}[language=C, caption={fusion de listas}, label={lst:codigo}]
+/**
+* @brief Fusiona dos listas enlazadas ordenadas en una sola lista ordenada
+* @param a Puntero a la primera lista ordenada
+* @param b Puntero a la segunda lista ordenada
+* @return Puntero al nodo inicial de la lista fusionada ordenada
+*/
+GenreLinkPosition merge_genreLinkLists(GenreLinkPosition a, GenreLinkPosition b)
+{
+    if (a == NULL) return b;
+    if (b == NULL) return a;
+    GenreLinkPosition result;
+    if (strcmp(a->genre, b->genre) <= 0) {
+        result = a;
+        result->next = merge_genreLinkLists(a->next, b);
+    } else {
+        result = b;
+        result->next = merge_genreLinkLists(a, b->next);
+    }
+    return result;
+}
+\end{lstlisting}
+    \item \textbf{mergerSort\_genreLinkList}: Esta función controla el algoritmo como tal llamando \textbf{recursivamente} a las funciones anteriores y a sí misma.
+\begin{lstlisting}[language=C, caption={mergerSort\_genreLinkList}, label={lst:codigo}]
+/**
+* @brief Ordena una lista enlazada utilizando el algoritmo merge sort.
+* @param headRef Referencia al puntero del nodo inicial de la lista a ordenar.
+*/
+void mergeSort_genreLinkList(GenreLinkPosition* headRef)
+{
+    GenreLinkPosition head = *headRef;
+    GenreLinkPosition a, b;
+    if ((head == NULL) || (head->next == NULL)) {
+        return;  /**<si la lista esta vacia o tiene un solo elemento, no hay que ordenar */
+    }
+    split_genreLinkList(head, &a, &b);
+    mergeSort_genreLinkList(&a);  /**<ordena la primera mitad */
+    mergeSort_genreLinkList(&b);  /**<ordena la segunda mitad */
+    *headRef = merge_genreLinkLists(a, b);  /**<fusiona las dos mitades ordenadas */
+}
+\end{lstlisting}
+\end{enumerate}
+
+Estas funciones fueron implementadas y ligeramente modificadas al interior del código para ajustarse a cada uno de los casos de uso necesarios\footnote{Es importante notar que todas las funciones hacen uso de punteros a los nodos de la lista enlazada y que además la función principal debe recibir como parámetro un puntero al \textbf{Primer} nodo de la lista enlazada y NO al centinela de la misma}.
+
+
+%----------------------------%
+\newpage
+\subsection{Algoritmo BFS para recorrido de un grafo}
+
+El algoritmo BFS (algoritmo de búsqueda en profundidad) se encarga de recorrer los usuarios conectados por ``nivel'' y
+es utilizado para generar las recomendaciones de amigos, esta información se guarda en una lista de usuarios visitados, esto se hace para evitar repetir usuarios que ya se han visitado anteriormente.
+
+Las recomendaciones dentro del programa se restringen a los amigos en tercer grado (Los amigos de amigos de amigos) para evitar una lista muy larga de recomendaciones.
+
+\begin{lstlisting}[language=C, caption={Pseudocodigo del algoritmo BFS}, label={lst:BFS}]
+    BFS(Grafo G, Nodo inicial S):
+    Crear una cola vacia Q
+    Crear un conjunto vacio VISITADOS
+    Crear un diccionario NIVELES, donde cada nodo tiene un nivel asociado
+
+    Encolar S en Q
+    Marcar S como visitado anhadiendolo a VISITADOS
+    Asignar nivel 1 a S en NIVELES
+
+    Mientras Q no este vacia:
+        Nodo actual <- desencolar Q
+        Procesar Nodo actual (EJ: Almacenarlo en una lista de recomendaciones)
+
+        Para cada vecino V de Nodo actual en G:
+            Si V no esta en VISITADOS:
+                Encolar V en Q
+                Marcar V como visitado anhadiendolo a VISITADOS
+                Asignar nivel (NIVELES[Nodo actual] + 1) a V en NIVELES
+\end{lstlisting}
