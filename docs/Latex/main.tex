@@ -1,0 +1,106 @@
+\documentclass[9pt,letterpaper,onecolumn]{rho-class/rho}
+\usepackage[spanish,es-nodecimaldot,es-noindentfirst]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\setlength{\parindent}{0pt}  % Elimina la sangría
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\setbool{rho-abstract}{true} % Set false to hide the abstract
+\setbool{corres-info}{true} % Set false to hide the corresponding author section
+\addbibresource{rho.bib}
+
+% Definir el nuevo comando
+\newcommand{\loopweb}{LoopWe$\mathbb{\flat}$ }
+
+%----------------------------------------------------------
+% TITLE
+%----------------------------------------------------------
+
+%\journalname{Example Template}
+\title{\loopweb: Una red social en tu terminal}
+
+%----------------------------------------------------------
+% AUTHORS AND AFFILIATIONS
+%----------------------------------------------------------
+\author[$\dagger$]{Constanza Araya}
+\author[$\dagger$]{Rodolfo Cifuentes}
+\author[$\dagger$]{Bruno Martinez}
+\author[$\dagger$]{Milton Hernández}
+\author[$\dagger$]{Guliana Ruiz}
+
+%----------------------------------------------------------
+
+%\affil[1]{Affiliation of author one}
+%\affil[2]{Affiliation of author two}
+%\affil[3]{Affiliation of author three}
+\affil[$\dagger$]{Universidad de Magallanes}
+
+%----------------------------------------------------------
+% DATES
+%----------------------------------------------------------
+
+\dates{Este informe fue compilado el \today}
+
+%----------------------------------------------------------
+% FOOTER INFORMATION
+%----------------------------------------------------------
+
+%\leadauthor{Author last name et al.}
+%\footinfo{Creative Commons CC BY 4.0}
+\smalltitle{Estructuras de datos}
+%\institution{College name}
+\theday{\today} %\today
+
+%----------------------------------------------------------
+% ARTICLE INFORMATION
+%----------------------------------------------------------
+
+%\corres{Provide the corresponding author information and publisher here.}
+%\email{example@organization.com.}
+%\doi{\url{https://www.doi.org/exampledoi/XXXXXXXXXX}}
+
+%\received{March 20, 2024}
+%\revised{April 16, 2024}
+%\accepted{April 20, 2024}
+%\published{May 21, 2024}
+
+%\license{Rho LaTeX Class \ccLogo\ This document is licensed under Creative Commons CC BY 4.0.}
+
+%----------------------------------------------------------
+% ABSTRACT
+%----------------------------------------------------------
+
+\begin{abstract}
+    \loopweb es una simulación en terminal de una red social, creada con el propósito de desarrollar habilidades en el manejo de volúmenes de datos mediante el uso de estructuras como Tablas hash, Listas enlazadas simples y Grafos.
+\end{abstract}
+
+%----------------------------------------------------------
+
+\keywords{\loopweb, Simulación, Estructuras de datos, Tablas hash, Lista enlazada, Grafo}
+
+%----------------------------------------------------------
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\input{./src/sections/introduccion.tex}
+\newpage
+\input{./src/sections/planificacion.tex}
+\newpage
+\input{src/sections/investigación.tex}
+\newpage
+\input{src/sections/estructuras.tex}
+\newpage
+\input{src/sections/eficiencia.tex}
+\newpage
+\input{src/sections/algoritmos y funciones.tex}
+\newpage
+\input{src/sections/experienciaDeUsuario.tex}
+\newpage
+\input{src/sections/conclusion.tex}
+\newpage
+
+\nocite{*}
+\printbibliography[heading=bibintoc]
+
+\end{document}

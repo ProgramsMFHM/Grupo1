@@ -1,0 +1,26 @@
+\section{Estructuras de datos implementadas}
+Dentro de \loopweb se utilizaron en esencia dos estructuras de datos: Tablas hash y Listas enlazadas simples. Ambas tienen sus propias características y usos específicos, y se han diseñado para cumplir con diferentes objetivos propuestos para la aplicación.
+
+%-----------------------------%
+\subsection{Tablas Hash}
+El uso de esta estructura de datos se debe a su eficiencia a la hora de almacenar información. Esta estructura fue utilizada para almacenar los \textbf{Usuarios}, \textbf{Bandas}, \textbf{Generos} y \textbf{Comentarios} que existen dentro de la ``base de datos'' de \loopweb.
+
+Las tablas hash también son fáciles de crear y eliminar en forma recursiva y los datos que se guardan en ellas pueden ser de cualquier tipo, lo que facilita la gestión de información de los usuarios o bandas quienes no tienen necesariamente un Identificador numérico.
+
+%-----------------------------%
+\subsection{Listas Enlazadas Simples}
+Esta estructura es el `Engranaje central' de este programa, escogida por su gran flexibilidad en cuanto a espacio.
+
+El principal uso de esta estructura de datos se encuentra en la creación de ``Enlaces a las tablas hash'' anteriores. Esto permite el almacenamiento de información que se encuentra en las tablas sin necesidad de duplicar la información presente en las mismas.
+
+%-----------------------------%
+\subsection{Grafos}
+El almacenamiento de usuarios es la caracteristica fundamental de \loopweb, esencial para su correcto funcionamiento.
+
+Para ``dar vida'' a esta estructura de datos dentro del programa no se creó una estructura de datos especifica sino que se usó una abstracción de los conceptos de grafos mediante las tablas hash.
+
+Los algoritmos para grafos fueron utilizados para recorrer las conexiones de los usuarios y poder recomendar amigos entre amigos de amigos para ello se usó el algoritmo \textbf{BFS} para recorrer el grafo de usuarios.
+
+%-----------------------------%
+\subsection*{¿Qué otras estructuras de datos podrían haber sido implementadas?}
+El uso de Listas enlazadas simples permite la facilidad de implementación de todas las funciones propias de \loopweb, sin embargo estructuras como las Listas Doblemente Enlazadas o las Colas podrían dar más eficiencia a ciertas operaciones.

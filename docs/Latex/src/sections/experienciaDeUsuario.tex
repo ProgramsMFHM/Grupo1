@@ -1,0 +1,13 @@
+\section{Apariencia de loopweb}
+La función \texttt{print\_loopweb} tiene como objetivo procesar y resaltar publicaciones desde una cadena de caracteres. Las palabras que comienzan con \texttt{@} (bandas o artistas) se imprimen en verde, mientras que las que comienzan con \texttt{\#} (géneros) se imprimen en rojo.
+
+Esta función divide el texto en palabras, procesa cada una (carácter por carácter) y aplica los colores correspondientes a los géneros o bandas, asegurando que caracteres mal ubicados o repetidos no interfieran con el formato.
+
+Un aspecto clave del funcionamiento es el uso de \texttt{strtok()} para dividir el texto en palabras y el ciclo que recorre cada carácter para identificar y resaltar correctamente los géneros y bandas. La línea \texttt{printf(ANSI\_COLOR\_GREEN);} es esencial, ya que aplica el color verde a las palabras que comienzan con \texttt{@}, permitiendo que se resalten correctamente en la salida (análogamente para los géneros).
+
+El formato resultante permite identificar fácilmente los géneros (\texttt{@}) y bandas (\texttt{\#}) en las publicaciones, mejorando la visualización del contenido en \loopweb. Esta funcionalidad contribuye a resaltar elementos clave de manera clara y eficiente, y es útil para visualizar perfiles o contenido dinámico de los usuarios.
+
+\section{Experiencia del Usuario}
+En \loopweb, la experiencia del usuario ha sido diseñada para ser dinámica, llamativa y altamente interactiva, esto debido a su característica de ser una aplicación no estática (donde todas las acciones son realizadas por el usuario y no existe generación automática o programada de contenido).
+
+Para poder llevar a cabo este dinamismo se hizo uso de los colores proporcionados por el código ANSI, que permite representar colores en la pantalla.
